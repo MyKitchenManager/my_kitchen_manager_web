@@ -1,13 +1,20 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 export const styles = StyleSheet.create({
-    container: {
+    main: {
       flex: 1,
       backgroundColor: '#fff',
-      alignItems: 'center',
-      justifyContent: 'center',
+        padding: 7,
     },
     boldText : {
       fontWeight: 'bold',
+        fontSize: 20,
+    },
+    whiteText : {
+
+        fontSize: 15,
+        color: '#fff',
+        justifyContent: 'center',
+        alignContent: 'center',
     },
     header: {
       backgroundColor: 'pink',
@@ -16,5 +23,13 @@ export const styles = StyleSheet.create({
     body: {
       backgroundColor: 'yellow',
       padding: 30,
+    },
+    container: {
+       paddingLeft: 20,
+        paddingRight: 20,
+        paddingTop: 10,
+       justifyContent: 'center',
+        alignContent: 'center',
+
     }
   });
