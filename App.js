@@ -1,18 +1,15 @@
 import React, {Component}from 'react';
-import { Container, Header,  Body, Title, Content, Item, Input, Icon } from 'native-base';
+import { Header,Container,Title, Content, List, ListItem, InputGroup, Input, Icon, Picker, Button } from 'native-base';
+
 import { StyleSheet, Text, View } from 'react-native';
-import {styles} from './styles';
-import Login from './components/Login';
-import TopBar from "./components/TopBar"
+import LoginForm from './components/LoginForm';
+//import TopBar from "./components/TopBar"
 
 export default class App extends Component {
   render(){
       return (
-          <View style = {styles.main}>
-              <TopBar/>
-              <Content>
-                <Login/>
-              </Content>
+          <View style = {{flex: 1, padding: 7}}>
+              <LoginForm/>
           </View>
       );
   }

@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Container,Header, Icon, Left, Right} from "native-base";
 import {Text} from "react-native";
-import {styles} from "../styles";
+import {styles} from "../styles/styles";
 
 class TopBar extends Component {
     render() {
