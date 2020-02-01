@@ -26,40 +26,43 @@ class SignUp extends Component {
     }
 
     handlerSignUp() {
-        fetch(`${API_URL}/users/register`,{
-            method: 'POST',
-            headers: {
-                // 'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                "signupDate": '2020-01-28T12:00:00.000+0000',
-                "password": this.state.password,
-                "gender": 'M',
-                "emailAddress": this.state.email,
-                "nationality": 90,
-                "firstName": 'Xiao',
-                "lastName": 'Yu',
-                "userName": this.state.username,
-                "vegetarian": false,
-                "vegan": false,
-                "lactoseIntolerant": false,
-                "glutenFree": false,
+        if(this.state.password!==this.state.confirmPassword){
+            alert('Password does not match with confirm password');
+        }else {
+            fetch(`${API_URL}/users/register`, {
+                method: 'POST',
+                headers: {
+                    // 'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    "signupDate": '2020-01-28T12:00:00.000+0000',
+                    "password": this.state.password,
+                    "gender": 'M',
+                    "emailAddress": this.state.email,
+                    "nationality": 90,
+                    "firstName": 'Xiao',
+                    "lastName": 'Yu',
+                    "userName": this.state.username,
+                    "vegetarian": false,
+                    "vegan": false,
+                    "lactoseIntolerant": false,
+                    "glutenFree": false,
+                })
+            }).then((response) => {
+                if (response.status == "200") {
+                    alert('Register successfully');
+                    console.log('Register successfully');
+                    Actions.login();
+                } else if (response.status == "226") {
+                    alert('User has existed');
+                    console.log('The username has existed')
+                }
+                //throw new Error(response.statusText)
+            }).catch((error)=>{
+                console.log('Exist Error: '+error);
             })
-        }).then((response) => {
-            if (response.status == "200") {
-                alert('Register successfully');
-                console.log('Register successfully');
-                Actions.login();
-            } else if (response.status == "226") {
-                alert('User has existed');
-                console.log('The username has existed')
-            }
-            throw new Error(response.statusText)
-        }).catch((error) => {
-            console.log("-------- error ------- "+ error);
-            //alert("result:"+ error)
-        });
+        }
     }
 
     render() {
@@ -100,6 +103,7 @@ class SignUp extends Component {
                                         <Input
                                             onChangeText={(text)=>this.setState({password:text})}
                                             value = {this.state.password}
+                                            secureTextEntry = {true}
                                         />
                                     </Item>
                                 </InputGroup>
@@ -112,6 +116,7 @@ class SignUp extends Component {
                                         <Input
                                             onChangeText={(text)=>this.setState({confirmPassword:text})}
                                             value = {this.state.confirmPassword}
+                                            secureTextEntry = {true}
                                         />
                                     </Item>
                                 </InputGroup>
