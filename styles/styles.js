@@ -20,6 +20,6 @@ module.exports = StyleSheet.create({
         alignSelf:'center',
         justifyContent:'center',
         backgroundColor:"deepskyblue",
-        width:150
+        width:200
     },
 });

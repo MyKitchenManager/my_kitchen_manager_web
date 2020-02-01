@@ -2,11 +2,11 @@ import React, {Component}from 'react';
 import SignUp from "./components/SignUp";
 import { StyleSheet, Text, View } from 'react-native';
 import {Scene, Router} from 'react-native-router-flux';
-import LoginForm from './components/LoginForm';
+import Login from './components/Login';
 import Home from "./components/Home";
 import {AsyncStorage} from "react-native-web"
 import {TOKEN_KEY, API_URL} from "./constant";
-//import TopBar from "./components/TopBar"
+
 
 export default class App extends Component {
     state = {
@@ -38,7 +38,7 @@ export default class App extends Component {
 
       return  <Router>
                 <Scene key="root">
-                    <Scene key="login" component={LoginForm} title="Login" initial={this.state.init}/>
+                    <Scene key="login" component={Login} title="Login" initial={this.state.init}/>
                     <Scene key="signup" component={SignUp} title="SignUp"/>
                     <Scene key="home" component={Home} titile = "My Kitchen Manager" initial={!this.state.init}/>
                 </Scene>
