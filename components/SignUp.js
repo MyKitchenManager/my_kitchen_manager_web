@@ -53,7 +53,7 @@ class SignUp extends Component {
                 if (response.status == "200") {
                     alert('Register successfully');
                     console.log('Register successfully');
-                    Actions.login();
+                    Actions.pop();
                 } else if (response.status == "226") {
                     alert('User has existed');
                     console.log('The username has existed')

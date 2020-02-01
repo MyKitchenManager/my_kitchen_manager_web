@@ -40,7 +40,7 @@ export default class App extends Component {
                 <Scene key="root">
                     <Scene key="login" component={Login} title="Login" initial={this.state.init}/>
                     <Scene key="signup" component={SignUp} title="SignUp"/>
-                    <Scene key="home" component={Home} titile = "My Kitchen Manager" initial={!this.state.init}/>
+                    <Scene key="home" component={Home} title = "My Kitchen Manager" initial={!this.state.init}/>
                 </Scene>
               </Router>
 
