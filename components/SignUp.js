@@ -33,11 +33,11 @@ class SignUp extends Component {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                "signupDate": Date(),
+                "signupDate": '2020-01-28T12:00:00.000+0000',
                 "password": this.state.password,
                 "gender": 'M',
                 "emailAddress": this.state.email,
-                "nationality": 'China',
+                "nationality": 90,
                 "firstName": 'Xiao',
                 "lastName": 'Yu',
                 "userName": this.state.username,
@@ -48,17 +48,17 @@ class SignUp extends Component {
             })
         }).then((response) => {
             if (response.status == "200") {
-                Alert.alert('Register successfully');
+                alert('Register successfully');
                 console.log('Register successfully');
                 Actions.login();
             } else if (response.status == "226") {
-                Alert.alert('User has existed');
+                alert('User has existed');
                 console.log('The username has existed')
             }
             throw new Error(response.statusText)
         }).catch((error) => {
             console.log("-------- error ------- "+ error);
-            alert("result:"+ error)
+            //alert("result:"+ error)
         });
     }
 
