@@ -27,7 +27,7 @@ class SignUp extends Component {
                                 <InputGroup>
                                     <Icon name="ios-person" style={{color: '#fe6e32'}}/>
                                     <Item floatingLabel>
-                                        <Label style={{padding: 10, fontSize: 15}}> Username (Email) </Label>
+                                        <Label style={{padding: 10, fontSize: 15}}> Username </Label>
                                         <Input/>
                                     </Item>
                                 </InputGroup>
@@ -45,7 +45,16 @@ class SignUp extends Component {
                                 <InputGroup>
                                     <Icon type="MaterialIcons" name="done" style={{color: '#fe6e32'}}/>
                                     <Item floatingLabel>
-                                        <Label style={{padding: 10, fontSize: 15}}> Confirm Password </Label>
+                                        <Label style={{padding: 10, fontSize: 15}}>Confirm Password </Label>
+                                        <Input/>
+                                    </Item>
+                                </InputGroup>
+                            </ListItem>
+                            <ListItem>
+                                <InputGroup>
+                                    <Icon type="MaterialIcons" name="mail" style={{color: '#fe6e32'}}/>
+                                    <Item floatingLabel>
+                                        <Label style={{padding: 10, fontSize: 15}}> Email </Label>
                                         <Input/>
                                     </Item>
                                 </InputGroup>

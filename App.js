@@ -3,20 +3,48 @@ import SignUp from "./components/SignUp";
 import { StyleSheet, Text, View } from 'react-native';
 import {Scene, Router} from 'react-native-router-flux';
 import LoginForm from './components/LoginForm';
+import Home from "./components/Home";
+import {AsyncStorage} from "react-native-web"
+import {TOKEN_KEY, API_URL} from "./constant";
 //import TopBar from "./components/TopBar"
 
 export default class App extends Component {
+    state = {
+        init : true
+    }
+    componentDidMount(){
+        AsyncStorage.getItem(TOKEN_KEY)
+            .then((accessToken)=>{
+                if(accessToken!=null){
+                    fetch(API_URL, {
+                        method: 'GET',
+                        headers: {
+                            'Authorization': 'Bearer '+accessToken
+                        }
+                    }).then((response)=>{
+                        if(response.status=='200'){
+                            this.setState({init:false});
+                        }else{
+                            this.setState({init:true});
+                        }
+                    })
+                }
+            });
+
+    }
+
   render(){
 
 
       return  <Router>
                 <Scene key="root">
-                    <Scene key="login" component={LoginForm} title="Login" initial={true}/>
+                    <Scene key="login" component={LoginForm} title="Login" initial={this.state.init}/>
                     <Scene key="signup" component={SignUp} title="SignUp"/>
+                    <Scene key="home" component={Home} titile = "My Kitchen Manager" initial={!this.state.init}/>
                 </Scene>
               </Router>
 
 
-  }
+    }
 }
 
