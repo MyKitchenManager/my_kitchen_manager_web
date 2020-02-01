@@ -14,13 +14,13 @@ export default class Login extends Component {
         }
     }
 
-    async _onValueChange(accessToken){
-        try {
-            await AsyncStorage.setItem(TOKEN_KEY, accessToken);
-        }catch (e) {
-            console.log('Async Storage Error:'+e.message());
-        }
-    }
+    // async _onValueChange(accessToken){
+    //     try {
+    //         await AsyncStorage.setItem(TOKEN_KEY, accessToken);
+    //     }catch (e) {
+    //         console.log('Async Storage Error:'+e.message());
+    //     }
+    // }
 
     loginHandler(){
         return fetch(`${API_URL}/login`,{
@@ -34,22 +34,29 @@ export default class Login extends Component {
                 password : this.state.password,
             }),
         })
-            .then((response)=> Actions.home())
+            //.then((response) => response.json())
+            .then((response) => {
+                console.log('Success:', response);
+            })
+            .catch((error) => {
+                console.warn('Login Fail')
+               // console.error('Error:', error);
+            });
+
+            //.then((response)=> Actions.home())
             // .then((responseData)=>{
             //     //this._onValueChange(responseData.text());//这里的header要怎么拿？
             //     Actions.home();
             // })
-            .catch((error) => {
-            console.error(error);
-        })
+            // .catch((error) => {
+            // console.error(error);
+        // })
     }
 
     render() {
         // The content of the screen should be inputs for a username, password and submit button.
         // If we are loading then we display an ActivityIndicator.
 
-        //hfshf
-        //sdjfkjsaf
         return (
             <Container>
 
