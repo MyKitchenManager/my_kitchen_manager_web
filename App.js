@@ -12,26 +12,26 @@ export default class App extends Component {
     state = {
         init : true
     }
-    componentDidMount(){
-        AsyncStorage.getItem(TOKEN_KEY)
-            .then((accessToken)=>{
-                if(accessToken!=null){
-                    fetch(API_URL, {
-                        method: 'GET',
-                        headers: {
-                            'Authorization': 'Bearer '+accessToken
-                        }
-                    }).then((response)=>{
-                        if(response.status=='200'){
-                            this.setState({init:false});
-                        }else{
-                            this.setState({init:true});
-                        }
-                    })
-                }
-            });
+    //componentDidMount(){
+        // AsyncStorage.getItem(TOKEN_KEY)
+        //     .then((accessToken)=>{
+        //         if(accessToken!=null){
+        //             fetch(API_URL, {
+        //                 method: 'GET',
+        //                 headers: {
+        //                     'Authorization': 'Bearer '+accessToken
+        //                 }
+        //             }).then((response)=>{
+        //                 if(response.status=='200'){
+        //                     this.setState({init:false});
+        //                 }else{
+        //                     this.setState({init:true});
+        //                 }
+        //             })
+        //         }
+        //     });
 
-    }
+    //}
 
   render(){
 

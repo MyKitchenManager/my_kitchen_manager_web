@@ -14,15 +14,17 @@ export default class Login extends Component {
         }
     }
 
-    // async _onValueChange(accessToken){
-    //     try {
-    //         await AsyncStorage.setItem(TOKEN_KEY, accessToken);
-    //     }catch (e) {
-    //         console.log('Async Storage Error:'+e.message());
-    //     }
-    // }
+    async _onValueChange(accessToken){
+        try {
+            await AsyncStorage.setItem(TOKEN_KEY, accessToken);
+            await AsyncStorage.getItem(TOKEN_KEY, (error, result) => {console.log(result)});
 
-    loginHandler(){
+        }catch (error) {
+            //console.log('Async Storage Error:'+error.message());
+        }
+    }
+
+    async loginHandler(){
         return fetch(`${API_URL}/login`,{
             method: 'POST',
             headers: {
@@ -30,27 +32,26 @@ export default class Login extends Component {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                username : this.state.username,
+                userName : this.state.username,
                 password : this.state.password,
             }),
         })
-            //.then((response) => response.json())
             .then((response) => {
-                console.log('Success:', response);
+                if (response.status == "200") {
+                    Actions.home();
+                }
+                console.log(response.status);
+                return response.headers;
+            })
+            .then((headers) => {
+                console.log('Success:', headers);
+                let accessToken = headers.get('authorization');
+                console.log(accessToken);
+                this._onValueChange(accessToken);
             })
             .catch((error) => {
-                console.warn('Login Fail')
-               // console.error('Error:', error);
+                console.error('Error:', error);
             });
-
-            //.then((response)=> Actions.home())
-            // .then((responseData)=>{
-            //     //this._onValueChange(responseData.text());//这里的header要怎么拿？
-            //     Actions.home();
-            // })
-            // .catch((error) => {
-            // console.error(error);
-        // })
     }
 
     render() {
