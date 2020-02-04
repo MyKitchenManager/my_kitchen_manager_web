@@ -12,39 +12,35 @@ export default class App extends Component {
     state = {
         init : true
     }
-    //componentDidMount(){
-        // AsyncStorage.getItem(TOKEN_KEY)
-        //     .then((accessToken)=>{
-        //         if(accessToken!=null){
-        //             fetch(API_URL, {
-        //                 method: 'GET',
-        //                 headers: {
-        //                     'Authorization': 'Bearer '+accessToken
-        //                 }
-        //             }).then((response)=>{
-        //                 if(response.status=='200'){
-        //                     this.setState({init:false});
-        //                 }else{
-        //                     this.setState({init:true});
-        //                 }
-        //             })
-        //         }
-        //     });
+    componentDidMount(){
+        AsyncStorage.getItem(TOKEN_KEY)
+            .then((accessToken)=>{
+                if(accessToken!=null){
+                    fetch(API_URL, {
+                        method: 'GET',
+                        headers: {
+                            'Authorization': 'Bearer '+accessToken
+                        }
+                    }).then((response)=>{
+                        if(response.status=='200'){
+                            this.setState({init:false});
+                        }else{
+                            this.setState({init:true});
+                        }
+                    })
+                }
+            });
 
-    //}
+    }
 
   render(){
-
-
       return  <Router>
                 <Scene key="root">
                     <Scene key="login" component={Login} title="Login" initial={this.state.init}/>
                     <Scene key="signup" component={SignUp} title="SignUp"/>
-                    <Scene key="home" component={Home} title = "My Kitchen Manager" initial={!this.state.init}/>
+                    <Scene key="home" component={Home} title = "My Kitc1234hen Manager" initial={!this.state.init}/>
                 </Scene>
               </Router>
-
-
     }
 }
 

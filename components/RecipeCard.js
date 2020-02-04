@@ -6,7 +6,6 @@ class RecipeCard extends Component {
     render() {
         return (
             <Container>
-                <Header />
                 <Content>
                     <Card>
                         <CardItem>

@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
-import {Text, View} from "native-base"
-import {TouchableOpacity, StyleSheet, Alert} from "react-native";
+import {Text, View, Container, Header, Left, Body, Right, Button, Icon, Title} from "native-base"
+import {TouchableOpacity, StyleSheet} from "react-native";
 import RecipeCard from "./RecipeCard";
 import {Agenda} from "react-native-calendars";
 
@@ -18,30 +18,51 @@ class MealPlan extends Component {
 
     render() {
         return (
-            <Agenda
-                items={this.state.items}
-                loadItemsForMonth={this.loadItems.bind(this)}
-                selected={'2020-02-01'}
-                renderItem={this.renderItem.bind(this)}
-                renderEmptyDate={this.renderEmptyDate.bind(this)}
-                rowHasChanged={this.rowHasChanged.bind(this)}
-                // markingType={'period'}
-                // markedDates={{
-                //    '2017-05-08': {textColor: '#43515c'},
-                //    '2017-05-09': {textColor: '#43515c'},
-                //    '2017-05-14': {startingDay: true, endingDay: true, color: 'blue'},
-                //    '2017-05-21': {startingDay: true, color: 'blue'},
-                //    '2017-05-22': {endingDay: true, color: 'gray'},
-                //    '2017-05-24': {startingDay: true, color: 'gray'},
-                //    '2017-05-25': {color: 'gray'},
-                //    '2017-05-26': {endingDay: true, color: 'gray'}}}
-                // monthFormat={'yyyy'}
-                // theme={{calendarBackground: 'red', agendaKnobColor: 'green'}}
-                // renderDay={(day, item) => (<Text>{day ? day.day: 'item'}</Text>)}
-                // hideExtraDays={false}
-            />
+            <Container>
 
+                {/*shopping cart*/}
+                {/*<Header>*/}
+                {/*    <Left>*/}
+                {/*        <Button transparent>*/}
+                {/*            <Icon name='arrow-back' />*/}
+                {/*            <Text>Back</Text>*/}
+                {/*        </Button>*/}
+                {/*    </Left>*/}
+                {/*    <Body>*/}
+                {/*        <Title>My Meal Plan</Title>*/}
+                {/*    </Body>*/}
+                {/*    <Right>*/}
+                {/*        <Button transparent>*/}
+                {/*            <Icon name='ios-cart' />*/}
+                {/*        </Button>*/}
+                {/*    </Right>*/}
+                {/*</Header>*/}
 
+                {/*Calender View*/}
+                <Agenda
+                    items={this.state.items}
+                    loadItemsForMonth={this.loadItems.bind(this)}
+                    selected={'2020-02-01'}
+                    renderItem={this.renderItem.bind(this)}
+                    renderEmptyDate={this.renderEmptyDate.bind(this)}
+                    rowHasChanged={this.rowHasChanged.bind(this)}
+                    // markingType={'period'}
+                    // markedDates={{
+                    //    '2017-05-08': {textColor: '#43515c'},
+                    //    '2017-05-09': {textColor: '#43515c'},
+                    //    '2017-05-14': {startingDay: true, endingDay: true, color: 'blue'},
+                    //    '2017-05-21': {startingDay: true, color: 'blue'},
+                    //    '2017-05-22': {endingDay: true, color: 'gray'},
+                    //    '2017-05-24': {startingDay: true, color: 'gray'},
+                    //    '2017-05-25': {color: 'gray'},
+                    //    '2017-05-26': {endingDay: true, color: 'gray'}}}
+                    // monthFormat={'yyyy'}
+                    // theme={{calendarBackground: 'red', agendaKnobColor: 'green'}}
+                    // renderDay={(day, item) => (<Text>{day ? day.day: 'item'}</Text>)}
+                    // hideExtraDays={false}
+                />
+
+            </Container>
 
         );
     }
@@ -58,7 +79,7 @@ class MealPlan extends Component {
                     for (let j = 0; j < numItems; j++) {
                         this.state.items[strTime].push({
                                 name: 'Item for ' + strTime + ' #' + j,
-                                height: Math.max(250, Math.floor(Math.random() * 150))
+                                height: Math.max(50, Math.floor(Math.random() * 150))
                             }
                         );
                     }
@@ -78,7 +99,7 @@ class MealPlan extends Component {
         return (
             <TouchableOpacity
                 style={styles.item}
-                onPress={() => Alert.alert("Show Recipe Details")}
+                //onPress={() => Alert.alert("Show Recipe Details")}
             >
                 <RecipeCard/>
             </TouchableOpacity>
@@ -110,7 +131,7 @@ const styles = StyleSheet.create({
         padding: 10,
         marginRight: 10,
         marginTop: 17,
-        height: 420
+        height: 355
     },
     emptyDate: {
         height: 15,

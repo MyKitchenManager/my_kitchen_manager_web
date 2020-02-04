@@ -1,4 +1,4 @@
-import { Header,Container,Title, Content, List, ListItem, InputGroup, Icon, Text, Label, Button, Footer, FooterTab} from 'native-base';
+import { Header,Container,Title, Content, List, ListItem, InputGroup, Icon, Text, Label, Button, Footer, FooterTab, Left, Right, Body} from 'native-base';
 import React, {Component} from 'react';
 import MealPlan from "./MealPlan";
 import Inventory from "./Inventory";
