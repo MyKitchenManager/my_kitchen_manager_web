@@ -3,6 +3,7 @@ import {Text, View} from "native-base"
 import {TouchableOpacity, StyleSheet, Alert} from "react-native";
 import RecipeCard from "./RecipeCard";
 import {Agenda} from "react-native-calendars";
+import RecipeItem from "./RecipeItem";
 
 
 
@@ -80,7 +81,9 @@ class MealPlan extends Component {
                 style={styles.item}
                 onPress={() => Alert.alert(item.name)}
             >
-                <RecipeCard/>
+                <RecipeItem/>
+                <RecipeItem/>
+                <RecipeItem/>
             </TouchableOpacity>
         );
     }
