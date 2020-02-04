@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
-import {Content, Text, Container, Card, CardItem} from "native-base"
+import {Content, Text, Container, Card, CardItem, View} from "native-base"
 import {SafeAreaView, TouchableOpacity, ScrollView, Image} from "react-native";
-import meal from "../assets/meal.jpg";
+//import meal from "../assets/meal.jpeg";
 import CalendarView from "./CalendarView";
 class MealPlan extends Component {
     render() {
@@ -10,12 +10,15 @@ class MealPlan extends Component {
                 <ScrollView style = {{padding: 30}}>
                     <CalendarView />
                 </ScrollView>
-            </SafeAreaView>
+             </SafeAreaView>
+
         );
     }
 }
 
 export default MealPlan;
+
+
 
 
 {/*<Card>*/}

@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
-import {Alert, StyleSheet, Text, View, TouchableOpacity} from 'react-native';
+import {Alert, StyleSheet, Text, View, TouchableOpacity, Button, Content, Container} from 'react-native';
 import {Agenda} from 'react-native-calendars';
+
+import RecipeCard from "./RecipeCard";
 
 
 class CalendarView extends Component {
@@ -34,15 +36,14 @@ class CalendarView extends Component {
                 // monthFormat={'yyyy'}
                 // theme={{calendarBackground: 'red', agendaKnobColor: 'green'}}
                 // renderDay={(day, item) => (<Text>{day ? day.day: 'item'}</Text>)}
-                // hideExtraDays={false}
-
+                // hideExtraDays={false}:
             />
         );
     }
 
     loadItems(day) {
         setTimeout(() => {
-            for (let i = -15; i < 85; i++) {
+            for (let i = 0; i < 10; i++) {
                 const time = day.timestamp + i * 24 * 60 * 60 * 1000;
                 const strTime = this.timeToString(time);
                 if (!this.state.items[strTime]) {
@@ -50,9 +51,10 @@ class CalendarView extends Component {
                     const numItems = Math.floor(Math.random() * 5);
                     for (let j = 0; j < numItems; j++) {
                         this.state.items[strTime].push({
-                            name: 'Item for ' + strTime + ' #' + j,
-                            height: Math.max(50, Math.floor(Math.random() * 150))
-                        });
+                                name: 'Item for ' + strTime + ' #' + j,
+                                height: Math.max(250, Math.floor(Math.random() * 150))
+                            }
+                        );
                     }
                 }
             }
@@ -66,19 +68,19 @@ class CalendarView extends Component {
 
     renderItem(item) {
         return (
-            <TouchableOpacity
-                style={[styles.item, {height: item.height}]}
-                onPress={() => Alert.alert(item.name)}
-            >
-                <Text>{item.name}</Text>
-            </TouchableOpacity>
+                <TouchableOpacity
+                    style={styles.item}
+                    //onPress={() => Alert.alert(item.name)}
+                >
+                    <RecipeCard />
+                </TouchableOpacity>
         );
     }
 
     renderEmptyDate() {
         return (
             <View style={styles.emptyDate}>
-                <Text>This is empty date!</Text>
+                <Text>There is no recipes today!</Text>
             </View>
         );
     }
@@ -100,7 +102,9 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         padding: 10,
         marginRight: 10,
-        marginTop: 17
+        marginTop: 70,
+        marginBottom: 17,
+        height: 500
     },
     emptyDate: {
         height: 15,
