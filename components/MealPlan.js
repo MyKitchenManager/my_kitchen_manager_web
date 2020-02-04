@@ -78,7 +78,7 @@ class MealPlan extends Component {
         return (
             <TouchableOpacity
                 style={styles.item}
-                onPress={() => Alert.alert(item.name)}
+                onPress={() => Alert.alert("Show Recipe Details")}
             >
                 <RecipeCard/>
             </TouchableOpacity>
@@ -109,9 +109,8 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         padding: 10,
         marginRight: 10,
-        marginTop: 70,
-        marginBottom: 17,
-        height: 500
+        marginTop: 17,
+        height: 420
     },
     emptyDate: {
         height: 15,

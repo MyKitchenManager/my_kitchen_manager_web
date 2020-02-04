@@ -24,19 +24,22 @@ class RecipeCard extends Component {
                         <CardItem>
                             <Left>
                                 <Button transparent>
-                                    <Icon active name="flame" />
+                                    <Icon active name="ios-bonfire" />
                                     <Text>Cook</Text>
                                 </Button>
                             </Left>
                             <Body>
                                 <Button transparent>
-                                    <Icon active name="trash" />
+                                    <Icon active name="ios-trash" />
                                     <Text>Delete</Text>
                                 </Button>
                             </Body>
-                            {/*<Right>*/}
-                            {/*    <Text>11h ago</Text>*/}
-                            {/*</Right>*/}
+                            <Right>
+                                <Button transparent>
+                                    <Icon active name="ios-book" />
+                                    <Text>Details</Text>
+                                </Button>
+                            </Right>
                         </CardItem>
                     </Card>
                 </Content>
