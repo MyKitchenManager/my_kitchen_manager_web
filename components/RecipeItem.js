@@ -6,7 +6,6 @@ class RecipeItem extends Component {
     render() {
         return (
             <Container>
-                <Header />
                 <Content>
                     <List>
                         <ListItem thumbnail>

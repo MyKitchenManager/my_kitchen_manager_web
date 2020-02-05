@@ -82,8 +82,6 @@ class MealPlan extends Component {
                 onPress={() => Alert.alert(item.name)}
             >
                 <RecipeItem/>
-                <RecipeItem/>
-                <RecipeItem/>
             </TouchableOpacity>
         );
     }
@@ -112,9 +110,9 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         padding: 10,
         marginRight: 10,
-        marginTop: 70,
-        marginBottom: 17,
-        height: 500
+        marginTop: 17,
+
+        height: 100
     },
     emptyDate: {
         height: 15,
