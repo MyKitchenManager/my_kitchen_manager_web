@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Text, View, Container, Header, Left, Body, Right, Button, Icon, Title} from "native-base"
-import {TouchableOpacity, StyleSheet} from "react-native";
+import {TouchableOpacity, StyleSheet, Modal} from "react-native";
 import RecipeCard from "./RecipeCard";
 import {Agenda} from "react-native-calendars";
 
@@ -20,7 +20,7 @@ class MealPlan extends Component {
         return (
             <Container>
 
-                {/*shopping cart*/}
+
                 {/*<Header>*/}
                 {/*    <Left>*/}
                 {/*        <Button transparent>*/}
