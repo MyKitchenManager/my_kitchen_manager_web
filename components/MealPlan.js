@@ -1,10 +1,9 @@
 import React, {Component} from 'react';
 import {Text, View, Container, Header, Left, Body, Right, Button, Icon, Title} from "native-base"
-import {TouchableOpacity, StyleSheet, Modal} from "react-native";
+import {TouchableOpacity, StyleSheet} from "react-native";
+import {Provider, Modal} from "@ant-design/react-native"
 import RecipeCard from "./RecipeCard";
 import {Agenda} from "react-native-calendars";
-
-
 
 class MealPlan extends Component {
 
@@ -12,31 +11,63 @@ class MealPlan extends Component {
         super(props);
 
         this.state = {
-            items: {}
+            items: {},
+            showModal: false
         };
+    }
+
+    openModal(){
+        this.setState({showModal:true});
     }
 
     render() {
         return (
+            <Provider>
             <Container>
+                <Modal
+                    title="Title"
+                    transparent
+                    onClose={()=>{
+                        this.setState({showModal:false});
+                    }}
+                    maskClosable
+                    animationType = 'slide'
+                    visible={this.state.showModal}
+                    title = {<Text style = {{fontWeight:"bold", fontSize:18, textAlign: "center"}}>Details</Text>}
+                    closable
+                >
+                    <View style={{ paddingVertical: 20 }}>
+                        <Text style={{ textAlign: 'center', padding: 10 }}>Content...</Text>
+                        <Text style={{ textAlign: 'center' , padding: 10}}>Content...</Text>
+                    </View>
+                    <Button style = {{margin: 10,
+                        padding: 15,
+                        alignSelf:'center',
+                        justifyContent:'center',
+                        backgroundColor:"deepskyblue",
+                        width:200}} onPress={()=>{
+                        this.setState({showModal: false})
+                    }}>
+                        <Text >Finish Cook</Text>
+                    </Button>
+                </Modal>
 
-
-                {/*<Header>*/}
-                {/*    <Left>*/}
-                {/*        <Button transparent>*/}
-                {/*            <Icon name='arrow-back' />*/}
-                {/*            <Text>Back</Text>*/}
-                {/*        </Button>*/}
-                {/*    </Left>*/}
-                {/*    <Body>*/}
-                {/*        <Title>My Meal Plan</Title>*/}
-                {/*    </Body>*/}
-                {/*    <Right>*/}
-                {/*        <Button transparent>*/}
-                {/*            <Icon name='ios-cart' />*/}
-                {/*        </Button>*/}
-                {/*    </Right>*/}
-                {/*</Header>*/}
+                <Header>
+                    <Left>
+                        <Button transparent>
+                            <Icon name='arrow-back' />
+                            <Text>Back</Text>
+                        </Button>
+                    </Left>
+                    <Body>
+                        <Title>My Meal Plan</Title>
+                    </Body>
+                    <Right>
+                        <Button transparent>
+                            <Icon name='ios-cart' />
+                        </Button>
+                    </Right>
+                </Header>
 
                 {/*Calender View*/}
                 <Agenda
@@ -63,7 +94,7 @@ class MealPlan extends Component {
                 />
 
             </Container>
-
+            </Provider>
         );
     }
 
@@ -101,7 +132,7 @@ class MealPlan extends Component {
                 style={styles.item}
                 //onPress={() => Alert.alert("Show Recipe Details")}
             >
-                <RecipeCard/>
+                <RecipeCard data={this.openModal.bind(this)}/>
             </TouchableOpacity>
         );
     }

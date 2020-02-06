@@ -1,11 +1,13 @@
 import React, {Component} from 'react';
-import {Container, Text} from "native-base"
+import {Container, Content, Text} from "native-base"
 
 class Inventory extends Component {
     render() {
         return (
             <Container>
-                <Text>This is Inventory</Text>
+                <Content>
+                    <Text style = {{padding:30}}>This is Inventory</Text>
+                </Content>
             </Container>
         );
     }

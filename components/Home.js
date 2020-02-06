@@ -38,6 +38,7 @@ class Home extends Component {
         }
         return (
            <Container>
+
                {view}
 
                 <Footer style={{height: 60}}>

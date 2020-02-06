@@ -1,11 +1,13 @@
 import React, {Component} from 'react';
-import {Container, Text} from "native-base"
+import {Container, Text, Content} from "native-base"
 
 class MealPool extends Component {
     render() {
         return (
             <Container>
-                <Text>This is Meal pool</Text>
+                <Content>
+                    <Text style = {{padding:30}}>This is Meal pool</Text>
+                </Content>
             </Container>
         );
     }

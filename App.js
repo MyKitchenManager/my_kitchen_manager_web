@@ -19,7 +19,7 @@ export default class App extends Component {
                     fetch(API_URL, {
                         method: 'GET',
                         headers: {
-                            'Authorization': 'Bearer '+accessToken
+                            'Authorization': accessToken
                         }
                     }).then((response)=>{
                         if(response.status=='200'){
@@ -36,9 +36,9 @@ export default class App extends Component {
   render(){
       return  <Router>
                 <Scene key="root">
-                    <Scene key="login" component={Login} title="Login" initial={this.state.init}/>
-                    <Scene key="signup" component={SignUp} title="SignUp"/>
-                    <Scene key="home" component={Home} title = "My Kitchen Manager" initial={!this.state.init}/>
+                    <Scene key="login" component={Login} hideNavBar={true} title="Login" initial={this.state.init}/>
+                    <Scene key="signup" component={SignUp} hideNavBar={true} title="SignUp"/>
+                    <Scene key="home" component={Home} hideNavBar={true} title = "My Kitchen Manager" initial={!this.state.init}/>
                 </Scene>
               </Router>
     }

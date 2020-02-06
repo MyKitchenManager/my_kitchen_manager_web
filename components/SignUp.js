@@ -68,6 +68,11 @@ class SignUp extends Component {
     render() {
         return (
             <Container>
+                <Header>
+                    <Text style = {{fontWeight: "bold", paddingTop:10, fontSize:17}}>
+                        Sign Up
+                    </Text>
+                </Header>
                 {
                     <Content>
                         <List style={{paddingTop: 10, paddingBottom: 15}}>
