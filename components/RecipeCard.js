@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Image } from 'react-native';
 import { Container, Header, Content, Card, CardItem, Thumbnail, Text, Button, Icon, Left, Body, Right, View } from 'native-base';
 import meal from "../assets/meal.jpeg";
-import TouchableOpacity from "react-native-web/dist/exports/TouchableOpacity";
+
 class RecipeCard extends Component {
     constructor(props) {
         super(props);
@@ -12,22 +12,6 @@ class RecipeCard extends Component {
         return (
 
             <Container>
-
-                {/*<Modal*/}
-                {/*    animationType="slide"*/}
-                {/*    transparent={true}*/}
-                {/*    visiable={false}*/}
-
-                {/*>*/}
-                {/*    <View style={{backgroundColor:"#000000aa", flex: 1}}>*/}
-                {/*        <View style={{backgroundColor: "#ffffff", margin: 50, padding: 20, borderRadius: 10}}>*/}
-                {/*            <Text style={{fontSize: 20}}>This is recipe details</Text>*/}
-                {/*            <Button title="close modal" onPress={() => {this.setState({showModal: false})}} >*/}
-                {/*                <Text >Finish Cook</Text>*/}
-                {/*            </Button>*/}
-                {/*        </View>*/}
-                {/*    </View>*/}
-                {/*</Modal>*/}
                 <Content>
                     <Card>
                         <CardItem>
