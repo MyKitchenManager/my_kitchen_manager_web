@@ -128,12 +128,22 @@ class MealPlan extends Component {
 
     renderItem(item) {
         return (
+            <View>
             <TouchableOpacity
                 style={styles.item}
                 //onPress={() => Alert.alert("Show Recipe Details")}
             >
                 <RecipeCard data={this.openModal.bind(this)}/>
             </TouchableOpacity>
+                {/*<Button bordered style={{margin: 15, padding: 10, alignSelf:'center',*/}
+                {/*    justifyContent:'center',*/}
+                {/*    backgroundColor:"white",*/}
+                {/*    width:200}}>*/}
+                {/*    <Text>*/}
+                {/*        Add Recipe*/}
+                {/*    </Text>*/}
+                {/*</Button>*/}
+            </View>
         );
     }
 

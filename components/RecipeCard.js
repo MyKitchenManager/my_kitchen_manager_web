@@ -40,7 +40,7 @@ class RecipeCard extends Component {
                             </Left>
                         </CardItem>
                         <CardItem cardBody>
-                            <Image source={meal} style={{height: 200, width: null, flex: 1}}/>
+                            <Image source={meal} style={{height: 200, width: 100, flex: 1,}}/>
                         </CardItem>
                         <CardItem>
                             <Left>
