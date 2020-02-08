@@ -55,12 +55,12 @@ class Inventory extends Component {
                         <Col>
                             <Card style={{padding: 20}}>
                                 <CardItem cardBody>
-                                    <Button transparent style={{margin:5}}>
+                                    <Button transparent style={{margin:10}}>
                                         <Thumbnail source={beef} style ={{height: 100, width: 100}}/>
                                     </Button>
                                 </CardItem>
                                 <CardItem footer>
-                                    <Text style = {{fontweight:"bold", fontSize:13}}>Beef    0.7lbs</Text>
+                                    <Text style = {{fontWeight:"bold", fontSize:13}}>Beef 0.7lbs</Text>
                                 </CardItem>
                             </Card>
                             <Card style={{padding: 20}}>
