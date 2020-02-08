@@ -3,14 +3,8 @@ import React, {Component} from 'react';
 import {Actions} from "react-native-router-flux";
 import styles from '../styles/styles.js';
 import {API_URL, TOKEN_KEY} from "../constant";
-<<<<<<< HEAD
-import {AsyncStorage} from "react-native"
-
-import TouchableOpacity from "react-native-web/src/exports/TouchableOpacity";
-//import AsyncStorage from '@react-native-community/async-storage';
-=======
 import {AsyncStorage} from "react-native";
->>>>>>> 597397ff38ed2992dfce8607b34159bcd1384de9
+
 
 export default class Login extends Component {
     constructor(props) {
