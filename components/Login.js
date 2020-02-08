@@ -3,8 +3,10 @@ import React, {Component} from 'react';
 import {Actions} from "react-native-router-flux";
 import styles from '../styles/styles.js';
 import {API_URL, TOKEN_KEY} from "../constant";
-import {AsyncStorage} from "react-native-web"
+import {AsyncStorage} from "react-native"
+
 import TouchableOpacity from "react-native-web/src/exports/TouchableOpacity";
+//import AsyncStorage from '@react-native-community/async-storage';
 
 export default class Login extends Component {
     constructor(props) {
@@ -17,13 +19,13 @@ export default class Login extends Component {
 
     async _onValueChange(accessToken){
         try {
-            return await AsyncStorage.setItem(TOKEN_KEY, accessToken);
-            // let value = await AsyncStorage.getItem(TOKEN_KEY)
-            // if(value!==null){
-            //     console.log(value);
-            // }else{
-            //     console.log("null");
-            // }
+            return await AsyncStorage.setItem(TOKEN_KEY,accessToken);
+            let value = await AsyncStorage.getItem(TOKEN_KEY)
+            if(value!==null){
+                console.log(value);
+            }else{
+                console.log("null");
+            }
         }catch (error) {
             console.log(`Async Storage Error -->${error}`);
         }

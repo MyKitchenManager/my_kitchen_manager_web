@@ -6,14 +6,16 @@ import MealPool from "./MealPool";
 import {Actions} from "react-native-router-flux";
 import styles from '../styles/styles.js';
 import Profile from "./Profile"
-import {API_URL} from "../constant"
+import {API_URL, TOKEN_KEY, AUTH_HEADER} from "../constant"
+import {AsyncStorage} from "react-native";
+
 
 class Home extends Component {
     constructor(props) {
         super(props);
         this.state = {
             page: "",
-            userId: 1,
+            userId: "241",
             Items: []
         }
     }
@@ -21,11 +23,21 @@ class Home extends Component {
         this.setState({page:data});
     }
 
-    scanInventory(){
-        return fetch(`${API_URL}/inventory/userId/${this.state.userId}`)
+
+    async scanInventory(){
+        const token = await AsyncStorage.getItem(TOKEN_KEY);
+        return fetch(`${API_URL}/inventory/userId/${this.state.userId}`, {
+                method: 'Get',
+                headers: {
+                    //'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    Authorization: `${AUTH_HEADER} ${token}`
+                }
+            })
             .then((response)=>{
                 return response.json();
             }).then((responseData)=>{
+                console.log(responseData);
                 responseData.forEach(function (item) {
                     let id = item.inventoryId;
                     let name = item.ingredientIdJoin.ingredientName;
@@ -80,7 +92,7 @@ class Home extends Component {
                             <Text style = {{fontSize: 12}}>Meal Plan</Text>
                         </Button>
                         <Button vertical onPress = {()=>{
-                            if(this.state.page != "inventory"){
+                            if(this.state.page != "inventory") {
                                 this.setState({page: "inventory"});
                             }}}>
                             <Icon type='MaterialIcons' name="store"/>

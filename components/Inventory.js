@@ -2,18 +2,22 @@ import React, {Component} from 'react';
 import {Container, Content, Text, Header, Left, Button, Icon, Body, Title, Right, Item, Input, Card, CardItem, Thumbnail} from "native-base"
 import {ScrollView, Image} from "react-native";
 import {Grid, Row, Col} from "react-native-easy-grid";
-import {API_URL} from "../constant";
+import {API_URL, AUTH_HEADER,  TOKEN_KEY} from "../constant";
 import beef from '../assets/beef.jpg';
 import spinach from '../assets/spinach.jpeg';
 import AddIngredientModal from "./AddIngredientModal";
 import {Provider} from "@ant-design/react-native";
 import IngredientDetailModal from "./IngredientDetailModal";
+import {Actions} from "react-native-router-flux";
+import {AsyncStorage} from "react-native-web";
+
 
 class Inventory extends Component {
     constructor(props) {
         super(props);
         this.state={
             search : "",
+
         }
         this.onPressAdd = this.onPressAdd.bind(this);
         this.onPressImage = this.onPressImage.bind(this);
@@ -29,6 +33,7 @@ class Inventory extends Component {
         //alert("A new item added");
         this.refs.IngredientDetailModal.showIngredientDetailModal();
     }
+
     render() {
         return (
             <Provider>
