@@ -14,7 +14,20 @@ class Home extends Component {
         this.state = {
             page: "",
             userId: 1,
-            Items: []
+            Items: [
+                {
+                    id: 1,
+                    name: "Beef",
+                    amount: 0.7,
+                    unit: "lbs"
+                },
+                {
+                    id: 2,
+                    name: "Beef",
+                    amount: 0.7,
+                    unit: "lbs"
+                }
+            ]
         }
     }
     pageHandler(data){
