@@ -109,7 +109,7 @@ export default class Login extends Component {
 
                         <Text style = {{alignSelf: "center", paddingTop: 10}}>Or New Here?</Text>
                         <Button onPress={()=>Actions.signup()} style={styles.primaryButton}>
-                            <Text>Register</Text>
+                            <Text style={{fontWeight: "bold"}}>Register</Text>
                         </Button>
 
                         {/*<Text style = {{alignSelf: "center", paddingTop: 10}}>*/}

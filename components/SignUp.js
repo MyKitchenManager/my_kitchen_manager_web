@@ -130,9 +130,11 @@ class SignUp extends Component {
                         <Button style={styles.primaryButton} onPress={this.handlerSignUp.bind(this)}>
                             <Text style={{fontWeight: "bold"}}>Sign Up</Text>
                         </Button>
-                        {/*<Button style={styles.primaryButton} onPress={()=>Actions.pop()}>*/}
-                        {/*    <Text style={{fontWeight: "bold"}}>Back to Login</Text>*/}
-                        {/*</Button>*/}
+
+
+                        <Button style={styles.primaryButton} onPress={()=>Actions.pop()}>
+                            <Text style={{fontWeight: "bold"}}>Back to Login</Text>
+                        </Button>
 
                     </Content>
                 }
