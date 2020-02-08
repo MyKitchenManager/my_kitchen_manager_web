@@ -27,9 +27,9 @@ class IngredientDetailModal extends Component {
         this.state = {
             showModal: false,
             selected2: undefined,
-            newItemName: '',
-            newItemVolume: '',
-            newItemUnit: '',
+            ItemName: '',
+            ItemVolume: '',
+            ItemUnit: '',
         }
     }
 

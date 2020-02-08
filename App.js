@@ -4,7 +4,7 @@ import { StyleSheet, Text, View } from 'react-native';
 import {Scene, Router} from 'react-native-router-flux';
 import Login from './components/Login';
 import Home from "./components/Home";
-import {AsyncStorage} from "react-native-web"
+import {AsyncStorage} from "react-native"
 import {TOKEN_KEY, API_URL} from "./constant";
 
 
@@ -29,7 +29,9 @@ export default class App extends Component {
                         }
                     })
                 }
-            });
+            }).catch((error)=>{
+                console.log(`Unable to get token -->${error}`);
+        });
 
     }
 

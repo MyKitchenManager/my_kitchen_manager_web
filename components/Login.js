@@ -3,10 +3,14 @@ import React, {Component} from 'react';
 import {Actions} from "react-native-router-flux";
 import styles from '../styles/styles.js';
 import {API_URL, TOKEN_KEY} from "../constant";
+<<<<<<< HEAD
 import {AsyncStorage} from "react-native"
 
 import TouchableOpacity from "react-native-web/src/exports/TouchableOpacity";
 //import AsyncStorage from '@react-native-community/async-storage';
+=======
+import {AsyncStorage} from "react-native";
+>>>>>>> 597397ff38ed2992dfce8607b34159bcd1384de9
 
 export default class Login extends Component {
     constructor(props) {
@@ -19,8 +23,8 @@ export default class Login extends Component {
 
     async _onValueChange(accessToken){
         try {
-            return await AsyncStorage.setItem(TOKEN_KEY,accessToken);
-            let value = await AsyncStorage.getItem(TOKEN_KEY)
+            await AsyncStorage.setItem(TOKEN_KEY, accessToken);
+            let value = await AsyncStorage.getItem(TOKEN_KEY);
             if(value!==null){
                 console.log(value);
             }else{
@@ -56,7 +60,7 @@ export default class Login extends Component {
             .then((headers) => {
                 console.log('Success:', headers);
                 let accessToken = headers.get('authorization').toString();
-                console.log(accessToken);
+                //console.log(accessToken);
                 this._onValueChange(accessToken);
             })
             .catch((error) => {

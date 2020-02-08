@@ -87,7 +87,7 @@ class Inventory extends Component {
                             </Card>
                             <Card style={{padding: 20}}>
                                 <CardItem cardBody>
-                                    <Button transparent style={{margin:10}}>
+                                    <Button transparent style={{margin:10}} onPress = {() => this.onPressImage()}>
                                         <Thumbnail source={spinach} style ={{height: 100, width: 100}}/>
                                     </Button>
                                 </CardItem>
