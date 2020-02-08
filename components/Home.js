@@ -6,16 +6,43 @@ import MealPool from "./MealPool";
 import {Actions} from "react-native-router-flux";
 import styles from '../styles/styles.js';
 import Profile from "./Profile"
+import {API_URL} from "../constant"
 
 class Home extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            page: ""
+            page: "",
+            userId: 1,
+            Items: []
         }
     }
     pageHandler(data){
         this.setState({page:data});
+    }
+
+    scanInventory(){
+        return fetch(`${API_URL}/inventory/userId/${this.state.userId}`)
+            .then((response)=>{
+                return response.json();
+            }).then((responseData)=>{
+                responseData.forEach(function (item) {
+                    let id = item.inventoryId;
+                    let name = item.ingredientIdJoin.ingredientName;
+                    let image = item.ingredientIdJoin.imageUrl;
+                    let amount = item.inventoryVolume;
+                    let unit = item.unitsOfMeasureListEntry.entry;
+                    this.setState({Items: [...this.state.Items, {
+                            id: id,
+                            name: name,
+                            image: image,
+                            amount: amount,
+                            unit: unit
+                        }]})
+                })
+            }).catch((error)=>{
+                console.log(`Error in fetching inventory list --> ${error}`);
+            })
     }
 
     render() {
@@ -25,7 +52,8 @@ class Home extends Component {
                 view = <MealPlan/>;
                 break;
             case "inventory":
-                view = <Inventory/>;
+                this.scanInventory();
+                view = <Inventory data={this.state.Items}/>;
                 break;
             case "mealpool":
                 view = <MealPool/>;
