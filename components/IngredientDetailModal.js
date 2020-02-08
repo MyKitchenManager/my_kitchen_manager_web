@@ -15,7 +15,7 @@ import {
     Thumbnail,
     Card
 } from "native-base";
-import {Modal, List, WhiteSpace} from "@ant-design/react-native";
+import {Modal, List, WhiteSpace, InputItem} from "@ant-design/react-native";
 import beef from "../assets/beef.jpg";
 
 
