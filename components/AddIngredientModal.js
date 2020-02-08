@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Button, Text, View, Input, Item, Form, Picker, Icon, Grid, Col } from "native-base";
+import {Button, Text, View, Input, Item, Form, Picker, Icon, Grid, Col, Right} from "native-base";
 import {Modal} from "@ant-design/react-native";
 
 //import Modal from 'react-native-modalbox';
@@ -13,9 +13,10 @@ class AddIngredientModal extends Component {
         this.state = {
             showModal: false,
             selected2: undefined,
-            newItemName: '',
-            newItemVolume: '',
-            newItemUnit: '',
+            searchIngredient: "",
+            newItemName: "",
+            newItemVolume: "",
+            newItemUnit: "",
         }
     }
 
@@ -33,7 +34,8 @@ class AddIngredientModal extends Component {
     render() {
         return (
             <Modal
-                ref={"InventoryAddItemModal"}
+                style={{width: 320}}
+                ref={"AddIngredientModal"}
                 title="Title"
                 transparent
                 onClose={()=>{
@@ -47,38 +49,50 @@ class AddIngredientModal extends Component {
             >
 
                 <View style={{ paddingVertical: 20 }}>
-                    <Item>
+                    {/*Search Bar*/}
+                    <Item rounded style={{margin: 10, width: 290, height:50, alignSelf: "center"}}>
+                        <Icon name="ios-search"/>
                         <Input
-                            placeholder='Item Name'
+                            placeholder='Name'
                             value={this.state.newItemName}
                             onChangeText={(text) => this.setState({newItemName: text})}
                         />
-                        <Icon name="ios-search" />
+                        <Right>
+                            <Button transparent onPress={
+                                ()=>{
+                                    if(this.state.searchIngredient!=""){
+                                        this.setState({searchIngredient:""});
+                                    }
+                                }
+                            }>
+                                <Icon type="MaterialIcons" name="clear"></Icon>
+                            </Button>
+                        </Right>
                     </Item>
 
-                    <Item  style={{ textAlign: 'center', padding: 10, height: 35 }}>
+                    <Item  rounded style={{ alignSelf: "center", margin: 10, width: 290, height: 50 }}>
                         <Input
-                            placeholder='Item Volume'
-                            value={this.state.newItemName}
+                            style={{marginLeft: 10}}
+                            placeholder='Volume'
+                            value={this.state.newItemVolume}
                             onChangeText={(text) => this.setState({newItemVolume: text})}
                         />
-                    </Item>
-
-                    <Item picker>
-                        <Picker
-                            mode="dropdown"
-                            iosIcon={<Icon name="arrow-down" />}
-                            style={{ width: undefined }}
-                            placeholder="Select the Unit"
-                            placeholderStyle={{ color: "#bfc6ea" }}
-                            placeholderIconColor="#007aff"
-                            selectedValue={this.state.selected2}
-                            onValueChange={this.onValueChange.bind(this)}
-                        >
-                            <Picker.Item label="LB" value="key0" />
-                            <Picker.Item label="KG" value="key1" />
-                            <Picker.Item label="G" value="key2" />
-                        </Picker>
+                        <Right>
+                            <Picker
+                                mode="dropdown"
+                                iosIcon={<Icon name="arrow-down" />}
+                                style={{ width: undefined, marginRight: 5}}
+                                placeholder="Choose Unit"
+                                placeholderStyle={{ color: "#bfc6ea" }}
+                                placeholderIconColor="#007aff"
+                                selectedValue={this.state.selected2}
+                                onValueChange={this.onValueChange.bind(this)}
+                            >
+                                <Picker.Item label="LB" value="key0" />
+                                <Picker.Item label="KG" value="key1" />
+                                <Picker.Item label="G" value="key2" />
+                            </Picker>
+                        </Right>
                     </Item>
                 </View>
 
@@ -100,23 +114,3 @@ class AddIngredientModal extends Component {
 }
 
 export default AddIngredientModal;
-/*
-<Modal
-    ref={"InventoryAddItemModal"}
-    style={{
-        justifyContent: 'center',
-        borderRadius: 20,
-        shadowRadius: 10,
-        width: 280,
-        height: 280
-    }}
-    position='center'
-    backdrop={true}
-    onClosed={ () => {
-        //alert("Modal Closed");
-    }}
->
-    <Text>New food's information</Text>
-</Modal>
-
- */

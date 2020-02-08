@@ -22,7 +22,7 @@ class Inventory extends Component {
 
     onPressAdd(){
         //alert("A new item added");
-        this.refs.InventoryAddItemModal.showAddIngredientModal();
+        this.refs.AddIngredientModal.showAddIngredientModal();
     }
 
     onPressImage(){
@@ -138,7 +138,7 @@ class Inventory extends Component {
                     </Grid>
 
                     {/*Modal*/}
-                    <AddIngredientModal ref={'InventoryAddItemModal'} />
+                    <AddIngredientModal ref={'AddIngredientModal'} />
                     <IngredientDetailModal ref={'IngredientDetailModal'} />
 
                     <Text style = {{padding:30}}>This is Inventory</Text>
