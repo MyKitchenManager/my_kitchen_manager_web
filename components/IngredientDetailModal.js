@@ -62,28 +62,28 @@ class IngredientDetailModal extends Component {
                         </CardItem>
                     </Card>
                     <View>
-                        <Text style={{fontSize: 30, fontWeight: '4'}}>Beef </Text>
+                        <Text style={{fontSize: 30, fontWeight: '4', alignSelf: 'center'}}>Beef </Text>
                     </View>
 
                     <WhiteSpace />
 
                     <List style={{width: 280}}>
                         <Item data-seed="logId">
-                            <Text style={{fontSize: 15, fontWeight: '2'}}>Amount</Text>
+                            <Text style={{fontSize: 15, fontWeight: 'bold'}}>Amount</Text>
                             <Right>
                                 <Text>20LB</Text>
                             </Right>
                         </Item>
 
                         <Item data-seed="logId">
-                            <Text style={{fontSize: 15, fontWeight: '2'}}>Category</Text>
+                            <Text style={{fontSize: 15, fontWeight: 'bold'}}>Category</Text>
                             <Right>
                                 <Text>Meat</Text>
                             </Right>
                         </Item>
 
                         <Item data-seed="logId">
-                            <Text style={{fontSize: 15, fontWeight: '2'}}>Purchased Date</Text>
+                            <Text style={{fontSize: 15, fontWeight: 'bold'}}>Purchased Date</Text>
                             <Right>
                                 <Text>12/19/2020</Text>
                             </Right>
