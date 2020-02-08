@@ -4,6 +4,7 @@ import {Actions} from "react-native-router-flux";
 import styles from '../styles/styles.js';
 import {API_URL, TOKEN_KEY} from "../constant";
 import {AsyncStorage} from "react-native-web"
+import TouchableOpacity from "react-native-web/src/exports/TouchableOpacity";
 
 export default class Login extends Component {
     constructor(props) {
@@ -105,11 +106,15 @@ export default class Login extends Component {
                         <Button style={styles.primaryButton} onPress={this.loginHandler.bind(this)}>
                             <Text style={{fontWeight: "bold"}}>Log in</Text>
                         </Button>
-                        <Text style = {{alignSelf: "center", paddingTop: 10}}>
-                            Or New Here? Try <Text onPress={()=>Actions.signup()} style={{fontWeight: "bold", color:"#47c1fe"}}>Register</Text>
-                        </Text>
 
+                        <Text style = {{alignSelf: "center", paddingTop: 10}}>Or New Here?</Text>
+                        <Button onPress={()=>Actions.signup()} style={styles.primaryButton}>
+                            <Text>Register</Text>
+                        </Button>
 
+                        {/*<Text style = {{alignSelf: "center", paddingTop: 10}}>*/}
+                        {/*    Or New Here? Try <Text onPress={()=>Actions.signup()} style={{fontWeight: "bold", color:"#47c1fe"}}>Register</Text>*/}
+                        {/*</Text>*/}
 
                     </Content>
                 }
