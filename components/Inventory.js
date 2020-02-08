@@ -6,7 +6,7 @@ import {API_URL, AUTH_HEADER,  TOKEN_KEY} from "../constant";
 import beef from '../assets/beef.jpg';
 import spinach from '../assets/spinach.jpeg';
 import AddIngredientModal from "./AddIngredientModal";
-import {Provider} from "@ant-design/react-native";
+import {Provider } from "@ant-design/react-native";
 import IngredientDetailModal from "./IngredientDetailModal";
 import {Actions} from "react-native-router-flux";
 import {AsyncStorage} from "react-native-web";
@@ -17,11 +17,9 @@ class Inventory extends Component {
         super(props);
         this.state={
             search : "",
-
         }
         this.onPressAdd = this.onPressAdd.bind(this);
         this.onPressImage = this.onPressImage.bind(this);
-
     }
 
     onPressAdd(){
@@ -72,6 +70,9 @@ class Inventory extends Component {
                             </Button>
                         </Right>
                     </Item>
+
+
+
                     <Grid>
                         <Col>
 
@@ -82,7 +83,7 @@ class Inventory extends Component {
                                     </Button>
                                 </CardItem>
                                 <CardItem footer>
-                                    <Text style = {{fontWeight:"bold", fontSize:13}}>Beef 0.7lbs</Text>
+                                    <Text style = {{fontWeight:"bold", fontSize:13}}>name</Text>
                                 </CardItem>
                             </Card>
                             <Card style={{padding: 20}}>
@@ -142,7 +143,7 @@ class Inventory extends Component {
                         </Col>
                     </Grid>
 
-                    {/*Modal*/}
+                    Modal
                     <AddIngredientModal ref={'AddIngredientModal'} />
                     <IngredientDetailModal ref={'IngredientDetailModal'} />
                 </Content>

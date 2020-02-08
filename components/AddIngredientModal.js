@@ -31,6 +31,14 @@ class AddIngredientModal extends Component {
         });
     }
 
+    onPressAddButton() {
+        //add item to My Inventory
+
+
+        //then clean the table
+
+    }
+
     render() {
         return (
             <Modal
@@ -92,31 +100,20 @@ class AddIngredientModal extends Component {
                                     this.state.newItemUnit==""?"Select Unit":this.state.newItemUnit
                                 }</Text>
                             </ModalDropdown>
-                            {/*<Picker*/}
-                            {/*    mode="dropdown"*/}
-                            {/*    iosIcon={<Icon name="arrow-down" />}*/}
-                            {/*    style={{ width: undefined, marginRight: 5}}*/}
-                            {/*    placeholder="Choose Unit"*/}
-                            {/*    placeholderStyle={{ color: "#bfc6ea" }}*/}
-                            {/*    placeholderIconColor="#007aff"*/}
-                            {/*    selectedValue={this.state.selected2}*/}
-                            {/*    onValueChange={this.onValueChange.bind(this)}*/}
-                            {/*>*/}
-                            {/*    <Picker.Item label="LB" value="key0" />*/}
-                            {/*    <Picker.Item label="KG" value="key1" />*/}
-                            {/*    <Picker.Item label="G" value="key2" />*/}
-                            {/*</Picker>*/}
                         </Right>
                     </Item>
                 </View>
 
-                <Button style = {{margin: 10,
+                <Button
+                    onPress={() => {this.onPressAddButton()}}
+                    style = {{margin: 10,
                     padding: 15,
                     alignSelf:'center',
                     justifyContent:'center',
                     backgroundColor:"deepskyblue",
                     width:200}} onPress={()=>{
                     this.setState({showModal: false})
+
                 }}>
                     <Text >ADD</Text>
                 </Button>
