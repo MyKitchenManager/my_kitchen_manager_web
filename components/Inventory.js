@@ -140,8 +140,6 @@ class Inventory extends Component {
                     {/*Modal*/}
                     <AddIngredientModal ref={'AddIngredientModal'} />
                     <IngredientDetailModal ref={'IngredientDetailModal'} />
-
-                    <Text style = {{padding:30}}>This is Inventory</Text>
                 </Content>
             </Container>
             </Provider>
@@ -151,51 +149,3 @@ class Inventory extends Component {
 
 export default Inventory;
 
-
-
-// import React, {Component} from 'react';
-// import { Container, Content, Text, View} from "native-base"
-// import {Provider, Modal,Button, WingBlank, WhiteSpace, Toast} from "@ant-design/react-native"
-// import InventoryAddItemModal from "./InventroyAddItemModal";
-// import InventoryViewDetailModal from "./InventoryViewDetailModal";
-//
-// class Inventory extends Component {
-//     constructor (props) {
-//         super(props);
-//         this._onPressAdd = this._onPressAdd.bind(this);
-//         this._onPressViewDetail = this._onPressViewDetail.bind(this);
-//     }
-//     _onPressAdd(){
-//         //alert("A new item added");
-//         this.refs.InventoryAddItemModal.showInventoryAddItemModal();
-//     }
-//     _onPressViewDetail() {
-//         //alert("View Detail");
-//         this.refs.InventoryViewDetailModal.showInventoryViewDetailModal();
-//     }
-//
-//     render() {
-//         return (
-//             <Provider>
-//                 <Container>
-//                     <Content>
-//                         <Button onPress = {() => this._onPressAdd()}>
-//                             <Text>Add Item</Text>
-//                         </Button>
-//                         <Button onPress = {() => this._onPressViewDetail()}>
-//                             <Text>View Item Detail</Text>
-//                         </Button>
-//                         {/*<InventoryAddItemModal ref={'InventoryAddItemModal'} parentList={{this}}>*/}
-//                         {/*</InventoryAddItemModal>*/}
-//                         <InventoryAddItemModal ref={'InventoryAddItemModal'} >
-//                         </InventoryAddItemModal>
-//
-//                         <InventoryViewDetailModal ref={'InventoryViewDetailModal'}>
-//                         </InventoryViewDetailModal>
-//                     </Content>
-//                 </Container>
-//             </Provider>
-//         );
-//     }
-// }
-//

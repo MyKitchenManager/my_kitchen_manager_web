@@ -1,12 +1,26 @@
 import React, {Component} from 'react';
-import {Button, Text, View, Input, Item, Form, Picker, Icon, Grid, Col } from "native-base";
-import {Modal} from "@ant-design/react-native";
+import {
+    Button,
+    Text,
+    View,
+    Input,
+    Item,
+    Form,
+    Picker,
+    Icon,
+    Grid,
+    Col,
+    Right,
+    CardItem,
+    Thumbnail,
+    Card
+} from "native-base";
+import {Modal, List, WhiteSpace} from "@ant-design/react-native";
+import beef from "../assets/beef.jpg";
 
-//import Modal from 'react-native-modalbox';
 
-/*
-This modal component shows inventory item info adding to inventory
- */
+
+
 class IngredientDetailModal extends Component {
     constructor(props) {
         super(props);
@@ -24,15 +38,10 @@ class IngredientDetailModal extends Component {
         this.setState({showModal: true})
     }
 
-    onValueChange(value) {
-        this.setState({
-            selected2: value,
-        });
-    }
-
     render() {
         return (
             <Modal
+                style={{width: 320, height: 530}}
                 ref={"IngredientDetailModal"}
                 title="Title"
                 transparent
@@ -40,84 +49,78 @@ class IngredientDetailModal extends Component {
                     this.setState({showModal:false});
                 }}
                 maskClosable
-                animationType = 'slide'
+                animationType = 'slide-up'
                 visible={this.state.showModal}
-                title = {<Text style = {{fontWeight:"bold", fontSize:18, textAlign: "center"}}>Add Item</Text>}
+                title = {<Text style = {{fontWeight:"bold", fontSize:18, textAlign: "center"}}>Ingredient Details</Text>}
                 closable
             >
 
                 <View style={{ paddingVertical: 20 }}>
-                    <Item>
-                        <Input
-                            placeholder='Item Name'
-                            value={this.state.newItemName}
-                            onChangeText={(text) => this.setState({newItemName: text})}
-                        />
-                        <Icon name="ios-search" />
-                    </Item>
+                    <Card style={{padding: 20, height: 250, width: 280}}>
+                        <CardItem cardBody style={{alignSelf: 'center'}}>
+                            <Thumbnail source={beef} style ={{height: 200, width: 200}}/>
+                        </CardItem>
+                    </Card>
+                    <View>
+                        <Text style={{fontSize: 30, fontWeight: '4'}}>Beef </Text>
+                    </View>
 
-                    <Item  style={{ textAlign: 'center', padding: 10, height: 35 }}>
-                        <Input
-                            placeholder='Item Volume'
-                            value={this.state.newItemName}
-                            onChangeText={(text) => this.setState({newItemVolume: text})}
-                        />
-                    </Item>
+                    <WhiteSpace />
 
-                    <Item picker>
-                        <Picker
-                            mode="dropdown"
-                            iosIcon={<Icon name="arrow-down" />}
-                            style={{ width: undefined }}
-                            placeholder="Select the Unit"
-                            placeholderStyle={{ color: "#bfc6ea" }}
-                            placeholderIconColor="#007aff"
-                            selectedValue={this.state.selected2}
-                            onValueChange={this.onValueChange.bind(this)}
-                        >
-                            <Picker.Item label="LB" value="key0" />
-                            <Picker.Item label="KG" value="key1" />
-                            <Picker.Item label="G" value="key2" />
-                        </Picker>
-                    </Item>
+                    <List style={{width: 280}}>
+                        <Item data-seed="logId">
+                            <Text style={{fontSize: 15, fontWeight: '2'}}>Amount</Text>
+                            <Right>
+                                <Text>20LB</Text>
+                            </Right>
+                        </Item>
+
+                        <Item data-seed="logId">
+                            <Text style={{fontSize: 15, fontWeight: '2'}}>Category</Text>
+                            <Right>
+                                <Text>Meat</Text>
+                            </Right>
+                        </Item>
+
+                        <Item data-seed="logId">
+                            <Text style={{fontSize: 15, fontWeight: '2'}}>Purchased Date</Text>
+                            <Right>
+                                <Text>12/19/2020</Text>
+                            </Right>
+                        </Item>
+                    </List>
                 </View>
 
-                <Button style = {{margin: 10,
-                    padding: 15,
-                    alignSelf:'center',
-                    justifyContent:'center',
-                    backgroundColor:"deepskyblue",
-                    width:200}} onPress={()=>{
-                    this.setState({showModal: false})
-                }}>
-                    <Text >ADD</Text>
-                </Button>
+                <Grid>
+                    <Col style={{marginRight: 10}}>
+                        <Button style = {{margin: 10,
+                            padding: 15,
+                            alignSelf:'center',
+                            justifyContent:'center',
+                            backgroundColor:"deepskyblue",
+                            width:150}} onPress={()=>{
+                            this.setState({showModal: false})
+                        }}>
+                            <Text >Update</Text>
+                        </Button>
+                    </Col>
+                    <Col style={{marginLeft: 10}}>
+                        <Button style = {{margin: 10,
+                            padding: 15,
+                            alignSelf:'center',
+                            justifyContent:'center',
+                            backgroundColor:"deepskyblue",
+                            width:150}} onPress={()=>{
+                            this.setState({showModal: false})
+                        }}>
+                            <Text >Delete</Text>
+                        </Button>
+                    </Col>
+                </Grid>
             </Modal>
-
-
         );
     }
 }
 
 export default IngredientDetailModal;
 
-/*
-<Modal
-    ref={"InventoryAddItemModal"}
-    style={{
-        justifyContent: 'center',
-        borderRadius: 20,
-        shadowRadius: 10,
-        width: 280,
-        height: 280
-    }}
-    position='center'
-    backdrop={true}
-    onClosed={ () => {
-        //alert("Modal Closed");
-    }}
->
-    <Text>New food's information</Text>
-</Modal>
-
- */
