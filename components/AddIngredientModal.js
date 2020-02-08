@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Button, Text, View, Input, Item, Form, Picker, Icon, Grid, Col, Right} from "native-base";
 import {Modal} from "@ant-design/react-native";
-
+import ModalDropdown from "react-native-modal-dropdown";
 //import Modal from 'react-native-modalbox';
 
 /*
@@ -54,8 +54,8 @@ class AddIngredientModal extends Component {
                         <Icon name="ios-search"/>
                         <Input
                             placeholder='Name'
-                            value={this.state.newItemName}
-                            onChangeText={(text) => this.setState({newItemName: text})}
+                            value={this.state.searchIngredient}
+                            onChangeText={(text) => this.setState({searchIngredient: text})}
                         />
                         <Right>
                             <Button transparent onPress={
@@ -78,20 +78,34 @@ class AddIngredientModal extends Component {
                             onChangeText={(text) => this.setState({newItemVolume: text})}
                         />
                         <Right>
-                            <Picker
-                                mode="dropdown"
-                                iosIcon={<Icon name="arrow-down" />}
-                                style={{ width: undefined, marginRight: 5}}
-                                placeholder="Choose Unit"
-                                placeholderStyle={{ color: "#bfc6ea" }}
-                                placeholderIconColor="#007aff"
-                                selectedValue={this.state.selected2}
-                                onValueChange={this.onValueChange.bind(this)}
+                            <ModalDropdown
+                                animated
+                                options={['lbs', 'g', 'kg','ounce',]}
+                                style={{marginRight:10}}
+                                dropdownStyle={{width: 80, marginTop: 10, height: 150}}
+                                dropdownTextStyle={{fontSize: 14}}
+                                onSelect={(index, value)=>{
+                                    this.setState({newItemUnit: value});
+                                }}
                             >
-                                <Picker.Item label="LB" value="key0" />
-                                <Picker.Item label="KG" value="key1" />
-                                <Picker.Item label="G" value="key2" />
-                            </Picker>
+                                <Text style={{fontSize:15, color:'grey', alignSelf: "center", justifyContent:"center"}}>{
+                                    this.state.newItemUnit==""?"Select Unit":this.state.newItemUnit
+                                }</Text>
+                            </ModalDropdown>
+                            {/*<Picker*/}
+                            {/*    mode="dropdown"*/}
+                            {/*    iosIcon={<Icon name="arrow-down" />}*/}
+                            {/*    style={{ width: undefined, marginRight: 5}}*/}
+                            {/*    placeholder="Choose Unit"*/}
+                            {/*    placeholderStyle={{ color: "#bfc6ea" }}*/}
+                            {/*    placeholderIconColor="#007aff"*/}
+                            {/*    selectedValue={this.state.selected2}*/}
+                            {/*    onValueChange={this.onValueChange.bind(this)}*/}
+                            {/*>*/}
+                            {/*    <Picker.Item label="LB" value="key0" />*/}
+                            {/*    <Picker.Item label="KG" value="key1" />*/}
+                            {/*    <Picker.Item label="G" value="key2" />*/}
+                            {/*</Picker>*/}
                         </Right>
                     </Item>
                 </View>
