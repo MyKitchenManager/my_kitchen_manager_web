@@ -7,6 +7,7 @@ import beef from '../assets/beef.jpg';
 import spinach from '../assets/spinach.jpeg';
 import AddIngredientModal from "./AddIngredientModal";
 import {Provider} from "@ant-design/react-native";
+import IngredientDetailModal from "./IngredientDetailModal";
 
 class Inventory extends Component {
     constructor(props) {
@@ -14,12 +15,19 @@ class Inventory extends Component {
         this.state={
             search : "",
         }
-        this._onPressAdd = this._onPressAdd.bind(this);
+        this.onPressAdd = this.onPressAdd.bind(this);
+        this.onPressImage = this.onPressImage.bind(this);
+
     }
 
-    _onPressAdd(){
+    onPressAdd(){
         //alert("A new item added");
         this.refs.InventoryAddItemModal.showAddIngredientModal();
+    }
+
+    onPressImage(){
+        //alert("A new item added");
+        this.refs.IngredientDetailModal.showIngredientDetailModal();
     }
     render() {
         return (
@@ -34,7 +42,7 @@ class Inventory extends Component {
                             justifyContent:'center',}}>My Inventory</Title>
                     </Body>
                     <Right>
-                        <Button transparent onPress = {() => this._onPressAdd()}>
+                        <Button transparent onPress = {() => this.onPressAdd()}>
                             <Icon name='add-circle' />
                         </Button>
                     </Right>
@@ -64,7 +72,7 @@ class Inventory extends Component {
 
                             <Card style={{padding: 20}}>
                                 <CardItem cardBody>
-                                    <Button transparent style={{margin:10}}>
+                                    <Button transparent style={{margin:10}} onPress = {() => this.onPressImage()}>
                                         <Thumbnail source={beef} style ={{height: 100, width: 100}}/>
                                     </Button>
                                 </CardItem>
@@ -128,7 +136,10 @@ class Inventory extends Component {
                             </Card>
                         </Col>
                     </Grid>
+
+                    {/*Modal*/}
                     <AddIngredientModal ref={'InventoryAddItemModal'} />
+                    <IngredientDetailModal ref={'IngredientDetailModal'} />
 
                     <Text style = {{padding:30}}>This is Inventory</Text>
                 </Content>
