@@ -19,12 +19,12 @@ class AddIngredientModal extends Component {
         }
     }
 
-    showInventoryAddItemModal = () => {
+    showAddIngredientModal = () => {
         //this.refs.InventoryAddItemModal.open();
         this.setState({showModal: true})
     }
 
-    onValueChange2(value) {
+    onValueChange(value) {
         this.setState({
             selected2: value,
         });
@@ -73,7 +73,7 @@ class AddIngredientModal extends Component {
                             placeholderStyle={{ color: "#bfc6ea" }}
                             placeholderIconColor="#007aff"
                             selectedValue={this.state.selected2}
-                            onValueChange={this.onValueChange2.bind(this)}
+                            onValueChange={this.onValueChange.bind(this)}
                         >
                             <Picker.Item label="LB" value="key0" />
                             <Picker.Item label="KG" value="key1" />
