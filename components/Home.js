@@ -6,68 +6,75 @@ import MealPool from "./MealPool";
 import {Actions} from "react-native-router-flux";
 import styles from '../styles/styles.js';
 import Profile from "./Profile"
+<<<<<<< HEAD
 import {API_URL, TOKEN_KEY, AUTH_HEADER} from "../constant"
 import {AsyncStorage} from "react-native";
 
+=======
+import {API_URL, TOKEN_KEY} from "../constant"
+import {AsyncStorage} from "react-native";
+>>>>>>> 306b19758ee9f489c0757d02cae51c597d3dc29c
 
 class Home extends Component {
     constructor(props) {
         super(props);
         this.state = {
             page: "",
-            userId: 1,
-            Items: [
-                {
-                    id: 1,
-                    name: "Beef",
-                    amount: 0.7,
-                    unit: "lbs"
-                },
-                {
-                    id: 2,
-                    name: "Beef",
-                    amount: 0.7,
-                    unit: "lbs"
-                }
-            ]
+            userId: 241,
+            Items: []
         }
     }
     pageHandler(data){
         this.setState({page:data});
     }
 
-
-    async scanInventory(){
-        const token = await AsyncStorage.getItem(TOKEN_KEY);
-        return fetch(`${API_URL}/inventory/userId/${this.state.userId}`, {
-                method: 'Get',
-                headers: {
-                    //'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                    Authorization: `${AUTH_HEADER} ${token}`
+    scanInventory(){
+        AsyncStorage.getItem(TOKEN_KEY)
+            .then((accessToken)=>{
+                if(accessToken!=null){
+                    let newItem;
+                    fetch(`${API_URL}/inventory/userId/${this.state.userId}`, {
+                        method:"GET",
+                        headers:{
+                            "Authorization" : accessToken
+                        }
+                    })
+                        .then((response)=>{
+                            return response.json();
+                        }).then((responseData)=>{
+                            responseData.forEach(function (item) {
+                                console.log(item);
+                                let id = item.inventoryId;
+                                let name = item.ingredientIdJoin.ingredientName;
+                                let image = item.ingredientIdJoin.imageUrl;
+                                let amount = item.inventoryVolume;
+                                let unit = item.unitsOfMeasureListEntry.entry;
+                                newItem = {
+                                    id: id,
+                                    name: name,
+                                    image: image,
+                                    amount: amount,
+                                    unit: unit
+                                }
+                                // this.setState({Items: [...this.state.Items, {
+                                //         id: id,
+                                //         name: name,
+                                //         image: image,
+                                //         amount: amount,
+                                //         unit: unit
+                                //     }]})
+                            })
+                        })
+                    if(newItem!=null){
+                        this.setState({Items: [...this.state.Items, newItem]});
+                        console.log("Success!");
+                    }
                 }
             })
-            .then((response)=>{
-                return response.json();
-            }).then((responseData)=>{
-                console.log(responseData);
-                responseData.forEach(function (item) {
-                    let id = item.inventoryId;
-                    let name = item.ingredientIdJoin.ingredientName;
-                    let image = item.ingredientIdJoin.imageUrl;
-                    let amount = item.inventoryVolume;
-                    let unit = item.unitsOfMeasureListEntry.entry;
-                    this.setState({Items: [...this.state.Items, {
-                            id: id,
-                            name: name,
-                            image: image,
-                            amount: amount,
-                            unit: unit
-                        }]})
-                })
-            }).catch((error)=>{
+        .catch((error)=>{
                 console.log(`Error in fetching inventory list --> ${error}`);
             })
+
     }
 
     render() {
@@ -78,6 +85,7 @@ class Home extends Component {
                 break;
             case "inventory":
                 this.scanInventory();
+                console.log(this.state.Items);
                 view = <Inventory data={this.state.Items}/>;
                 break;
             case "mealpool":
