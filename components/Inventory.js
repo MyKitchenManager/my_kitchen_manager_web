@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
 import {Container, Content, Text, Header, Left, Button, Icon, Body, Title, Right, Item, Input, Card, CardItem, Thumbnail} from "native-base"
-import {ScrollView, Image} from "react-native";
+import {ScrollView, Image, AsyncStorage} from "react-native";
 import {Grid, Row, Col} from "react-native-easy-grid";
-import {API_URL} from "../constant";
+import {API_URL, TOKEN_KEY} from "../constant";
 import beef from '../assets/beef.jpg';
 import spinach from '../assets/spinach.jpeg';
 import AddIngredientModal from "./AddIngredientModal";
@@ -14,6 +14,8 @@ class Inventory extends Component {
         super(props);
         this.state={
             search : "",
+            userId: 241,
+            Items: []
         }
         this.onPressAdd = this.onPressAdd.bind(this);
         this.onPressImage = this.onPressImage.bind(this);
@@ -25,10 +27,57 @@ class Inventory extends Component {
         this.refs.AddIngredientModal.showAddIngredientModal();
     }
 
-    onPressImage(){
+    onPressImage(item){
         //alert("A new item added");
-        this.refs.IngredientDetailModal.showIngredientDetailModal();
+        this.refs.IngredientDetailModal.showIngredientDetailModal(item);
     }
+
+    scanInventory(){
+        AsyncStorage.getItem(TOKEN_KEY)
+            .then((accessToken)=>{
+                if(accessToken!=null){
+                    //let newItem = [];
+                    fetch(`${API_URL}/inventory/userId/${this.state.userId}`, {
+                        method:"GET",
+                        headers:{
+                            "Authorization" : accessToken
+                        }
+                    })
+                        .then((response)=>{
+                            return response.json();
+                        }).then((responseData)=>{
+                        for(let i = 0; i< responseData.length; i++) {
+                            console.log(responseData[i]);
+                            let name = responseData[i].ingredientIdJoin.ingredientName;
+                            let id = responseData[i].inventoryId;
+                            let image = responseData[i].ingredientIdJoin.imageUrl;
+                            let amount = responseData[i].inventoryVolume;
+                            let unit = responseData[i].unitsOfMeasureListEntry.entry;
+                            const item = {
+                                id: id,
+                                name: name,
+                                image: image,
+                                amount: amount,
+                                unit: unit
+                            };
+                            const list = this.state.Items.concat(item);
+                            this.setState({Items: list});
+                        }
+                        console.log(this.state.Items);
+                    }).done();
+
+                }
+            })
+            .catch((error)=>{
+                console.log(`Error in fetching inventory list --> ${error}`);
+            })
+
+    }
+
+    componentDidMount() {
+        this.scanInventory();
+    }
+
     render() {
         return (
             <Provider>
@@ -69,7 +118,18 @@ class Inventory extends Component {
                     </Item>
                     <Grid>
                         <Col>
-
+                            {this.state.Items.map((info)=>{
+                                return <Card style={{padding: 20}} key = {info.id}>
+                                    <CardItem cardBody>
+                                        <Button transparent style={{margin:10}} onPress = {() => this.onPressImage(info)}>
+                                            <Thumbnail source={{uri: info.image}} style ={{height: 100, width: 100}}/>
+                                        </Button>
+                                    </CardItem>
+                                    <CardItem footer>
+                                        <Text style = {{fontWeight:"bold", fontSize:13}}>{`${info.name} ${info.amount}${info.unit}`}</Text>
+                                    </CardItem>
+                                </Card>
+                            })}
                             <Card style={{padding: 20}}>
                                 <CardItem cardBody>
                                     <Button transparent style={{margin:10}} onPress = {() => this.onPressImage()}>

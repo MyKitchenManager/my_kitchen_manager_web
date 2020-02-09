@@ -22,55 +22,6 @@ class Home extends Component {
         this.setState({page:data});
     }
 
-    scanInventory(){
-        AsyncStorage.getItem(TOKEN_KEY)
-            .then((accessToken)=>{
-                if(accessToken!=null){
-                    let newItem;
-                    fetch(`${API_URL}/inventory/userId/${this.state.userId}`, {
-                        method:"GET",
-                        headers:{
-                            "Authorization" : accessToken
-                        }
-                    })
-                        .then((response)=>{
-                            return response.json();
-                        }).then((responseData)=>{
-                            responseData.forEach(function (item) {
-                                console.log(item);
-                                let id = item.inventoryId;
-                                let name = item.ingredientIdJoin.ingredientName;
-                                let image = item.ingredientIdJoin.imageUrl;
-                                let amount = item.inventoryVolume;
-                                let unit = item.unitsOfMeasureListEntry.entry;
-                                newItem = {
-                                    id: id,
-                                    name: name,
-                                    image: image,
-                                    amount: amount,
-                                    unit: unit
-                                }
-                                // this.setState({Items: [...this.state.Items, {
-                                //         id: id,
-                                //         name: name,
-                                //         image: image,
-                                //         amount: amount,
-                                //         unit: unit
-                                //     }]})
-                            })
-                        })
-                    if(newItem!=null){
-                        this.setState({Items: [...this.state.Items, newItem]});
-                        console.log("Success!");
-                    }
-                }
-            })
-        .catch((error)=>{
-                console.log(`Error in fetching inventory list --> ${error}`);
-            })
-
-    }
-
     render() {
         let view = <MealPlan/>;
         switch (this.state.page) {
@@ -78,9 +29,7 @@ class Home extends Component {
                 view = <MealPlan/>;
                 break;
             case "inventory":
-                this.scanInventory();
-                console.log(this.state.Items);
-                view = <Inventory data={this.state.Items}/>;
+                view = <Inventory/>;
                 break;
             case "mealpool":
                 view = <MealPool/>;

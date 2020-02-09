@@ -30,12 +30,20 @@ class IngredientDetailModal extends Component {
             ItemName: '',
             ItemVolume: '',
             ItemUnit: '',
+            ItemImage: ''
         }
     }
 
-    showIngredientDetailModal = () => {
+    showIngredientDetailModal = (item) => {
         //this.refs.InventoryAddItemModal.open();
-        this.setState({showModal: true})
+        this.setState({
+            showModal: true,
+            ItemName: item.name,
+            ItemVolume: item.amount,
+            ItemUnit: item.unit,
+            ItemImage: item.image
+        })
+
     }
 
     render() {
@@ -58,11 +66,11 @@ class IngredientDetailModal extends Component {
                 <View style={{ paddingVertical: 20 }}>
                     <Card style={{padding: 20, height: 250, width: 280}}>
                         <CardItem cardBody style={{alignSelf: 'center'}}>
-                            <Thumbnail source={beef} style ={{height: 200, width: 200}}/>
+                            <Thumbnail source={{uri: this.state.ItemImage}} style ={{height: 200, width: 200}}/>
                         </CardItem>
                     </Card>
                     <View>
-                        <Text style={{fontSize: 30, fontWeight: '4', alignSelf: 'center'}}>Beef </Text>
+                        <Text style={{fontSize: 30, fontWeight: '4', alignSelf: 'center'}}>{this.state.ItemName}</Text>
                     </View>
 
                     <WhiteSpace />
@@ -71,7 +79,7 @@ class IngredientDetailModal extends Component {
                         <Item data-seed="logId">
                             <Text style={{fontSize: 15, fontWeight: 'bold'}}>Amount</Text>
                             <Right>
-                                <Text>20LB</Text>
+                                <Text>{`${this.state.ItemVolume} ${this.state.ItemUnit}`}</Text>
                             </Right>
                         </Item>
 
