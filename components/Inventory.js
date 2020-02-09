@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Container, Content, Text, Header, Left, Button, Icon, Body, Title, Right, Item, Input, Card, CardItem, Thumbnail} from "native-base"
-import {ScrollView, Image, AsyncStorage} from "react-native";
+import {ScrollView, Image, AsyncStorage, FlatList} from "react-native";
 import {Grid, Row, Col} from "react-native-easy-grid";
 import {API_URL, TOKEN_KEY} from "../constant";
 import beef from '../assets/beef.jpg';
@@ -116,86 +116,103 @@ class Inventory extends Component {
                             </Button>
                         </Right>
                     </Item>
-                    <Grid>
-                        <Col>
-                            {this.state.Items.map((info)=>{
-                                return <Card style={{padding: 20}} key = {info.id}>
-                                    <CardItem cardBody>
-                                        <Button transparent style={{margin:10}} onPress = {() => this.onPressImage(info)}>
-                                            <Thumbnail source={{uri: info.image}} style ={{height: 100, width: 100}}/>
-                                        </Button>
-                                    </CardItem>
-                                    <CardItem footer>
-                                        <Text style = {{fontWeight:"bold", fontSize:13}}>{`${info.name} ${info.amount}${info.unit}`}</Text>
-                                    </CardItem>
-                                </Card>
-                            })}
-                            {/*<Card style={{padding: 20}}>*/}
-                            {/*    <CardItem cardBody>*/}
-                            {/*        <Button transparent style={{margin:10}} onPress = {() => this.onPressImage()}>*/}
-                            {/*            <Thumbnail source={beef} style ={{height: 100, width: 100}}/>*/}
-                            {/*        </Button>*/}
-                            {/*    </CardItem>*/}
-                            {/*    <CardItem footer>*/}
-                            {/*        <Text style = {{fontWeight:"bold", fontSize:13}}>Beef 0.7lbs</Text>*/}
-                            {/*    </CardItem>*/}
-                            {/*</Card>*/}
-                            {/*<Card style={{padding: 20}}>*/}
-                            {/*    <CardItem cardBody>*/}
-                            {/*        <Button transparent style={{margin:10}} onPress = {() => this.onPressImage()}>*/}
-                            {/*            <Thumbnail source={spinach} style ={{height: 100, width: 100}}/>*/}
-                            {/*        </Button>*/}
-                            {/*    </CardItem>*/}
-                            {/*    <CardItem>*/}
-                            {/*        <Text style = {{fontWeight:"bold", fontSize:13}}>Spinach  0.4lbs</Text>*/}
-                            {/*    </CardItem>*/}
-                            {/*</Card>*/}
-                        </Col>
-                        <Col>
-                            <Card style={{padding: 20}}>
+                    <FlatList
+                        data ={this.state.Items}
+                        renderItem={({item})=>(
+                            <Card style={{margin: 15, paddingTop: 10, width: 130, height: 140}}>
                                 <CardItem cardBody>
-                                    <Button transparent style={{margin:10}}>
-                                        <Thumbnail source={spinach} style ={{height: 100, width: 100}}/>
-                                    </Button>
-                                </CardItem>
-                                <CardItem>
-                                    <Text style = {{fontWeight:"bold", fontSize:13}}>Spinach  0.4lbs</Text>
-                                </CardItem>
-                            </Card>
-                            <Card style={{padding: 20}}>
-                                <CardItem cardBody>
-                                    <Button transparent style={{margin:10}}>
-                                        <Thumbnail source={beef} style ={{height: 100, width: 100}}/>
+                                    <Button transparent style={{margin:10}} onPress = {() => this.onPressImage(item)}>
+                                        <Thumbnail source={{uri: item.image}} style ={{height: 90, width: 100}}/>
                                     </Button>
                                 </CardItem>
                                 <CardItem footer>
-                                    <Text style = {{fontWeight:"bold", fontSize:13}}>Beef 0.7lbs</Text>
+                                    <Text style = {{fontWeight:"bold", fontSize:13}}>{`${item.name} ${item.amount}${item.unit}`}</Text>
                                 </CardItem>
                             </Card>
-                        </Col>
-                        <Col>
-                            <Card style={{padding: 20}}>
-                                <CardItem cardBody>
-                                    <Button transparent style={{margin:10}}>
-                                        <Thumbnail source={beef} style ={{height: 100, width: 100}}/>
-                                    </Button>
-                                </CardItem>
-                                <CardItem footer>
-                                    <Text style = {{fontWeight:"bold", fontSize:13}}>Beef 0.7lbs</Text>
-                                </CardItem>
-                            </Card>
-                            <Card style={{padding: 20}}>
-                                <CardItem cardBody>
-                                    <Button transparent style={{margin:10}}>
-                                        <Thumbnail source={spinach} style ={{height: 100, width: 100}}/>
-                                    </Button>
-                                </CardItem>
-                                <CardItem>
-                                    <Text style = {{fontWeight:"bold", fontSize:13}}>Spinach  0.4lbs</Text>
-                                </CardItem>
-                            </Card>
-                        </Col>
-                    </Grid>
+                        )}
+                        numColumns = {3}
+                        keyExtractor = {item=>item.id}
+                    />
+                    {/*<Grid>*/}
+                    {/*    <Col>*/}
+                    {/*        {this.state.Items.map((info)=>{*/}
+                    {/*            return <Card style={{padding: 20}} key = {info.id}>*/}
+                    {/*                <CardItem cardBody>*/}
+                    {/*                    <Button transparent style={{margin:10}} onPress = {() => this.onPressImage(info)}>*/}
+                    {/*                        <Thumbnail source={{uri: info.image}} style ={{height: 100, width: 100}}/>*/}
+                    {/*                    </Button>*/}
+                    {/*                </CardItem>*/}
+                    {/*                <CardItem footer>*/}
+                    {/*                    <Text style = {{fontWeight:"bold", fontSize:13}}>{`${info.name} ${info.amount}${info.unit}`}</Text>*/}
+                    {/*                </CardItem>*/}
+                    {/*            </Card>*/}
+                    {/*        })}*/}
+                    {/*        /!*<Card style={{padding: 20}}>*!/*/}
+                    {/*        /!*    <CardItem cardBody>*!/*/}
+                    {/*        /!*        <Button transparent style={{margin:10}} onPress = {() => this.onPressImage()}>*!/*/}
+                    {/*        /!*            <Thumbnail source={beef} style ={{height: 100, width: 100}}/>*!/*/}
+                    {/*        /!*        </Button>*!/*/}
+                    {/*        /!*    </CardItem>*!/*/}
+                    {/*        /!*    <CardItem footer>*!/*/}
+                    {/*        /!*        <Text style = {{fontWeight:"bold", fontSize:13}}>Beef 0.7lbs</Text>*!/*/}
+                    {/*        /!*    </CardItem>*!/*/}
+                    {/*        /!*</Card>*!/*/}
+                    {/*        /!*<Card style={{padding: 20}}>*!/*/}
+                    {/*        /!*    <CardItem cardBody>*!/*/}
+                    {/*        /!*        <Button transparent style={{margin:10}} onPress = {() => this.onPressImage()}>*!/*/}
+                    {/*        /!*            <Thumbnail source={spinach} style ={{height: 100, width: 100}}/>*!/*/}
+                    {/*        /!*        </Button>*!/*/}
+                    {/*        /!*    </CardItem>*!/*/}
+                    {/*        /!*    <CardItem>*!/*/}
+                    {/*        /!*        <Text style = {{fontWeight:"bold", fontSize:13}}>Spinach  0.4lbs</Text>*!/*/}
+                    {/*        /!*    </CardItem>*!/*/}
+                    {/*        /!*</Card>*!/*/}
+                    {/*    </Col>*/}
+                    {/*    <Col>*/}
+                    {/*        <Card style={{padding: 20}}>*/}
+                    {/*            <CardItem cardBody>*/}
+                    {/*                <Button transparent style={{margin:10}}>*/}
+                    {/*                    <Thumbnail source={spinach} style ={{height: 100, width: 100}}/>*/}
+                    {/*                </Button>*/}
+                    {/*            </CardItem>*/}
+                    {/*            <CardItem>*/}
+                    {/*                <Text style = {{fontWeight:"bold", fontSize:13}}>Spinach  0.4lbs</Text>*/}
+                    {/*            </CardItem>*/}
+                    {/*        </Card>*/}
+                    {/*        <Card style={{padding: 20}}>*/}
+                    {/*            <CardItem cardBody>*/}
+                    {/*                <Button transparent style={{margin:10}}>*/}
+                    {/*                    <Thumbnail source={beef} style ={{height: 100, width: 100}}/>*/}
+                    {/*                </Button>*/}
+                    {/*            </CardItem>*/}
+                    {/*            <CardItem footer>*/}
+                    {/*                <Text style = {{fontWeight:"bold", fontSize:13}}>Beef 0.7lbs</Text>*/}
+                    {/*            </CardItem>*/}
+                    {/*        </Card>*/}
+                    {/*    </Col>*/}
+                    {/*    <Col>*/}
+                    {/*        <Card style={{padding: 20}}>*/}
+                    {/*            <CardItem cardBody>*/}
+                    {/*                <Button transparent style={{margin:10}}>*/}
+                    {/*                    <Thumbnail source={beef} style ={{height: 100, width: 100}}/>*/}
+                    {/*                </Button>*/}
+                    {/*            </CardItem>*/}
+                    {/*            <CardItem footer>*/}
+                    {/*                <Text style = {{fontWeight:"bold", fontSize:13}}>Beef 0.7lbs</Text>*/}
+                    {/*            </CardItem>*/}
+                    {/*        </Card>*/}
+                    {/*        <Card style={{padding: 20}}>*/}
+                    {/*            <CardItem cardBody>*/}
+                    {/*                <Button transparent style={{margin:10}}>*/}
+                    {/*                    <Thumbnail source={spinach} style ={{height: 100, width: 100}}/>*/}
+                    {/*                </Button>*/}
+                    {/*            </CardItem>*/}
+                    {/*            <CardItem>*/}
+                    {/*                <Text style = {{fontWeight:"bold", fontSize:13}}>Spinach  0.4lbs</Text>*/}
+                    {/*            </CardItem>*/}
+                    {/*        </Card>*/}
+                    {/*    </Col>*/}
+                    {/*</Grid>*/}
 
                     {/*Modal*/}
                     <AddIngredientModal ref={'AddIngredientModal'} />
