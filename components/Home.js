@@ -6,8 +6,7 @@ import MealPool from "./MealPool";
 import {Actions} from "react-native-router-flux";
 import styles from '../styles/styles.js';
 import Profile from "./Profile"
-import {API_URL, TOKEN_KEY} from "../constant"
-import {AsyncStorage} from "react-native";
+
 
 class Home extends Component {
     constructor(props) {
