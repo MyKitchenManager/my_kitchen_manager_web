@@ -24,27 +24,33 @@ class Inventory extends Component {
 
     onPressAdd(){
         //alert("A new item added");
-        this.refs.AddIngredientModal.showAddIngredientModal();
+        this.refs.AddIngredientModal.showAddIngredientModal(this.props.data);
     }
 
     onPressImage(item){
         //alert("A new item added");
-        this.refs.IngredientDetailModal.showIngredientDetailModal(item);
+        this.refs.IngredientDetailModal.showIngredientDetailModal();
     }
 
     scanInventory(){
         AsyncStorage.getItem(TOKEN_KEY)
             .then((accessToken)=>{
                 if(accessToken!=null){
+                    console.log(accessToken);
                     //let newItem = [];
-                    fetch(`${API_URL}/inventory/userId/${this.state.userId}`, {
+                    fetch(`${API_URL}/inventory/userId/${this.props.data}`, {
                         method:"GET",
                         headers:{
                             "Authorization" : accessToken
                         }
                     })
                         .then((response)=>{
-                            return response.json();
+                            if(response.status=="200"){
+                                return response.json();
+                            }else{
+                                console.log(response.status);
+                            }
+
                         }).then((responseData)=>{
                         for(let i = 0; i< responseData.length; i++) {
                             console.log(responseData[i]);
@@ -215,7 +221,7 @@ class Inventory extends Component {
                     {/*</Grid>*/}
 
                     {/*Modal*/}
-                    <AddIngredientModal ref={'AddIngredientModal'} />
+                    <AddIngredientModal ref={'AddIngredientModal'} data={this.props.data}/>
                     <IngredientDetailModal ref={'IngredientDetailModal'} />
                 </Content>
             </Container>

@@ -13,12 +13,8 @@ class Home extends Component {
         super(props);
         this.state = {
             page: "",
-            userId: 241,
             Items: []
         }
-    }
-    pageHandler(data){
-        this.setState({page:data});
     }
 
     render() {
@@ -28,7 +24,8 @@ class Home extends Component {
                 view = <MealPlan/>;
                 break;
             case "inventory":
-                view = <Inventory/>;
+                console.log(this.props.data);
+                view = <Inventory data = {this.props.data}/>;
                 break;
             case "mealpool":
                 view = <MealPool/>;

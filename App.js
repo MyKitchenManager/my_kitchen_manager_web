@@ -10,12 +10,15 @@ import {TOKEN_KEY, API_URL} from "./constant";
 
 export default class App extends Component {
     state = {
-        init : true
+        init : true,
+        userId: 0
     }
+
     componentDidMount(){
         AsyncStorage.getItem(TOKEN_KEY)
             .then((accessToken)=>{
                 if(accessToken!=null){
+                    this.userInfoHandler(accessToken);
                     fetch(API_URL, {
                         method: 'GET',
                         headers: {
@@ -35,12 +38,29 @@ export default class App extends Component {
 
     }
 
+    userInfoHandler(accessToken){
+        return fetch(`${API_URL}/`, {
+            method: 'GET',
+            headers: {
+                'Authorization': accessToken
+            }
+        }).then((response)=>{
+            if(response.status=='200'){
+                return response.json();
+            }
+        }).then((responseData)=>{
+            this.setState({userId: responseData.userId});
+        }).catch((error)=>{
+            console.log(`Error in fetching user id --> ${error}`);
+        })
+    }
+
   render(){
       return  <Router>
                 <Scene key="root">
-                    <Scene key="login" component={Login} hideNavBar={true} title="Login" initial={this.state.init}/>
+                    <Scene key="login"  component={Login} hideNavBar={true} title="Login" initial={this.state.init}/>
                     <Scene key="signup" component={SignUp} hideNavBar={true} title="SignUp"/>
-                    <Scene key="home" component={Home} hideNavBar={true} title = "My Kitchen Manager" initial={!this.state.init}/>
+                    <Scene key="home" data={this.state.userId} component={Home} hideNavBar={true} title = "My Kitchen Manager" initial={!this.state.init}/>
                 </Scene>
               </Router>
     }

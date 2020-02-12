@@ -53,6 +53,7 @@ export default class Login extends Component {
             .then((headers) => {
                 console.log('Success:', headers);
                 let accessToken = headers.get('authorization').toString();
+
                 //console.log(accessToken);
                 this._onValueChange(accessToken);
             })
