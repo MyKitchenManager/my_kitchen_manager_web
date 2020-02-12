@@ -27,23 +27,30 @@ class IngredientDetailModal extends Component {
         this.state = {
             showModal: false,
             selected2: undefined,
+            Item: this.props.item,
             ItemName: '',
             ItemVolume: '',
             ItemUnit: '',
-            ItemImage: ''
+            ItemImage: '',
+            ItemId: ''
         }
     }
 
     showIngredientDetailModal = (item) => {
-        //this.refs.InventoryAddItemModal.open();
+        console.log("IngredientDetailItem:" + item);
         this.setState({
             showModal: true,
             ItemName: item.name,
             ItemVolume: item.amount,
-            ItemUnit: item.unit,
-            ItemImage: item.image
+            ItemUnit: item.unit,  // 为什么这个unit是白色的？？名字没错啊！！
+            ItemImage: item.image,
+            ItemId: item.id
         })
 
+    }
+
+    handleDeleteItem(item) {
+        console.log('ToBeDeletedItem:' + item);
     }
 
     render() {
@@ -113,14 +120,18 @@ class IngredientDetailModal extends Component {
                         </Button>
                     </Col>
                     <Col style={{marginLeft: 10}}>
-                        <Button style = {{margin: 10,
-                            padding: 15,
-                            alignSelf:'center',
-                            justifyContent:'center',
-                            backgroundColor:"deepskyblue",
-                            width:150}} onPress={()=>{
-                            this.setState({showModal: false})
-                        }}>
+                        <Button
+                            style = {{margin: 10,
+                                padding: 15,
+                                alignSelf:'center',
+                                justifyContent:'center',
+                                backgroundColor:"deepskyblue",
+                                width:150}}
+                            onPress={()=>{
+                                this.setState({showModal: false}),
+                                //this.handleDeleteItem()
+                            }
+                        }>
                             <Text >Delete</Text>
                         </Button>
                     </Col>
