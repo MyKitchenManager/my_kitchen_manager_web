@@ -29,7 +29,7 @@ class Inventory extends Component {
 
     onPressImage(item){
         //alert("A new item added");
-        this.refs.IngredientDetailModal.showIngredientDetailModal();
+        this.refs.IngredientDetailModal.showIngredientDetailModal(this.props.data);
     }
 
     scanInventory(){
@@ -128,7 +128,7 @@ class Inventory extends Component {
                             <Card style={{margin: 15, paddingTop: 10, width: 130, height: 140}}>
                                 <CardItem cardBody>
                                     <Button transparent style={{margin:10}} onPress = {() => this.onPressImage(item)}>
-                                        <Thumbnail source={{uri: item.image}} style ={{height: 90, width: 100}}/>
+                                        <Thumbnail source={{uri: item.image}} style ={{marginTop: 30, height: 100, width: 100}}/>
                                     </Button>
                                 </CardItem>
                                 <CardItem footer>
