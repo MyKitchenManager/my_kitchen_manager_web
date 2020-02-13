@@ -6,44 +6,43 @@ import MealPool from "./MealPool";
 import {Actions} from "react-native-router-flux";
 import styles from '../styles/styles.js';
 import Profile from "./Profile"
-import {API_URL} from "../constant"
+import {AsyncStorage} from "react-native"
+import {API_URL, TOKEN_KEY} from "../constant"
+
 
 class Home extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            userId: 0,
             page: "",
-            userId: 1,
             Items: []
         }
     }
-    pageHandler(data){
-        this.setState({page:data});
-    }
 
-    scanInventory(){
-        return fetch(`${API_URL}/inventory/userId/${this.state.userId}`)
-            .then((response)=>{
-                return response.json();
-            }).then((responseData)=>{
-                responseData.forEach(function (item) {
-                    let id = item.inventoryId;
-                    let name = item.ingredientIdJoin.ingredientName;
-                    let image = item.ingredientIdJoin.imageUrl;
-                    let amount = item.inventoryVolume;
-                    let unit = item.unitsOfMeasureListEntry.entry;
-                    this.setState({Items: [...this.state.Items, {
-                            id: id,
-                            name: name,
-                            image: image,
-                            amount: amount,
-                            unit: unit
-                        }]})
-                })
-            }).catch((error)=>{
-                console.log(`Error in fetching inventory list --> ${error}`);
-            })
-    }
+    // async updateUserId(){
+    //     AsyncStorage.getItem(TOKEN_KEY)
+    //         .then((accessToken)=>{
+    //             if(accessToken!=null){
+    //                 return fetch(`${API_URL}/`, {
+    //                     method: 'GET',
+    //                     headers: {
+    //                         'Authorization': accessToken
+    //                     }
+    //                 }).then((response)=>{
+    //                     if(response.status=='200'){
+    //                         return response.json();
+    //                     }
+    //                 }).then((responseData)=>{
+    //                     this.setState({userId: responseData.userId})
+    //                 }).catch((error)=>{
+    //                     console.log(`Error in fetching user id --> ${error}`);
+    //                 })
+    //             }
+    //         }).catch((error)=> {
+    //         console.log(`Unable to get token -->${error}`);
+    //     })
+    // }
 
     render() {
         let view = <MealPlan/>;
@@ -52,8 +51,7 @@ class Home extends Component {
                 view = <MealPlan/>;
                 break;
             case "inventory":
-                this.scanInventory();
-                view = <Inventory data={this.state.Items}/>;
+                view = <Inventory data = {this.props.data}/>;
                 break;
             case "mealpool":
                 view = <MealPool/>;
