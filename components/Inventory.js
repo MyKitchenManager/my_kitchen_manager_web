@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Container, Content, Text, Header, Left, Button, Icon, Body, Title, Right, Item, Input, Card, CardItem, Thumbnail, Spinner} from "native-base"
-import {ScrollView, Image, AsyncStorage, FlatList} from "react-native";
+import {ScrollView, Image, AsyncStorage, FlatList, Alert} from "react-native";
 import {Grid, Row, Col} from "react-native-easy-grid";
 import {API_URL, TOKEN_KEY} from "../constant";
 import beef from '../assets/beef.jpg';
@@ -48,7 +48,6 @@ class Inventory extends Component {
                     }).then((response)=>{
                         if(response.status == "202"){
                             alert("Item successfully deleted");
-                            this.scanInventory();
                         }else{
                             console.log(response.status);
                         }
