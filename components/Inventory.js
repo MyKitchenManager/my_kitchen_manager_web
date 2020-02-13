@@ -51,7 +51,10 @@ class Inventory extends Component {
                         }else{
                             console.log(response.status);
                         }
-                    }).catch((error)=>{
+                    }).then(()=>{
+                        this.scanInventory();
+                    })
+                        .catch((error)=>{
                         console.log(`Error in adding item in inventory --> ${error}`);
                     })
                 }
