@@ -52,13 +52,12 @@ class AddIngredientModal extends Component {
                                 'Authorization':  accessToken
                             },
                             body: JSON.stringify({
-                                ingredientId : 79,
+                                ingredientId : 80,
                                 inventoryVolume: this.state.newItemVolume,
-                                unitsOfMeasure: 12,
+                                unitsOfMeasure: 13,
                                 userId: this.props.data,
                                 purchaseDate:"2020-02-04T12:00:00.000+0000",
                                 expirationDate:"2020-02-19T12:00:00.000+0000"
-
                             })
                         }).then((response)=>{
                             if(response.status == "201"){
@@ -160,7 +159,7 @@ class AddIngredientModal extends Component {
                     backgroundColor:"deepskyblue",
                     width:200}}
                         onPress={()=>{
-                        //this.onAddItem();
+                        this.onAddItem();
                         this.setState({showModal: false
                     })
                 }}>
