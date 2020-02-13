@@ -23,6 +23,8 @@ import meal from "../assets/meal.jpeg";
 import {Grid, Row, Col} from "react-native-easy-grid";
 import {getAutoFocusEnabled} from "expo/build/AR";
 import {lefthandObjectDiff} from "react-native/Libraries/Utilities/verifyComponentAttributeEquivalence";
+import AddRecipeModal from "./AddRecipeModal";
+import RecipeDetailModal from "./RecipeDetailModal";
 
 class MealPool extends Component {
     constructor(props) {
@@ -30,14 +32,16 @@ class MealPool extends Component {
         this.state = {
             search: "",
         }
+        this.onPressAdd = this.onPressAdd.bind(this);
+        this.onPressImage = this.onPressImage.bind(this);
     }
 
     onPressAdd(){
-        alert('Click add button');
+        this.refs.AddRecipeModal.showAddRecipeModal();
     }
 
     onPressImage() {
-        alert('Click image')
+        this.refs.RecipeDetailModal.showRecipeDetailModal();
     }
     render() {
         return (
@@ -143,6 +147,10 @@ class MealPool extends Component {
                                 </Card>
                             </Col>
                         </Grid>
+
+                        <AddRecipeModal ref={'AddRecipeModal'} />
+                        <RecipeDetailModal ref={'RecipeDetailModal'} />
+
                     </Content>
                 </Container>
             </Provider>
