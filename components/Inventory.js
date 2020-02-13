@@ -27,8 +27,35 @@ class Inventory extends Component {
     }
 
     onPressImage(item){
-
         this.refs.IngredientDetailModal.showIngredientDetailModal(item);
+    }
+
+    handleDeleteItem(item) {
+        //alert('An item is deleted!');
+        console.log('An item is deleted');
+        AsyncStorage.getItem(TOKEN_KEY)
+            .then((accessToken)=>{
+                if(accessToken!=null){
+                    console.log(accessToken);
+                    fetch(`${API_URL}/inventory/inventoryId/${item.id}`, {
+                        method: "POST",
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json',
+                            'Authorization':  accessToken
+                        }
+                    }).then((response)=>{
+                        if(response.status == "200"){
+                            alert("Item successfully deleted");
+                        }else{
+                            console.log(response.status);
+                        }
+                    }).catch((error)=>{
+                        console.log(`Error in adding item in inventory --> ${error}`);
+                    })
+                }
+            })
+
     }
 
     scanInventory(){
@@ -81,6 +108,7 @@ class Inventory extends Component {
 
     componentDidMount() {
         this.scanInventory();
+        //this.handleDeleteItem(item);
     }
 
     render() {
@@ -140,7 +168,7 @@ class Inventory extends Component {
                     />
 
                     <AddIngredientModal ref={'AddIngredientModal'} data={this.props.data}/>
-                    <IngredientDetailModal ref={'IngredientDetailModal'} />
+                    <IngredientDetailModal ref={'IngredientDetailModal'} handleDeleteItem={this.handleDeleteItem.bind(this)} />
                 </Content>
             </Container>
             </Provider>

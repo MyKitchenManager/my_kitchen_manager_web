@@ -16,6 +16,7 @@ import {
     Card
 } from "native-base";
 import {Modal, List, WhiteSpace} from "@ant-design/react-native";
+import {Alert} from 'react-native';
 import beef from "../assets/beef.jpg";
 
 
@@ -40,6 +41,7 @@ class IngredientDetailModal extends Component {
         console.log("IngredientDetailItem:" + item);
         this.setState({
             showModal: true,
+            Item: item,
             ItemName: item.name,
             ItemVolume: item.amount,
             ItemUnit: item.unit,  // 为什么这个unit是白色的？？名字没错啊！！
@@ -49,8 +51,13 @@ class IngredientDetailModal extends Component {
 
     }
 
-    handleDeleteItem(item) {
-        console.log('ToBeDeletedItem:' + item);
+    onPressYes() {
+        // close modal
+        this.setState({showModal: false});
+
+        //delete item on parent page (inventory)
+        console.log(this.state.Item);
+        this.props.handleDeleteItem(this.state.Item);
     }
 
     render() {
@@ -128,11 +135,23 @@ class IngredientDetailModal extends Component {
                                 backgroundColor:"deepskyblue",
                                 width:150}}
                             onPress={()=>{
-                                this.setState({showModal: false}),
-                                //this.handleDeleteItem()
+                                //this.setState({showModal: false})
+                                Alert.alert(
+                                    'Pay Attention',
+                                    'Do you really want to delete this item?',
+                                    [
+                                        {
+                                            text: 'Cancel',
+                                            onPress: () => console.log('Cancel Pressed'),
+                                            style: 'cancel',
+                                        },
+                                        {text: 'Yes', onPress: () => {this.onPressYes()}},
+                                    ],
+                                    {cancelable: false},
+                                );
                             }
                         }>
-                            <Text >Delete</Text>
+                            <Text>Delete</Text>
                         </Button>
                     </Col>
                 </Grid>
