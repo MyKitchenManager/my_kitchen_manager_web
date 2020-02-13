@@ -45,7 +45,7 @@ class Inventory extends Component {
                             'Authorization':  accessToken
                         }
                     }).then((response)=>{
-                        if(response.status == "200"){
+                        if(response.status == "202"){
                             alert("Item successfully deleted");
                         }else{
                             console.log(response.status);
@@ -55,7 +55,6 @@ class Inventory extends Component {
                     })
                 }
             })
-
     }
 
     scanInventory(){
@@ -143,7 +142,6 @@ class Inventory extends Component {
 
     componentDidMount() {
         this.scanInventory();
-        //this.handleDeleteItem(item);
     }
 
     render() {
