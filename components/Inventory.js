@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Container, Content, Text, Header, Left, Button, Icon, Body, Title, Right, Item, Input, Card, CardItem, Thumbnail} from "native-base"
+import {Container, Content, Text, Header, Left, Button, Icon, Body, Title, Right, Item, Input, Card, CardItem, Thumbnail, Spinner} from "native-base"
 import {ScrollView, Image, AsyncStorage, FlatList} from "react-native";
 import {Grid, Row, Col} from "react-native-easy-grid";
 import {API_URL, TOKEN_KEY} from "../constant";
@@ -15,7 +15,8 @@ class Inventory extends Component {
         this.state={
             search : "",
             userId: 241,
-            Items: []
+            Items: [],
+            loading: true
         }
         this.onPressAdd = this.onPressAdd.bind(this);
         this.onPressImage = this.onPressImage.bind(this);
@@ -32,6 +33,7 @@ class Inventory extends Component {
     }
 
     scanInventory(){
+        this.setState({Items: [], loading: true})
         AsyncStorage.getItem(TOKEN_KEY)
             .then((accessToken)=>{
                 if(accessToken!=null){
@@ -102,7 +104,7 @@ class Inventory extends Component {
                                 purchaseDate: purchaseDate.substr(0, 10)
                             };
                             const list = this.state.Items.concat(item);
-                            this.setState({Items: list});
+                            this.setState({Items: list, loading: false});
                         }
                     }).done();
 
@@ -119,7 +121,17 @@ class Inventory extends Component {
     }
 
     render() {
-        return (
+        return this.state.loading?
+            <Container>
+                <Header>
+                    <Title style={{alignSelf:'center',
+                        justifyContent:'center',}}>My Inventory</Title>
+                </Header>
+                <Content>
+                    <Spinner color='deepskyblue'/>
+                </Content>
+            </Container>
+            :(
             <Provider>
             <Container>
                 <Header>
@@ -174,7 +186,7 @@ class Inventory extends Component {
                         keyExtractor = {item=>item.id}
                     />
 
-                    <AddIngredientModal ref={'AddIngredientModal'} data={this.props.data}/>
+                    <AddIngredientModal ref={'AddIngredientModal'} data={this.props.data} data2 = {this.scanInventory.bind(this)}/>
                     <IngredientDetailModal ref={'IngredientDetailModal'} />
                 </Content>
             </Container>
