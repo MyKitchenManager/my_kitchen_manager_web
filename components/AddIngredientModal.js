@@ -160,6 +160,7 @@ class AddIngredientModal extends Component {
                     width:200}}
                         onPress={()=>{
                         this.onAddItem();
+                        this.props.data2();
                         this.setState({showModal: false
                     })
                 }}>
