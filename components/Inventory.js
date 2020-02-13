@@ -48,6 +48,7 @@ class Inventory extends Component {
                     }).then((response)=>{
                         if(response.status == "202"){
                             alert("Item successfully deleted");
+                            this.scanInventory();
                         }else{
                             console.log(response.status);
                         }
