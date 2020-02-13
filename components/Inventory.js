@@ -309,3 +309,15 @@ export default Inventory;
 {/*</Grid>*/}
 
 {/*Modal*/}
+
+
+{/*        /!*<Card style={{padding: 20}}>*!/*/}
+{/*        /!*    <CardItem cardBody>*!/*/}
+{/*        /!*        <Button transparent style={{margin:10}} onPress = {() => this.onPressImage()}>*!/*/}
+{/*        /!*            <Thumbnail source={beef} style ={{height: 100, width: 100}}/>*!/*/}
+{/*        /!*        </Button>*!/*/}
+{/*        /!*    </CardItem>*!/*/}
+{/*        /!*    <CardItem footer>*!/*/}
+{/*        /!*        <Text style = {{fontWeight:"bold", fontSize:13}}>Beef 0.7lbs</Text>*!/*/}
+{/*        /!*    </CardItem>*!/*/}
+{/*        /!*</Card>*!/*/}
