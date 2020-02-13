@@ -6,16 +6,43 @@ import MealPool from "./MealPool";
 import {Actions} from "react-native-router-flux";
 import styles from '../styles/styles.js';
 import Profile from "./Profile"
+import {AsyncStorage} from "react-native"
+import {API_URL, TOKEN_KEY} from "../constant"
 
 
 class Home extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            userId: 0,
             page: "",
             Items: []
         }
     }
+
+    // async updateUserId(){
+    //     AsyncStorage.getItem(TOKEN_KEY)
+    //         .then((accessToken)=>{
+    //             if(accessToken!=null){
+    //                 return fetch(`${API_URL}/`, {
+    //                     method: 'GET',
+    //                     headers: {
+    //                         'Authorization': accessToken
+    //                     }
+    //                 }).then((response)=>{
+    //                     if(response.status=='200'){
+    //                         return response.json();
+    //                     }
+    //                 }).then((responseData)=>{
+    //                     this.setState({userId: responseData.userId})
+    //                 }).catch((error)=>{
+    //                     console.log(`Error in fetching user id --> ${error}`);
+    //                 })
+    //             }
+    //         }).catch((error)=> {
+    //         console.log(`Unable to get token -->${error}`);
+    //     })
+    // }
 
     render() {
         let view = <MealPlan/>;
@@ -24,7 +51,6 @@ class Home extends Component {
                 view = <MealPlan/>;
                 break;
             case "inventory":
-                console.log(this.props.data);
                 view = <Inventory data = {this.props.data}/>;
                 break;
             case "mealpool":

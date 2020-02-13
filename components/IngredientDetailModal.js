@@ -32,7 +32,9 @@ class IngredientDetailModal extends Component {
             ItemVolume: '',
             ItemUnit: '',
             ItemImage: '',
-            ItemId: ''
+            ItemId: '',
+            ItemCategory: "Meat",
+            ItemDate: ""
         }
     }
 
@@ -44,7 +46,9 @@ class IngredientDetailModal extends Component {
             ItemVolume: item.amount,
             ItemUnit: item.unit,  // 为什么这个unit是白色的？？名字没错啊！！
             ItemImage: item.image,
-            ItemId: item.id
+            ItemId: item.id,
+            ItemCategory: item.category,
+            ItemDate: item.purchaseDate
         })
 
     }
@@ -93,14 +97,14 @@ class IngredientDetailModal extends Component {
                         <Item data-seed="logId">
                             <Text style={{fontSize: 15, fontWeight: 'bold'}}>Category</Text>
                             <Right>
-                                <Text>Meat</Text>
+                                <Text>{this.state.ItemCategory}</Text>
                             </Right>
                         </Item>
 
                         <Item data-seed="logId">
                             <Text style={{fontSize: 15, fontWeight: 'bold'}}>Purchased Date</Text>
                             <Right>
-                                <Text>12/19/2020</Text>
+                                <Text>{this.state.ItemDate}</Text>
                             </Right>
                         </Item>
                     </List>
@@ -128,7 +132,7 @@ class IngredientDetailModal extends Component {
                                 backgroundColor:"deepskyblue",
                                 width:150}}
                             onPress={()=>{
-                                this.setState({showModal: false}),
+                                this.setState({showModal: false});
                                 //this.handleDeleteItem()
                             }
                         }>

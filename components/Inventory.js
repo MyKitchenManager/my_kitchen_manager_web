@@ -35,7 +35,6 @@ class Inventory extends Component {
         AsyncStorage.getItem(TOKEN_KEY)
             .then((accessToken)=>{
                 if(accessToken!=null){
-                    console.log(accessToken);
                     //let newItem = [];
                     fetch(`${API_URL}/inventory/userId/${this.props.data}`, {
                         method:"GET",
@@ -58,17 +57,53 @@ class Inventory extends Component {
                             let image = responseData[i].ingredientIdJoin.imageUrl;
                             let amount = responseData[i].inventoryVolume;
                             let unit = responseData[i].unitsOfMeasureListEntry.entry;
+                            let expirationDate = responseData[i].expirationDate;
+                            let purchaseDate = responseData[i].purchaseDate;
+                            let category;
+                            switch(responseData[i].ingredientIdJoin.ingredientCategoryId){
+                                case 1:
+                                    category = "Vegetables";
+                                    break;
+                                case 2:
+                                    category = "Spices and Herbs";
+                                    break;
+                                case 3:
+                                    category = "Cereals and Pulses";
+                                    break;
+                                case 4:
+                                    category = "Meat";
+                                    break;
+                                case 5:
+                                    category = "Dairy Products";
+                                    break;
+                                case 6:
+                                    category = "Fruits";
+                                    break;
+                                case 7:
+                                    category = "Seafood";
+                                    break;
+                                case 8:
+                                    category = "Sugar and Sugar Products";
+                                    break;
+                                case 9:
+                                    category = "Nuts and Oilseeds";
+                                    break;
+                                default:
+                                    category = "Other Ingredients";
+                                    break;
+                            }
                             const item = {
                                 id: id,
                                 name: name,
                                 image: image,
                                 amount: amount,
-                                unit: unit
+                                unit: unit,
+                                category: category,
+                                purchaseDate: purchaseDate.substr(0, 10)
                             };
                             const list = this.state.Items.concat(item);
                             this.setState({Items: list});
                         }
-                        console.log(this.state.Items);
                     }).done();
 
                 }
