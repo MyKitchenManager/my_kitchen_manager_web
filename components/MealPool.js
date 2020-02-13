@@ -22,6 +22,7 @@ import RecipeCard from "./RecipeCard";
 import meal from "../assets/meal.jpeg";
 import {Grid, Row, Col} from "react-native-easy-grid";
 import {getAutoFocusEnabled} from "expo/build/AR";
+import {lefthandObjectDiff} from "react-native/Libraries/Utilities/verifyComponentAttributeEquivalence";
 
 class MealPool extends Component {
     constructor(props) {
@@ -84,10 +85,10 @@ class MealPool extends Component {
                                <Card style={{padding: 20, height: 160}}>
                                     <CardItem cardBody>
                                         <Button transparent style={{margin:10}} onPress = {() => this.onPressImage()}>
-                                            <Thumbnail source={meal} style ={{height: 120, width: 170, marginTop: 30, }}/>
+                                            <Thumbnail source={meal} style ={{height: 120, width: 140, marginTop: 30}}/>
                                         </Button>
                                     </CardItem>
-                                   <CardItem>
+                                   <CardItem style={{marginTop: 40, textAlign: 'center', backgroundColor: 'transparent'}}>
                                        <Left>
                                            <Body>
                                                <Text style = {{fontWeight:"bold", fontSize:13}}>Orange Chicken</Text>
@@ -98,10 +99,10 @@ class MealPool extends Component {
                                 <Card style={{padding: 20, height: 160}}>
                                     <CardItem cardBody>
                                         <Button transparent style={{margin:10}} onPress = {() => this.onPressImage()}>
-                                            <Thumbnail source={meal} style ={{height: 120, width: 170, marginTop: 30, }}/>
+                                            <Thumbnail source={meal} style ={{height: 120, width: 140, marginTop: 30}}/>
                                         </Button>
                                     </CardItem>
-                                    <CardItem>
+                                    <CardItem style={{marginTop: 40, textAlign: 'center', backgroundColor: 'transparent'}}>
                                         <Left>
                                             <Body>
                                                 <Text style = {{fontWeight:"bold", fontSize:13}}>Orange Chicken</Text>
@@ -115,10 +116,10 @@ class MealPool extends Component {
                                 <Card style={{padding: 20, height: 160}}>
                                     <CardItem cardBody>
                                         <Button transparent style={{margin:10}} onPress = {() => this.onPressImage()}>
-                                            <Thumbnail source={meal} style ={{height: 120, width: 170, marginTop: 30, }}/>
+                                            <Thumbnail source={meal} style ={{height: 120, width: 140, marginTop: 30}}/>
                                         </Button>
                                     </CardItem>
-                                    <CardItem>
+                                    <CardItem style={{marginTop: 40, textAlign: 'center', backgroundColor: 'transparent'}}>
                                         <Left>
                                             <Body>
                                                 <Text style = {{fontWeight:"bold", fontSize:13}}>Orange Chicken</Text>
@@ -129,10 +130,10 @@ class MealPool extends Component {
                                 <Card style={{padding: 20, height: 160}}>
                                     <CardItem cardBody>
                                         <Button transparent style={{margin:10}} onPress = {() => this.onPressImage()}>
-                                            <Thumbnail source={meal} style ={{height: 120, width: 170, marginTop: 30, }}/>
+                                            <Thumbnail source={meal} style ={{height: 120, width: 140, marginTop: 30}}/>
                                         </Button>
                                     </CardItem>
-                                    <CardItem>
+                                    <CardItem style={{marginTop: 40, textAlign: 'center', backgroundColor: 'transparent'}}>
                                         <Left>
                                             <Body>
                                                 <Text style = {{fontWeight:"bold", fontSize:13}}>Orange Chicken</Text>
@@ -140,13 +141,8 @@ class MealPool extends Component {
                                         </Left>
                                     </CardItem>
                                 </Card>
-
                             </Col>
-
                         </Grid>
-
-
-
                     </Content>
                 </Container>
             </Provider>
