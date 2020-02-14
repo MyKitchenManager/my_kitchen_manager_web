@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Container, Content, Text, Button, Left, Body, Title, Right, Icon, Header, Item} from "native-base"
 import {AsyncStorage, SafeAreaView, ScrollView, View, Image, StyleSheet, FlatList} from "react-native"
-import {TOKEN_KEY} from "../constant"
+import {API_URL, TOKEN_KEY} from "../constant"
 import {Actions} from "react-native-router-flux";
 import {SafeAreaProvider} from "react-native-safe-area-context";
 import avatar from '../assets/avatar.jpeg';
@@ -9,6 +9,22 @@ import meal from '../assets/meal.jpeg';
 import {List} from "@ant-design/react-native";
 
 class Profile extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            Username: '',
+            FirstName: '',
+            LastName: '',
+            Gender: '',
+            Email: '',
+            Nationality: '',
+            Vegetarian: '',
+            Vegan: '',
+            LactoseIntolerant: '',
+            GlutenFree: '',
+            Diet: []
+        }
+    }
    logoutHandler(){
        AsyncStorage.removeItem(TOKEN_KEY)
            .then(()=>{
@@ -19,6 +35,72 @@ class Profile extends Component {
        })
 
    }
+
+    getUserInfo(){
+        AsyncStorage.getItem(TOKEN_KEY)
+            .then((accessToken)=> {
+                if (accessToken != null) {
+                    //let newItem = [];
+                    fetch(`${API_URL}/`, {
+                        method: "GET",
+                        headers: {
+                            "Authorization": accessToken
+                        }
+                    }).then((response) => {
+                        if (response.status == '200') {
+                            return response.json();
+                        }
+                    }).then((responseData) => {
+
+                        this.setState({
+                            Username: responseData.userName,
+                            FirstName: responseData.firstName,
+                            LastName: responseData.lastName,
+                            Gender: responseData.gender,
+                            Email: responseData.emailAddress,
+                            Nationality: responseData.nationalityListEntry.entry,
+                            Vegetarian: responseData.vegetarian,
+                            Vegan: responseData.vegan,
+                            LactoseIntolerant: responseData.lactoseIntolerant,
+                            GlutenFree: responseData.glutenFree,
+                        });
+
+                    }).then(() => {
+                        this.getDiet();
+                    })
+                        .catch((error) => {
+                        console.log(`Error in fetching user id --> ${error}`);
+                    })
+                }
+            })
+    }
+
+    getDiet() {
+        if (this.state.Vegetarian === true) {
+            this.setState({Diet: [...this.state.Diet, 'Vegetarian']});
+        }
+        if (this.state.Vegan === true) {
+            this.setState({Diet: [...this.state.Diet, 'Vegan']});
+        }
+        if (this.state.LactoseIntolerant === true) {
+            this.setState({Diet: [...this.state.Diet, 'Lactose Intolerant']});
+        }
+        if (this.state.GlutenFree === true) {
+            this.setState({Diet: [...this.state.Diet, 'Gluten Free']});
+        }
+        if (this.state.Vegetarian === false && this.state.Vegan === false &&
+            this.state.LactoseIntolerant === false && this.state.GlutenFree === false) {
+            this.setState({Diet: ['Can Eat Everything']})
+        }
+    }
+
+
+    componentDidMount() {
+        this.getUserInfo();
+        console.log('mydiet:' + this.state.Diet);
+        // this.getDiet();
+    }
+
     render() {
         return (
             <SafeAreaProvider>
@@ -44,7 +126,7 @@ class Profile extends Component {
                     </View>
                     <View style={styles.infoContainer}>
                         <Text style={[styles.text, { fontWeight: "400", fontSize: 25 }]}>
-                            Julie Wang
+                            {this.state.Username}
                         </Text>
                     </View>
                     <View style={styles.statsContainer}>
@@ -86,48 +168,66 @@ class Profile extends Component {
                             <Item data-seed="logId">
                                 <Text style={[styles.text, {fontSize: 15, fontWeight: 'bold'}]}>Username</Text>
                                 <Right>
-                                    <Text style={styles.text}>Marilyn</Text>
+                                    <Text style={styles.text}>{this.state.Username}</Text>
                                 </Right>
                             </Item>
 
                             <Item data-seed="logId">
                                 <Text style={[styles.text, {fontSize: 15, fontWeight: 'bold'}]}>First Name</Text>
                                 <Right>
-                                    <Text style={styles.text}>Menglin</Text>
+                                    <Text style={styles.text}>{this.state.FirstName}</Text>
                                 </Right>
                             </Item>
 
                             <Item data-seed="logId">
                                 <Text style={[styles.text, {fontSize: 15, fontWeight: 'bold'}]}>Last Name</Text>
                                 <Right>
-                                    <Text style={styles.text}>Yu</Text>
+                                    <Text style={styles.text}>{this.state.LastName}</Text>
                                 </Right>
                             </Item>
 
                             <Item data-seed="logId">
                                 <Text style={[styles.text, {fontSize: 15, fontWeight: 'bold'}]}>Gender</Text>
                                 <Right>
-                                    <Text style={styles.text}>Female</Text>
+                                    <Text style={styles.text}>{this.state.Gender}</Text>
                                 </Right>
                             </Item>
                             <Item data-seed="logId">
                                 <Text style={[styles.text, {fontSize: 15, fontWeight: 'bold'}]}>Email</Text>
                                 <Right>
-                                    <Text style={styles.text}>yml.100205@gmail.com</Text>
+                                    <Text style={styles.text}>{this.state.Email}</Text>
                                 </Right>
                             </Item>
                             <Item data-seed="logId">
                                 <Text style={[styles.text, {fontSize: 15, fontWeight: 'bold'}]}>Nationality</Text>
                                 <Right>
-                                    <Text style={styles.text}>China</Text>
+                                    <Text style={styles.text}>{this.state.Nationality}</Text>
                                 </Right>
                             </Item>
                             <Item data-seed="logId">
                                 <Text style={[styles.text, {fontSize: 15, fontWeight: 'bold'}]}>Diet</Text>
                                 <Right>
-                                    <Text style={styles.text}>Vegetarian</Text>
+                                    <Text style={styles.text}>{this.state.Diet}</Text>
                                 </Right>
                             </Item>
+                            {/*<Item data-seed="logId">*/}
+                            {/*    <Text style={[styles.text, {fontSize: 15, fontWeight: 'bold'}]}>Vegan</Text>*/}
+                            {/*    <Right>*/}
+                            {/*        <Text style={styles.text}>{this.state.Vegan}</Text>*/}
+                            {/*    </Right>*/}
+                            {/*</Item>*/}
+                            {/*<Item data-seed="logId">*/}
+                            {/*    <Text style={[styles.text, {fontSize: 15, fontWeight: 'bold'}]}>Lactose Intolerant</Text>*/}
+                            {/*    <Right>*/}
+                            {/*        <Text style={styles.text}>{this.state.LactoseIntolerant}</Text>*/}
+                            {/*    </Right>*/}
+                            {/*</Item>*/}
+                            {/*<Item data-seed="logId">*/}
+                            {/*    <Text style={[styles.text, {fontSize: 15, fontWeight: 'bold'}]}>Gluten Free</Text>*/}
+                            {/*    <Right>*/}
+                            {/*        <Text style={styles.text}>{this.state.GlutenFree}</Text>*/}
+                            {/*    </Right>*/}
+                            {/*</Item>*/}
                         </List>
                     </View>
 
