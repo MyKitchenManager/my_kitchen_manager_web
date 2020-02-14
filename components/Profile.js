@@ -21,21 +21,21 @@ class Profile extends Component {
     render() {
         return (
             <SafeAreaProvider>
+                <Header>
+                    <Left>
+                    </Left>
+                    <Body>
+                        <Title style={{alignSelf:'center',
+                            justifyContent:'center'}}>My Profile</Title>
+                    </Body>
+                    <Right>
+                        <Button transparent onPress={this.logoutHandler}>
+                            <Text>LogOut</Text>
+                        </Button>
+                    </Right>
+                </Header>
             <SafeAreaView style={styles.container}>
                 <ScrollView showsVerticalScrollIndicator={false}>
-                    <Header>
-                        <Left>
-                        </Left>
-                        <Body>
-                            <Title style={{alignSelf:'center',
-                                justifyContent:'center'}}>My Profile</Title>
-                        </Body>
-                        <Right>
-                            <Button transparent onPress={this.logoutHandler}>
-                                <Text>LogOut</Text>
-                            </Button>
-                        </Right>
-                    </Header>
                     <View style={{alignSelf: "center"}}>
                         <View style={styles.profileImage}>
                             <Image source={avatar} style={styles.image} resizeMode="center" />
