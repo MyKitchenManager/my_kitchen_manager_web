@@ -74,13 +74,11 @@ class MealPlan extends Component {
                     selected={Date.UTC()}
                     renderDay={(day, item) => (
                         <View>
-                            <Text style={{color: 'blue', fontSize: 28, alignSelf: 'center', marginTop: 20}}>{day ? day.day: 'item'}</Text>
+                            <Text style={{color: 'grey', fontSize: 28, alignSelf: 'center', marginTop: 20}}>{day ? day.day: 'item'}</Text>
                             <Button transparent >
                                 <Icon name='add-circle' style={{fontSize: 34}}/>
                             </Button>
                         </View>
-
-
                     )}
                     renderItem={this.renderItem.bind(this)}
                     renderEmptyDate={this.renderEmptyDate.bind(this)}
