@@ -12,7 +12,8 @@ class MealPlan extends Component {
 
         this.state = {
             items: {},
-            showModal: false
+            showModal: false,
+
         };
     }
 
@@ -54,17 +55,14 @@ class MealPlan extends Component {
 
                 <Header>
                     <Left>
-                        <Button transparent>
-                            <Icon name='arrow-back' />
-                            <Text>Back</Text>
-                        </Button>
                     </Left>
                     <Body>
                         <Title>My Meal Plan</Title>
                     </Body>
                     <Right>
                         <Button transparent>
-                            <Icon name='ios-cart' />
+                            {/*<Icon name='ios-cart' />*/}
+                            <Text>Shopping</Text>
                         </Button>
                     </Right>
                 </Header>
@@ -73,7 +71,17 @@ class MealPlan extends Component {
                 <Agenda
                     items={this.state.items}
                     loadItemsForMonth={this.loadItems.bind(this)}
-                    selected={'2020-02-01'}
+                    selected={Date.UTC()}
+                    renderDay={(day, item) => (
+                        <View>
+                            <Text style={{color: 'blue', fontSize: 28, alignSelf: 'center', marginTop: 20}}>{day ? day.day: 'item'}</Text>
+                            <Button transparent >
+                                <Icon name='add-circle' style={{fontSize: 34}}/>
+                            </Button>
+                        </View>
+
+
+                    )}
                     renderItem={this.renderItem.bind(this)}
                     renderEmptyDate={this.renderEmptyDate.bind(this)}
                     rowHasChanged={this.rowHasChanged.bind(this)}
@@ -89,7 +97,7 @@ class MealPlan extends Component {
                     //    '2017-05-26': {endingDay: true, color: 'gray'}}}
                     // monthFormat={'yyyy'}
                     // theme={{calendarBackground: 'red', agendaKnobColor: 'green'}}
-                    // renderDay={(day, item) => (<Text>{day ? day.day: 'item'}</Text>)}
+
                     // hideExtraDays={false}
                 />
 
@@ -98,6 +106,16 @@ class MealPlan extends Component {
         );
     }
 
+    // renderDay(day, items) {
+    //     return (
+    //         <View>
+    //             <Text>haha</Text>
+    //             <Button transparent style={{marginTop: 30,}}>
+    //                 <Icon name='add-circle' style={{fontSize: 34}}/>
+    //             </Button>
+    //         </View>
+    //     )
+    // }
 
     loadItems(day) {
         setTimeout(() => {
