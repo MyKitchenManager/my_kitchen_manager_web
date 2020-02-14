@@ -6,72 +6,43 @@ import MealPool from "./MealPool";
 import {Actions} from "react-native-router-flux";
 import styles from '../styles/styles.js';
 import Profile from "./Profile"
-
+import {AsyncStorage} from "react-native"
 import {API_URL, TOKEN_KEY} from "../constant"
-import {AsyncStorage} from "react-native";
 
 
 class Home extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            userId: 0,
             page: "",
-            userId: 241,
             Items: []
         }
     }
-    pageHandler(data){
-        this.setState({page:data});
-    }
 
-    scanInventory(){
-        AsyncStorage.getItem(TOKEN_KEY)
-            .then((accessToken)=>{
-                if(accessToken!=null){
-                    let newItem;
-                    fetch(`${API_URL}/inventory/userId/${this.state.userId}`, {
-                        method:"GET",
-                        headers:{
-                            "Authorization" : accessToken
-                        }
-                    })
-                        .then((response)=>{
-                            return response.json();
-                        }).then((responseData)=>{
-                            responseData.forEach(function (item) {
-                                console.log(item);
-                                let id = item.inventoryId;
-                                let name = item.ingredientIdJoin.ingredientName;
-                                let image = item.ingredientIdJoin.imageUrl;
-                                let amount = item.inventoryVolume;
-                                let unit = item.unitsOfMeasureListEntry.entry;
-                                newItem = {
-                                    id: id,
-                                    name: name,
-                                    image: image,
-                                    amount: amount,
-                                    unit: unit
-                                }
-                                // this.setState({Items: [...this.state.Items, {
-                                //         id: id,
-                                //         name: name,
-                                //         image: image,
-                                //         amount: amount,
-                                //         unit: unit
-                                //     }]})
-                            })
-                        })
-                    if(newItem!=null){
-                        this.setState({Items: [...this.state.Items, newItem]});
-                        console.log("Success!");
-                    }
-                }
-            })
-        .catch((error)=>{
-                console.log(`Error in fetching inventory list --> ${error}`);
-            })
-
-    }
+    // async updateUserId(){
+    //     AsyncStorage.getItem(TOKEN_KEY)
+    //         .then((accessToken)=>{
+    //             if(accessToken!=null){
+    //                 return fetch(`${API_URL}/`, {
+    //                     method: 'GET',
+    //                     headers: {
+    //                         'Authorization': accessToken
+    //                     }
+    //                 }).then((response)=>{
+    //                     if(response.status=='200'){
+    //                         return response.json();
+    //                     }
+    //                 }).then((responseData)=>{
+    //                     this.setState({userId: responseData.userId})
+    //                 }).catch((error)=>{
+    //                     console.log(`Error in fetching user id --> ${error}`);
+    //                 })
+    //             }
+    //         }).catch((error)=> {
+    //         console.log(`Unable to get token -->${error}`);
+    //     })
+    // }
 
     render() {
         let view = <MealPlan/>;
@@ -80,9 +51,7 @@ class Home extends Component {
                 view = <MealPlan/>;
                 break;
             case "inventory":
-                this.scanInventory();
-                console.log(this.state.Items);
-                view = <Inventory data={this.state.Items}/>;
+                view = <Inventory data = {this.props.data}/>;
                 break;
             case "mealpool":
                 view = <MealPool/>;
@@ -94,9 +63,9 @@ class Home extends Component {
                 break;
         }
         return (
-           <Container>
+            <Container>
 
-               {view}
+                {view}
 
                 <Footer style={{height: 60}}>
                     <FooterTab style={{paddingBottom: 30}}>
@@ -109,7 +78,7 @@ class Home extends Component {
                             <Text style = {{fontSize: 12}}>Meal Plan</Text>
                         </Button>
                         <Button vertical onPress = {()=>{
-                            if(this.state.page != "inventory") {
+                            if(this.state.page != "inventory"){
                                 this.setState({page: "inventory"});
                             }}}>
                             <Icon type='MaterialIcons' name="store"/>
@@ -131,7 +100,7 @@ class Home extends Component {
                         </Button>
                     </FooterTab>
                 </Footer>
-           </Container>
+            </Container>
         );
     }
 }

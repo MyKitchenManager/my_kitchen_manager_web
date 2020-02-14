@@ -2,6 +2,9 @@ import React, {Component} from 'react';
 import {Button, Text, View, Input, Item, Form, Picker, Icon, Grid, Col, Right} from "native-base";
 import {Modal} from "@ant-design/react-native";
 import ModalDropdown from "react-native-modal-dropdown";
+import {AsyncStorage} from "react-native"
+import {API_URL, TOKEN_KEY} from "../constant"
+import {acc} from "react-native-reanimated"
 //import Modal from 'react-native-modalbox';
 
 /*
@@ -22,7 +25,9 @@ class AddIngredientModal extends Component {
 
     showAddIngredientModal = () => {
         //this.refs.InventoryAddItemModal.open();
-        this.setState({showModal: true})
+        this.setState({
+            showModal: true,
+        })
     }
 
     onValueChange(value) {
@@ -31,12 +36,41 @@ class AddIngredientModal extends Component {
         });
     }
 
-    onPressAddButton() {
-        //add item to My Inventory
-
-
-        //then clean the table
-
+    onAddItem(){
+        AsyncStorage.getItem(TOKEN_KEY)
+            .then((accessToken)=>{
+                if(accessToken!=null){
+                    if(this.state.newItemVolume==""||this.state.newItemUnit==""){
+                        alert("Every entry should not be empty");
+                    }else{
+                        console.log(accessToken);
+                        fetch(`${API_URL}/inventory`, {
+                            method: "POST",
+                            headers: {
+                                'Accept': 'application/json',
+                                'Content-Type': 'application/json',
+                                'Authorization':  accessToken
+                            },
+                            body: JSON.stringify({
+                                ingredientId : 80,
+                                inventoryVolume: this.state.newItemVolume,
+                                unitsOfMeasure: 13,
+                                userId: this.props.data,
+                                purchaseDate:"2020-02-04T12:00:00.000+0000",
+                                expirationDate:"2020-02-19T12:00:00.000+0000"
+                            })
+                        }).then((response)=>{
+                            if(response.status == "201"){
+                                alert("Item successfully added");
+                            }else{
+                                console.log(response.status);
+                            }
+                        }).catch((error)=>{
+                            console.log(`Error in adding item in inventory --> ${error}`);
+                        })
+                    }
+                }
+            })
     }
 
     render() {
@@ -111,9 +145,12 @@ class AddIngredientModal extends Component {
                     alignSelf:'center',
                     justifyContent:'center',
                     backgroundColor:"deepskyblue",
-                    width:200}} onPress={()=>{
-                    this.setState({showModal: false})
-
+                    width:200}}
+                        onPress={()=>{
+                        this.onAddItem();
+                        this.props.data2();
+                        this.setState({showModal: false
+                    })
                 }}>
                     <Text >ADD</Text>
                 </Button>

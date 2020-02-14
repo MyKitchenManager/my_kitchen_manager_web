@@ -16,6 +16,8 @@ import {
     Card
 } from "native-base";
 import {Modal, List, WhiteSpace, InputItem} from "@ant-design/react-native";
+import {Alert} from 'react-native';
+
 import beef from "../assets/beef.jpg";
 
 
@@ -27,15 +29,40 @@ class IngredientDetailModal extends Component {
         this.state = {
             showModal: false,
             selected2: undefined,
+            Item: this.props.item,
             ItemName: '',
             ItemVolume: '',
             ItemUnit: '',
+            ItemImage: '',
+            ItemId: '',
+            ItemCategory: "Meat",
+            ItemDate: ""
         }
     }
 
-    showIngredientDetailModal = () => {
-        //this.refs.InventoryAddItemModal.open();
-        this.setState({showModal: true})
+    showIngredientDetailModal = (item) => {
+        console.log("IngredientDetailItem:" + item);
+        this.setState({
+            showModal: true,
+            Item: item,
+            ItemName: item.name,
+            ItemVolume: item.amount,
+            ItemUnit: item.unit,  // 为什么这个unit是白色的？？名字没错啊！！
+            ItemImage: item.image,
+            ItemId: item.id,
+            ItemCategory: item.category,
+            ItemDate: item.purchaseDate
+        })
+
+    }
+
+    onPressYes() {
+        // close modal
+        this.setState({showModal: false});
+
+        //delete item on parent page (inventory)
+        console.log(this.state.Item);
+        this.props.handleDeleteItem(this.state.Item);
     }
 
     render() {
@@ -58,11 +85,11 @@ class IngredientDetailModal extends Component {
                 <View style={{ paddingVertical: 20 }}>
                     <Card style={{padding: 20, height: 250, width: 280}}>
                         <CardItem cardBody style={{alignSelf: 'center'}}>
-                            <Thumbnail source={beef} style ={{height: 200, width: 200}}/>
+                            <Thumbnail source={{uri: this.state.ItemImage}} style ={{height: 200, width: 200}}/>
                         </CardItem>
                     </Card>
                     <View>
-                        <Text style={{fontSize: 30, fontWeight: '4', alignSelf: 'center'}}>Beef </Text>
+                        <Text style={{fontSize: 30, fontWeight: '4', alignSelf: 'center'}}>{this.state.ItemName}</Text>
                     </View>
 
                     <WhiteSpace />
@@ -71,21 +98,21 @@ class IngredientDetailModal extends Component {
                         <Item data-seed="logId">
                             <Text style={{fontSize: 15, fontWeight: 'bold'}}>Amount</Text>
                             <Right>
-                                <Text>20LB</Text>
+                                <Text>{`${this.state.ItemVolume} ${this.state.ItemUnit}`}</Text>
                             </Right>
                         </Item>
 
                         <Item data-seed="logId">
                             <Text style={{fontSize: 15, fontWeight: 'bold'}}>Category</Text>
                             <Right>
-                                <Text>Meat</Text>
+                                <Text>{this.state.ItemCategory}</Text>
                             </Right>
                         </Item>
 
                         <Item data-seed="logId">
                             <Text style={{fontSize: 15, fontWeight: 'bold'}}>Purchased Date</Text>
                             <Right>
-                                <Text>12/19/2020</Text>
+                                <Text>{this.state.ItemDate}</Text>
                             </Right>
                         </Item>
                     </List>
@@ -105,15 +132,33 @@ class IngredientDetailModal extends Component {
                         </Button>
                     </Col>
                     <Col style={{marginLeft: 10}}>
-                        <Button style = {{margin: 10,
-                            padding: 15,
-                            alignSelf:'center',
-                            justifyContent:'center',
-                            backgroundColor:"deepskyblue",
-                            width:150}} onPress={()=>{
-                            this.setState({showModal: false})
-                        }}>
-                            <Text >Delete</Text>
+                        <Button
+                            style = {{margin: 10,
+                                padding: 15,
+                                alignSelf:'center',
+                                justifyContent:'center',
+                                backgroundColor:"deepskyblue",
+                                width:150}}
+                            onPress={()=>{
+
+                                //this.setState({showModal: false})
+                                Alert.alert(
+                                    'Pay Attention',
+                                    'Do you really want to delete this item?',
+                                    [
+                                        {
+                                            text: 'Cancel',
+                                            onPress: () => console.log('Cancel Pressed'),
+                                            style: 'cancel',
+                                        },
+                                        {text: 'Yes', onPress: () => {this.onPressYes()}},
+                                    ],
+                                    {cancelable: false},
+                                );
+
+                            }
+                        }>
+                            <Text>Delete</Text>
                         </Button>
                     </Col>
                 </Grid>
