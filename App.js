@@ -11,7 +11,7 @@ import {TOKEN_KEY, API_URL} from "./constant";
 export default class App extends Component {
     state = {
         init : true,
-        userId: 0
+        userId: 0,
     }
 
     componentDidMount(){
