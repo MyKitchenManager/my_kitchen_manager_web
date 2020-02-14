@@ -1,11 +1,12 @@
 import React, {Component} from 'react';
-import {Container, Content, Text, Button, Left, Body, Title, Right, Icon, Header} from "native-base"
+import {Container, Content, Text, Button, Left, Body, Title, Right, Icon, Header, Item} from "native-base"
 import {AsyncStorage, SafeAreaView, ScrollView, View, Image, StyleSheet, FlatList} from "react-native"
 import {TOKEN_KEY} from "../constant"
 import {Actions} from "react-native-router-flux";
 import {SafeAreaProvider} from "react-native-safe-area-context";
 import avatar from '../assets/avatar.jpeg';
 import meal from '../assets/meal.jpeg';
+import {List} from "@ant-design/react-native";
 
 class Profile extends Component {
    logoutHandler(){
@@ -80,22 +81,71 @@ class Profile extends Component {
                         </ScrollView>
                     </View>
                     <Text style={[styles.personalInfo, styles.subText]}>PERSONAL INFO</Text>
-
                     <View style={styles.personalInfoItem}>
+                        <List style={{width: 280}}>
+                            <Item data-seed="logId">
+                                <Text style={[styles.text, {fontSize: 15, fontWeight: 'bold'}]}>Username</Text>
+                                <Right>
+                                    <Text style={styles.text}>Marilyn</Text>
+                                </Right>
+                            </Item>
 
-                        <FlatList
-                            data={[
-                                {key: 'Username'},
-                                {key: 'First Name'},
-                                {key: 'Last Name'},
-                                {key: 'Gender:'},
-                                {key: 'Email Address'},
-                                {key: 'Nationality'},
-                                {key: 'Diet'}
-                            ]}
-                            renderItem={({item}) => <Text style={styles.text}>{item.key}: abcd</Text>}
-                        />
+                            <Item data-seed="logId">
+                                <Text style={[styles.text, {fontSize: 15, fontWeight: 'bold'}]}>First Name</Text>
+                                <Right>
+                                    <Text style={styles.text}>Menglin</Text>
+                                </Right>
+                            </Item>
+
+                            <Item data-seed="logId">
+                                <Text style={[styles.text, {fontSize: 15, fontWeight: 'bold'}]}>Last Name</Text>
+                                <Right>
+                                    <Text style={styles.text}>Yu</Text>
+                                </Right>
+                            </Item>
+
+                            <Item data-seed="logId">
+                                <Text style={[styles.text, {fontSize: 15, fontWeight: 'bold'}]}>Gender</Text>
+                                <Right>
+                                    <Text style={styles.text}>Female</Text>
+                                </Right>
+                            </Item>
+                            <Item data-seed="logId">
+                                <Text style={[styles.text, {fontSize: 15, fontWeight: 'bold'}]}>Email</Text>
+                                <Right>
+                                    <Text style={styles.text}>yml.100205@gmail.com</Text>
+                                </Right>
+                            </Item>
+                            <Item data-seed="logId">
+                                <Text style={[styles.text, {fontSize: 15, fontWeight: 'bold'}]}>Nationality</Text>
+                                <Right>
+                                    <Text style={styles.text}>China</Text>
+                                </Right>
+                            </Item>
+                            <Item data-seed="logId">
+                                <Text style={[styles.text, {fontSize: 15, fontWeight: 'bold'}]}>Diet</Text>
+                                <Right>
+                                    <Text style={styles.text}>Vegetarian</Text>
+                                </Right>
+                            </Item>
+                        </List>
                     </View>
+
+                    {/*<View style={[styles.personalInfoItem, styles.text]}>*/}
+
+                    {/*    <FlatList*/}
+                    {/*        data={[*/}
+                    {/*            {key: 'Username'},*/}
+                    {/*            {key: 'First Name'},*/}
+                    {/*            {key: 'Last Name'},*/}
+                    {/*            {key: 'Gender'},*/}
+                    {/*            {key: 'Email Address'},*/}
+                    {/*            {key: 'Nationality'},*/}
+                    {/*            {key: 'Diet'}*/}
+                    {/*        ]}*/}
+                    {/*        renderItem={({item}) => <Text style={styles.text}>{item.key}: abcd</Text>}*/}
+                    {/*    />*/}
+                    {/*</View>*/}
                 </ScrollView>
             </SafeAreaView>
             </SafeAreaProvider>
@@ -128,7 +178,8 @@ const styles = StyleSheet.create({
         width: 200,
         height: 200,
         borderRadius: 100,
-        overflow: "hidden"
+        overflow: "hidden",
+        marginTop: 8
     },
     infoContainer: {
         alignSelf: "center",
@@ -145,14 +196,14 @@ const styles = StyleSheet.create({
         flex: 1
     },
     mediaImageContainer: {
-        width: 150,
-        height: 150,
+        width: 120,
+        height: 120,
         borderRadius: 12,
         overflow: "hidden",
         marginHorizontal: 10
     },
     personalInfo: {
-        marginLeft: 78,
+        marginLeft: 60,
         marginTop: 32,
         marginBottom: 6,
         fontSize: 18
@@ -161,7 +212,7 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignItems: "flex-start",
         marginBottom: 16,
-        marginLeft: 78
+        marginLeft: 60
     },
     personalInfoItemIndicator: {
         backgroundColor: "#CABFAB",
