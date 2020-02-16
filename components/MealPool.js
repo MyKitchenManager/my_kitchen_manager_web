@@ -53,7 +53,7 @@ class MealPool extends Component {
         AsyncStorage.getItem(TOKEN_KEY)
             .then((accessToken)=>{
                 if(accessToken!=null){
-                    fetch(`${API_URL}/recipe/users`, {
+                    fetch(`${API_URL}/recipe/all`, {
                         method: "GET",
                         headers:{
                             "Authorization": accessToken

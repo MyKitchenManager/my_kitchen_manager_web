@@ -42,6 +42,7 @@ class MealPlan extends Component {
             //         {name: 'Zuppa Toscana', image: 'https://img.sndimg.com/food/image/upload/fl_progressive,c_fill,q_80,h_349,w_621/v1/img/recipes/38/29/8/Z8MMxtVfQfCLy4zZJtZU_0S9A7184.jpg'}],
             // },
             items: {},
+            allItems: {},
             loading: true,
             showModal: false,
         };
@@ -53,8 +54,7 @@ class MealPlan extends Component {
         this.setState({showModal: true});
     }
 
-    //load 所有item
-    loadItems(day) {
+    componentDidMount() {
         this.setState({items: [], loading: true})
         AsyncStorage.getItem(TOKEN_KEY)
             .then((accessToken)=>{
@@ -81,58 +81,48 @@ class MealPlan extends Component {
                             let date = responseData[i].mealDate;
                             let image = responseData[i].recipeIdJoin.recipeImageUrl;
                             let status = responseData[i].status;
-
-                            if (!this.state.items[date]) {
-                                this.state.items[date] = [];
+                            if (!this.state.allItems[date]) {
+                                this.state.allItems[date] = [];
                             }
-                            this.state.items[date].push({
+                            this.state.allItems[date].push({
                                 id: id,
                                 name: name,
                                 image: image,
                                 status: status
                             })
                         }
-                        const newItems = {};
-                        Object.keys(this.state.items).forEach(key => {
-                            newItems[key] = this.state.items[key];
-                        });
-                        this.setState({
-                            items: newItems,
-                            loading: false
-                        });
-                        //save items to state successfully
-                        console.log(this.state.items);
+
+
+                    }).then(()=>{
+                        console.log(this.state.allItems);
                     })
                 }
             })
             .catch((error)=>{
                 console.log(`Error in fetching inventory list --> ${error}`);
             })
+    }
 
-        // setTimeout(() => {
-        //     for (let i = 0; i < 10; i++) {
-        //         const time = day.timestamp + i * 24 * 60 * 60 * 1000;
-        //         const strTime = this.timeToString(time);
-        //         if (!this.state.items[strTime]) {
-        //             this.state.items[strTime] = [];
-        //             const numItems = Math.floor(Math.random() * 5);
-        //             for (let j = 0; j < numItems; j++) {
-        //                 this.state.items[strTime].push({
-        //                         name: 'Item for ' + strTime + ' #' + j,
-        //                         height: Math.max(50, Math.floor(Math.random() * 150))
-        //                     }
-        //                 );
-        //             }
-        //         }
-        //     }
-        //     const newItems = {};
-        //     Object.keys(this.state.items).forEach(key => {
-        //         newItems[key] = this.state.items[key];
-        //     });
-        //     this.setState({
-        //         items: newItems
-        //     });
-        // }, 1000);
+    //load 所有item
+    loadItems(day) {
+        setTimeout(() => {
+            for (let i = 0; i < 10; i++) {
+                const time = day.timestamp + i * 24 * 60 * 60 * 1000;
+                const strTime = this.timeToString(time);
+                if (!this.state.allItems[strTime]) {
+                    this.state.items[strTime] = [];
+                }else{
+                    this.state.items[strTime] = this.state.allItems[strTime];
+                }
+            }
+            const newItems = {};
+            Object.keys(this.state.items).forEach(key => {
+                newItems[key] = this.state.items[key];
+            });
+            this.setState({
+                items: newItems
+            });
+        }, 1000);
     }
 
 
