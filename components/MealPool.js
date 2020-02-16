@@ -25,12 +25,16 @@ import {getAutoFocusEnabled} from "expo/build/AR";
 import {lefthandObjectDiff} from "react-native/Libraries/Utilities/verifyComponentAttributeEquivalence";
 import AddRecipeModal from "./AddRecipeModal";
 import RecipeDetailModal from "./RecipeDetailModal";
+import {AsyncStorage} from "react-native"
+import {API_URL, TOKEN_KEY} from "../constant"
 
 class MealPool extends Component {
     constructor(props) {
         super(props);
         this.state = {
             search: "",
+            Items: [],
+            loading: true
         }
         this.onPressAdd = this.onPressAdd.bind(this);
         this.onPressImage = this.onPressImage.bind(this);
@@ -43,6 +47,49 @@ class MealPool extends Component {
     onPressImage() {
         this.refs.RecipeDetailModal.showRecipeDetailModal();
     }
+
+    scanRecipes(){
+        this.setState({Items: [], loading: true});
+        AsyncStorage.getItem(TOKEN_KEY)
+            .then((accessToken)=>{
+                if(accessToken!=null){
+                    fetch(`${API_URL}/recipe/users`, {
+                        method: "GET",
+                        headers:{
+                            "Authorization": accessToken
+                        }
+                    }).then((response)=>{
+                        if(response.status=="200"){
+                            return response.json();
+                        }else{
+                            alert(`Error in fetching data --> status ${response.status}`);
+                        }
+                    }).then((responseData)=>{
+                        for(let i = 0; i < responseData.length; i++){
+                            console.log(responseData[i]);
+                            let id = responseData[i].id;
+                            let name = responseData[i].recipeName;
+                            let image = responseData[i].recipeImageUrl;
+                            const item = {
+                                id: id,
+                                name: name,
+                                image: image
+                            }
+                            const list = this.state.Items.concat(item);
+                            this.setState({Items: list, loading: false});
+                        }
+                    }).done()
+                }
+            })
+            .catch((error)=>{
+                console.log("Error in fetching recipe list");
+            })
+    }
+
+    componentDidMount() {
+        this.scanRecipes();
+    }
+
     render() {
         return (
             <Provider>
@@ -84,71 +131,92 @@ class MealPool extends Component {
                             </Right>
                         </Item>
 
-                        <Grid>
-                            <Col>
-                               <Card style={{padding: 20, height: 160}}>
-                                    <CardItem cardBody>
-                                        <Button transparent style={{margin:10}} onPress = {() => this.onPressImage()}>
-                                            <Thumbnail source={meal} style ={{height: 120, width: 140, marginTop: 30}}/>
-                                        </Button>
-                                    </CardItem>
-                                   <CardItem style={{marginTop: 40, textAlign: 'center', backgroundColor: 'transparent'}}>
-                                       <Left>
-                                           <Body>
-                                               <Text style = {{fontWeight:"bold", fontSize:13}}>Orange Chicken</Text>
-                                           </Body>
-                                       </Left>
-                                   </CardItem>
-                                </Card>
-                                <Card style={{padding: 20, height: 160}}>
-                                    <CardItem cardBody>
-                                        <Button transparent style={{margin:10}} onPress = {() => this.onPressImage()}>
-                                            <Thumbnail source={meal} style ={{height: 120, width: 140, marginTop: 30}}/>
-                                        </Button>
-                                    </CardItem>
-                                    <CardItem style={{marginTop: 40, textAlign: 'center', backgroundColor: 'transparent'}}>
-                                        <Left>
-                                            <Body>
-                                                <Text style = {{fontWeight:"bold", fontSize:13}}>Orange Chicken</Text>
-                                            </Body>
-                                        </Left>
-                                    </CardItem>
-                                </Card>
-                            </Col>
+                        {/*<Grid>*/}
+                        {/*    <Col>*/}
+                        {/*       <Card style={{padding: 20, height: 160}}>*/}
+                        {/*            <CardItem cardBody>*/}
+                        {/*                <Button transparent style={{margin:10}} onPress = {() => this.onPressImage()}>*/}
+                        {/*                    <Thumbnail source={meal} style ={{height: 120, width: 140, marginTop: 30}}/>*/}
+                        {/*                </Button>*/}
+                        {/*            </CardItem>*/}
+                        {/*           <CardItem style={{marginTop: 40, textAlign: 'center', backgroundColor: 'transparent'}}>*/}
+                        {/*               <Left>*/}
+                        {/*                   <Body>*/}
+                        {/*                       <Text style = {{fontWeight:"bold", fontSize:13}}>Orange Chicken</Text>*/}
+                        {/*                   </Body>*/}
+                        {/*               </Left>*/}
+                        {/*           </CardItem>*/}
+                        {/*        </Card>*/}
+                        {/*        <Card style={{padding: 20, height: 160}}>*/}
+                        {/*            <CardItem cardBody>*/}
+                        {/*                <Button transparent style={{margin:10}} onPress = {() => this.onPressImage()}>*/}
+                        {/*                    <Thumbnail source={meal} style ={{height: 120, width: 140, marginTop: 30}}/>*/}
+                        {/*                </Button>*/}
+                        {/*            </CardItem>*/}
+                        {/*            <CardItem style={{marginTop: 40, textAlign: 'center', backgroundColor: 'transparent'}}>*/}
+                        {/*                <Left>*/}
+                        {/*                    <Body>*/}
+                        {/*                        <Text style = {{fontWeight:"bold", fontSize:13}}>Orange Chicken</Text>*/}
+                        {/*                    </Body>*/}
+                        {/*                </Left>*/}
+                        {/*            </CardItem>*/}
+                        {/*        </Card>*/}
+                        {/*    </Col>*/}
 
-                            <Col>
-                                <Card style={{padding: 20, height: 160}}>
-                                    <CardItem cardBody>
-                                        <Button transparent style={{margin:10}} onPress = {() => this.onPressImage()}>
-                                            <Thumbnail source={meal} style ={{height: 120, width: 140, marginTop: 30}}/>
-                                        </Button>
-                                    </CardItem>
-                                    <CardItem style={{marginTop: 40, textAlign: 'center', backgroundColor: 'transparent'}}>
-                                        <Left>
-                                            <Body>
-                                                <Text style = {{fontWeight:"bold", fontSize:13}}>Orange Chicken</Text>
-                                            </Body>
-                                        </Left>
-                                    </CardItem>
-                                </Card>
-                                <Card style={{padding: 20, height: 160}}>
-                                    <CardItem cardBody>
-                                        <Button transparent style={{margin:10}} onPress = {() => this.onPressImage()}>
-                                            <Thumbnail source={meal} style ={{height: 120, width: 140, marginTop: 30}}/>
-                                        </Button>
-                                    </CardItem>
-                                    <CardItem style={{marginTop: 40, textAlign: 'center', backgroundColor: 'transparent'}}>
-                                        <Left>
-                                            <Body>
-                                                <Text style = {{fontWeight:"bold", fontSize:13}}>Orange Chicken</Text>
-                                            </Body>
-                                        </Left>
-                                    </CardItem>
-                                </Card>
-                            </Col>
-                        </Grid>
+                        {/*    <Col>*/}
+                        {/*        <Card style={{padding: 20, height: 160}}>*/}
+                        {/*            <CardItem cardBody>*/}
+                        {/*                <Button transparent style={{margin:10}} onPress = {() => this.onPressImage()}>*/}
+                        {/*                    <Thumbnail source={meal} style ={{height: 120, width: 140, marginTop: 30}}/>*/}
+                        {/*                </Button>*/}
+                        {/*            </CardItem>*/}
+                        {/*            <CardItem style={{marginTop: 40, textAlign: 'center', backgroundColor: 'transparent'}}>*/}
+                        {/*                <Left>*/}
+                        {/*                    <Body>*/}
+                        {/*                        <Text style = {{fontWeight:"bold", fontSize:13}}>Orange Chicken</Text>*/}
+                        {/*                    </Body>*/}
+                        {/*                </Left>*/}
+                        {/*            </CardItem>*/}
+                        {/*        </Card>*/}
+                        {/*        <Card style={{padding: 20, height: 160}}>*/}
+                        {/*            <CardItem cardBody>*/}
+                        {/*                <Button transparent style={{margin:10}} onPress = {() => this.onPressImage()}>*/}
+                        {/*                    <Thumbnail source={meal} style ={{height: 120, width: 140, marginTop: 30}}/>*/}
+                        {/*                </Button>*/}
+                        {/*            </CardItem>*/}
+                        {/*            <CardItem style={{marginTop: 40, textAlign: 'center', backgroundColor: 'transparent'}}>*/}
+                        {/*                <Left>*/}
+                        {/*                    <Body>*/}
+                        {/*                        <Text style = {{fontWeight:"bold", fontSize:13}}>Orange Chicken</Text>*/}
+                        {/*                    </Body>*/}
+                        {/*                </Left>*/}
+                        {/*            </CardItem>*/}
+                        {/*        </Card>*/}
+                        {/*    </Col>*/}
+                        {/*</Grid>*/}
 
-                        <AddRecipeModal ref={'AddRecipeModal'} />
+                        <FlatList
+                            data={this.state.Items}
+                            renderItem={({item}) =>(
+                                <Card style={{padding: 20, height: 160}}>
+                                    <CardItem cardBody>
+                                        <Button transparent style={{margin:10}} onPress = {() => this.onPressImage()}>
+                                            <Thumbnail source={meal} style ={{height: 120, width: 140, marginTop: 30}}/>
+                                        </Button>
+                                    </CardItem>
+                                    <CardItem style={{marginTop: 40, textAlign: 'center', backgroundColor: 'transparent'}}>
+                                        <Left>
+                                            <Body>
+                                                <Text style = {{fontWeight:"bold", fontSize:13}}>{item.name}</Text>
+                                            </Body>
+                                        </Left>
+                                    </CardItem>
+                                </Card>
+                            )}
+                            numColumns = {2}
+                            keyExtractor = {item=>item.id}
+                        />
+                        <AddRecipeModal data={this.scanRecipes.bind(this)} ref={'AddRecipeModal'} />
                         <RecipeDetailModal ref={'RecipeDetailModal'} />
 
                     </Content>
