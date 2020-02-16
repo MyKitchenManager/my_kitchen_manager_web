@@ -14,7 +14,6 @@ class Inventory extends Component {
         super(props);
         this.state={
             search : "",
-            userId: 241,
             Items: [],
             loading: true
         }
@@ -67,7 +66,7 @@ class Inventory extends Component {
             .then((accessToken)=>{
                 if(accessToken!=null){
                     //let newItem = [];
-                    fetch(`${API_URL}/inventory/userId/${this.props.data}`, {
+                    fetch(`${API_URL}/inventory/users`, {
                         method:"GET",
                         headers:{
                             "Authorization" : accessToken
