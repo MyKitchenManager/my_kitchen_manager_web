@@ -99,7 +99,8 @@ class MealPlan extends Component {
                             newItems[key] = this.state.items[key];
                         });
                         this.setState({
-                            items: newItems
+                            items: newItems,
+                            loading: false
                         });
                         //save items to state successfully
                         console.log(this.state.items);
@@ -134,6 +135,10 @@ class MealPlan extends Component {
         //         items: newItems
         //     });
         // }, 1000);
+
+
+
+
     }
 
 
@@ -164,6 +169,7 @@ class MealPlan extends Component {
                         :
                         <View style={{marginLeft: 60}}></View>
                 }
+
             </View>
         )
     }
@@ -171,9 +177,9 @@ class MealPlan extends Component {
     //日期右侧
     renderItem(item) {
         return (
-            <View style={{backgroundColor: 'red', flexDirection: 'row', alignContent: 'stretch'}}>
+            <View style={{}}>
                 <TouchableOpacity
-                    style={styles.item}
+                    style={[styles.item]}
                     onPress={() => alert("Show Recipe Details")}
                 >
                     <Card>
@@ -284,7 +290,7 @@ class MealPlan extends Component {
                         renderItem={this.renderItem.bind(this)}
                         renderEmptyDate={this.renderEmptyDate.bind(this)}
                         rowHasChanged={this.rowHasChanged.bind(this)}
-                        style={{flexDirection: 'row',justifyContent: 'flex-start'}}
+                        style={{numberColumns: 2}}
                         // markingType={'period'}
                         // markedDates={{
                         //    '2017-05-08': {textColor: '#43515c'},
@@ -296,7 +302,7 @@ class MealPlan extends Component {
                         //    '2017-05-25': {color: 'gray'},
                         //    '2020-02-15': {endingDay: true, color: 'gray'}}}
                         // monthFormat={'yyyy'}
-                        // theme={{calendarBackground: 'gray', agendaKnobColor: 'red'}}
+                        //theme={{calendarBackground: 'gray', agendaKnobColor: 'red'}}
                         // hideExtraDays={false}
                     />
 
