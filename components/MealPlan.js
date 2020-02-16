@@ -12,7 +12,12 @@ import {
     Title,
     CardItem,
     Card,
-    Thumbnail, Content, Grid, Col
+    Thumbnail,
+    Content,
+    Grid,
+    Col,
+    List,
+    ListItem, Row
 } from "native-base"
 import {TouchableOpacity, StyleSheet, Image, FlatList, AsyncStorage} from "react-native";
 import {Provider, Modal} from "@ant-design/react-native"
@@ -175,6 +180,39 @@ class MealPlan extends Component {
     }
 
     //日期右侧
+    // renderItem(item) {
+    //     return (
+    //         <View style={{}}>
+    //             <TouchableOpacity
+    //                 style={[styles.item]}
+    //                 onPress={() => alert("Show Recipe Details")}
+    //             >
+    //                 <List style={{width: 320}}>
+    //                     <ListItem thumbnail>
+    //                         <Left style={{}}>
+    //                             <Thumbnail square source={{uri: item.image}} style={{height: 80, width: 80, borderRadius: 10}} />
+    //                         </Left>
+    //                         <Body style={{paddingTop: 8, paddingBottom: 5 }}>
+    //                             <Text style={{fontSize: 16}}>{item.name}</Text>
+    //                             <Row style={{paddingLeft: 0, marginTop: 10, marginBottom: 2}}>
+    //                                 <Button transparent >
+    //                                     <Icon active name="ios-bonfire" style={{marginLeft: 0}}/>
+    //                                     <Text style={{fontSize: 12, paddingLeft: 5}}>Cook</Text>
+    //                                 </Button>
+    //
+    //                                 <Button transparent>
+    //                                     <Icon active name="ios-trash"/>
+    //                                     <Text style={{fontSize: 12, paddingLeft: 5}}>Delete</Text>
+    //                                 </Button>
+    //                             </Row>
+    //                         </Body>
+    //                     </ListItem>
+    //                 </List>
+    //             </TouchableOpacity>
+    //         </View>
+    //     );
+    // }
+
     renderItem(item) {
         return (
             <View style={{}}>
@@ -213,7 +251,7 @@ class MealPlan extends Component {
         );
     }
 
-    //没有item的日子，如何render
+                    //没有item的日子，如何render
     renderEmptyDate() {
         return (
             <View style={styles.emptyDate}>
@@ -314,6 +352,7 @@ class MealPlan extends Component {
 }
     const styles = StyleSheet.create({
         item: {
+            //card style
             backgroundColor: 'white',
             //flex: 1,
             borderRadius: 10,
@@ -321,6 +360,18 @@ class MealPlan extends Component {
             marginRight: 10,
             marginTop: 17,
             width: 170
+
+            //list style
+            // backgroundColor: 'white',
+            // //flex: 1,
+            // borderRadius: 10,
+            // padding: 5,
+            // paddingLeft: 0,
+            // marginRight: 10,
+            // marginTop: 17,
+            // width: 340
+
+
         },
         emptyDate: {
             height: 15,
