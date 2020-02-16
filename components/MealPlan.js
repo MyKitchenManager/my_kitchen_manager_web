@@ -25,6 +25,7 @@ import RecipeCard from "./RecipeCard";
 import {Agenda} from "react-native-calendars";
 import meal from "../assets/meal.jpeg";
 import {API_URL, TOKEN_KEY} from "../constant";
+import ShoppingListModal from "./ShoppingListModal";
 
 class MealPlan extends Component {
 
@@ -40,25 +41,17 @@ class MealPlan extends Component {
             //         {name: 'Chicken Parmesan', image: 'https://img.sndimg.com/food/image/upload/w_621,h_349,c_fill,fl_progressive,q_80/v1/img/recipes/19/13/5/AKvKcJgQWqe5WpAZ4bTu_chicken-parmesan-5.jpg'},
             //         {name: 'Zuppa Toscana', image: 'https://img.sndimg.com/food/image/upload/fl_progressive,c_fill,q_80,h_349,w_621/v1/img/recipes/38/29/8/Z8MMxtVfQfCLy4zZJtZU_0S9A7184.jpg'}],
             // },
-            // items : [
-            //     {date: '2020-02-15', name: 'Chicken Parmesan', image: 'https://img.sndimg.com/food/image/upload/w_621,h_349,c_fill,fl_progressive,q_80/v1/img/recipes/19/13/5/AKvKcJgQWqe5WpAZ4bTu_chicken-parmesan-5.jpg' },
-            //     {date: '2020-02-15', name: 'Chicken Parmesan', image: 'https://img.sndimg.com/food/image/upload/w_621,h_349,c_fill,fl_progressive,q_80/v1/img/recipes/19/13/5/AKvKcJgQWqe5WpAZ4bTu_chicken-parmesan-5.jpg' },
-            //     {date: '2020-02-16', name: 'Zuppa Toscana', image: 'https://img.sndimg.com/food/image/upload/fl_progressive,c_fill,q_80,h_349,w_621/v1/img/recipes/38/29/8/Z8MMxtVfQfCLy4zZJtZU_0S9A7184.jpg'},
-            //     ],
-            //items: [],
             items: {},
             loading: true,
             showModal: false,
-
         };
+        this.onPressShoppingButton = this.onPressShoppingButton.bind(this);
     }
 
 
     openModal() {
         this.setState({showModal: true});
     }
-
-
 
     //load 所有item
     loadItems(day) {
@@ -140,10 +133,6 @@ class MealPlan extends Component {
         //         items: newItems
         //     });
         // }, 1000);
-
-
-
-
     }
 
 
@@ -195,14 +184,14 @@ class MealPlan extends Component {
                             <Body style={{paddingTop: 8, paddingBottom: 5 }}>
                                 <Text style={{fontSize: 16}}>{item.name}</Text>
                                 <Row style={{paddingLeft: 0, marginTop: 10, marginBottom: 2}}>
-                                    <Button transparent >
-                                        <Icon active name="ios-bonfire" style={{marginLeft: 0}}/>
-                                        <Text style={{fontSize: 12, paddingLeft: 5}}>Cook</Text>
+                                    <Button transparent>
+                                        <Icon active name="ios-bonfire" style={{fontSize: 18, marginLeft: 0, color: '#00BBF2'}}/>
+                                        <Text style={{fontSize: 12, paddingLeft: 5, color: '#00BBF2'}}>Cook</Text>
                                     </Button>
 
                                     <Button transparent>
-                                        <Icon active name="ios-trash"/>
-                                        <Text style={{fontSize: 12, paddingLeft: 5}}>Delete</Text>
+                                        <Icon active name="ios-trash" style={{fontSize: 18, color: '#00BBF2'}}/>
+                                        <Text style={{fontSize: 12, paddingLeft: 5, color: '#00BBF2'}}>Delete</Text>
                                     </Button>
                                 </Row>
                             </Body>
@@ -269,6 +258,11 @@ class MealPlan extends Component {
         return date.toISOString().split('T')[0];
     }
 
+    onPressShoppingButton() {
+        this.refs.ShoppingListModal.showShoppingListModal();
+    }
+
+
 
     render() {
         return (
@@ -312,7 +306,7 @@ class MealPlan extends Component {
                             <Title>My Meal Plan</Title>
                         </Body>
                         <Right>
-                            <Button transparent>
+                            <Button transparent onPress={() => this.onPressShoppingButton()}>
                                 {/*<Icon name='ios-cart' />*/}
                                 <Text style={{color: '#00BBF2'}}>Shopping</Text>
                             </Button>
@@ -344,6 +338,7 @@ class MealPlan extends Component {
                         // hideExtraDays={false}
                     />
 
+                    <ShoppingListModal ref={'ShoppingListModal'}/>
                 </Container>
             </Provider>
         );
