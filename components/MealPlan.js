@@ -41,9 +41,9 @@ class MealPlan extends Component {
             //         {name: 'Chicken Parmesan', image: 'https://img.sndimg.com/food/image/upload/w_621,h_349,c_fill,fl_progressive,q_80/v1/img/recipes/19/13/5/AKvKcJgQWqe5WpAZ4bTu_chicken-parmesan-5.jpg'},
             //         {name: 'Zuppa Toscana', image: 'https://img.sndimg.com/food/image/upload/fl_progressive,c_fill,q_80,h_349,w_621/v1/img/recipes/38/29/8/Z8MMxtVfQfCLy4zZJtZU_0S9A7184.jpg'}],
             // },
-            items: {
-                '2020-02-20': [],
-            },
+
+            items: {},
+            allItems: {},
             loading: true,
             showModal: false,
         };
@@ -55,8 +55,7 @@ class MealPlan extends Component {
         this.setState({showModal: true});
     }
 
-    //load 所有item
-    loadItems(day) {
+    componentDidMount() {
         this.setState({items: [], loading: true})
         AsyncStorage.getItem(TOKEN_KEY)
             .then((accessToken)=>{
@@ -83,34 +82,26 @@ class MealPlan extends Component {
                             let date = responseData[i].mealDate;
                             let image = responseData[i].recipeIdJoin.recipeImageUrl;
                             let status = responseData[i].status;
-
-                            if (!this.state.items[date]) {
-                                this.state.items[date] = [];
+                            if (!this.state.allItems[date]) {
+                                this.state.allItems[date] = [];
                             }
-                            this.state.items[date].push({
+                            this.state.allItems[date].push({
                                 id: id,
                                 name: name,
                                 image: image,
                                 status: status
                             })
                         }
-
-                        const newItems = {};
-                        Object.keys(this.state.items).forEach(key => {
-                            newItems[key] = this.state.items[key];
-                        });
-                        this.setState({
-                            items: newItems,
-                            loading: false
-                        });
-                        //save items to state successfully
-                        console.log(this.state.items);
+                    }).then(()=>{
+                        console.log(this.state.allItems);
                     })
                 }
             })
             .catch((error)=>{
                 console.log(`Error in fetching inventory list --> ${error}`);
             })
+    }
+
 
     //     setTimeout(() => {
     //         for (let i = 0; i < 7; i++) {
@@ -136,6 +127,28 @@ class MealPlan extends Component {
     //             items: newItems
     //         });
     //     }, 1000);
+
+    //load 所有item
+    loadItems(day) {
+        setTimeout(() => {
+            for (let i = 0; i < 10; i++) {
+                const time = day.timestamp + i * 24 * 60 * 60 * 1000;
+                const strTime = this.timeToString(time);
+                if (!this.state.allItems[strTime]) {
+                    this.state.items[strTime] = [];
+                }else{
+                    this.state.items[strTime] = this.state.allItems[strTime];
+                }
+            }
+            const newItems = {};
+            Object.keys(this.state.items).forEach(key => {
+                newItems[key] = this.state.items[key];
+            });
+            this.setState({
+                items: newItems
+            });
+        }, 1000);
+
     }
 
 
