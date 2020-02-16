@@ -40,7 +40,8 @@ class MealPlan extends Component {
             //     {date: '2020-02-15', name: 'Chicken Parmesan', image: 'https://img.sndimg.com/food/image/upload/w_621,h_349,c_fill,fl_progressive,q_80/v1/img/recipes/19/13/5/AKvKcJgQWqe5WpAZ4bTu_chicken-parmesan-5.jpg' },
             //     {date: '2020-02-16', name: 'Zuppa Toscana', image: 'https://img.sndimg.com/food/image/upload/fl_progressive,c_fill,q_80,h_349,w_621/v1/img/recipes/38/29/8/Z8MMxtVfQfCLy4zZJtZU_0S9A7184.jpg'},
             //     ],
-            items: [],
+            //items: [],
+            items: {},
             loading: true,
             showModal: false,
 
@@ -52,7 +53,10 @@ class MealPlan extends Component {
         this.setState({showModal: true});
     }
 
-    getAllRecipes() {
+
+
+    //load 所有item
+    loadItems(day) {
         this.setState({items: [], loading: true})
         AsyncStorage.getItem(TOKEN_KEY)
             .then((accessToken)=>{
@@ -80,55 +84,60 @@ class MealPlan extends Component {
                             let image = responseData[i].recipeIdJoin.recipeImageUrl;
                             let status = responseData[i].status;
 
-                            const item = {
+                            if (!this.state.items[date]) {
+                                this.state.items[date] = [];
+                            }
+                            this.state.items[date].push({
                                 id: id,
                                 name: name,
                                 image: image,
-                                date: date,
                                 status: status
-                            };
-                            const list = this.state.items.concat(item);
-                            this.setState({items: list, loading: false});
+                            })
                         }
-                    }).done();
-
+                        const newItems = {};
+                        Object.keys(this.state.items).forEach(key => {
+                            newItems[key] = this.state.items[key];
+                        });
+                        this.setState({
+                            items: newItems
+                        });
+                        //save items to state successfully
+                        console.log(this.state.items);
+                    })
                 }
             })
             .catch((error)=>{
                 console.log(`Error in fetching inventory list --> ${error}`);
             })
 
+        // setTimeout(() => {
+        //     for (let i = 0; i < 10; i++) {
+        //         const time = day.timestamp + i * 24 * 60 * 60 * 1000;
+        //         const strTime = this.timeToString(time);
+        //         if (!this.state.items[strTime]) {
+        //             this.state.items[strTime] = [];
+        //             const numItems = Math.floor(Math.random() * 5);
+        //             for (let j = 0; j < numItems; j++) {
+        //                 this.state.items[strTime].push({
+        //                         name: 'Item for ' + strTime + ' #' + j,
+        //                         height: Math.max(50, Math.floor(Math.random() * 150))
+        //                     }
+        //                 );
+        //             }
+        //         }
+        //     }
+        //     const newItems = {};
+        //     Object.keys(this.state.items).forEach(key => {
+        //         newItems[key] = this.state.items[key];
+        //     });
+        //     this.setState({
+        //         items: newItems
+        //     });
+        // }, 1000);
     }
 
-    //load 所有item
-    loadItems(day) {
-        setTimeout(() => {
-            for (let i = 0; i < 10; i++) {
-                const time = day.timestamp + i * 24 * 60 * 60 * 1000;
-                const strTime = this.timeToString(time);
-                if (!this.state.items[strTime]) {
-                    this.state.items[strTime] = [];
-                    const numItems = Math.floor(Math.random() * 5);
-                    for (let j = 0; j < numItems; j++) {
-                        this.state.items[strTime].push({
-                                name: 'Item for ' + strTime + ' #' + j,
-                                height: Math.max(50, Math.floor(Math.random() * 150))
-                            }
-                        );
-                    }
-                }
-            }
-            const newItems = {};
-            Object.keys(this.state.items).forEach(key => {
-                newItems[key] = this.state.items[key];
-            });
-            this.setState({
-                items: newItems
-            });
-        }, 1000);
-    }
 
-    //day and add button
+    //日期和加号
     renderDay(day, items) {
         return (
             <View>
@@ -142,6 +151,12 @@ class MealPlan extends Component {
                                 marginTop: 20
                             }}>{day.day}</Text>
                             {/*how to get weekday*/}
+                            {/*<Text style={{*/}
+                            {/*    color: '#43515c',*/}
+                            {/*    fontSize: 28,*/}
+                            {/*    alignSelf: 'center',*/}
+                            {/*    marginTop: 20*/}
+                            {/*}}>{day.weekNumbers}</Text>*/}
                             <Button transparent>
                                 <Icon name='add-circle' style={{fontSize: 34, color: '#00BBF2'}}/>
                             </Button>
@@ -153,28 +168,28 @@ class MealPlan extends Component {
         )
     }
 
-    //每个item长什么样子
+    //日期右侧
     renderItem(item) {
         return (
-            <View>
+            <View style={{backgroundColor: 'red', flexDirection: 'row', alignContent: 'stretch'}}>
                 <TouchableOpacity
                     style={styles.item}
-                    //onPress={() => Alert.alert("Show Recipe Details")}
+                    onPress={() => alert("Show Recipe Details")}
                 >
                     <Card>
                         <CardItem style={{selfAlign: 'center'}}>
                             <Left>
                                 <Body>
-                                    <Text style={{fontSize: 15, fontWeight: '8'}}>Orange Chicken</Text>
+                                    <Text style={{fontSize: 15, fontWeight: '8'}}>{item.name}</Text>
                                 </Body>
                             </Left>
                         </CardItem>
                         <CardItem cardBody>
-                            <Image source={meal} style={{height: 100, flex: 1,}}/>
+                            <Image source={{uri: item.image}} style={{height: 100, flex: 1,}}/>
                         </CardItem>
                         <CardItem style={{height: 30, paddingLeft: 15, paddingRight: 8}}>
                             <Left>
-                                <Button transparent title="show modal" onPress={this.props.data}>
+                                <Button transparent>
                                     <Icon active name="ios-bonfire"/>
                                     <Text style={{fontSize: 12, paddingLeft: 5}}>Cook</Text>
                                 </Button>
@@ -188,121 +203,6 @@ class MealPlan extends Component {
                         </CardItem>
                     </Card>
                 </TouchableOpacity>
-
-                {/*<Grid >*/}
-                {/*    <Col>*/}
-                {/*        <Card>*/}
-                {/*            <CardItem style={{selfAlign: 'center'}}>*/}
-                {/*                <Left>*/}
-                {/*                    <Body>*/}
-                {/*                        <Text style={{fontSize: 15, fontWeight: '8'}}>Orange Chicken</Text>*/}
-                {/*                    </Body>*/}
-                {/*                </Left>*/}
-                {/*            </CardItem>*/}
-                {/*            <CardItem cardBody>*/}
-                {/*                <Image source={meal} style={{height: 100, flex: 1,}}/>*/}
-                {/*            </CardItem>*/}
-                {/*            <CardItem style={{height: 30, paddingLeft: 15, paddingRight: 8}}>*/}
-                {/*                <Left>*/}
-                {/*                    <Button transparent title="show modal" onPress={this.props.data}>*/}
-                {/*                        <Icon active name="ios-bonfire"/>*/}
-                {/*                        <Text style={{fontSize: 12, paddingLeft: 5}}>Cook</Text>*/}
-                {/*                    </Button>*/}
-                {/*                </Left>*/}
-                {/*                <Right>*/}
-                {/*                    <Button transparent>*/}
-                {/*                        <Icon active name="ios-trash"/>*/}
-                {/*                        <Text style={{fontSize: 12, paddingLeft: 5}}>Delete</Text>*/}
-                {/*                    </Button>*/}
-                {/*                </Right>*/}
-                {/*            </CardItem>*/}
-                {/*        </Card>*/}
-                {/*        <Card>*/}
-                {/*            <CardItem style={{selfAlign: 'center'}}>*/}
-                {/*                <Left>*/}
-                {/*                    <Body>*/}
-                {/*                        <Text style={{fontSize: 15, fontWeight: '8'}}>Orange Chicken</Text>*/}
-                {/*                    </Body>*/}
-                {/*                </Left>*/}
-                {/*            </CardItem>*/}
-                {/*            <CardItem cardBody>*/}
-                {/*                <Image source={meal} style={{height: 100, flex: 1,}}/>*/}
-                {/*            </CardItem>*/}
-                {/*            <CardItem style={{height: 30, paddingLeft: 15, paddingRight: 8}}>*/}
-                {/*                <Left>*/}
-                {/*                    <Button transparent title="show modal" onPress={this.props.data}>*/}
-                {/*                        <Icon active name="ios-bonfire"/>*/}
-                {/*                        <Text style={{fontSize: 12, paddingLeft: 5}}>Cook</Text>*/}
-                {/*                    </Button>*/}
-                {/*                </Left>*/}
-                {/*                <Right>*/}
-                {/*                    <Button transparent>*/}
-                {/*                        <Icon active name="ios-trash"/>*/}
-                {/*                        <Text style={{fontSize: 12, paddingLeft: 5}}>Delete</Text>*/}
-                {/*                    </Button>*/}
-                {/*                </Right>*/}
-
-                {/*            </CardItem>*/}
-                {/*        </Card>*/}
-                {/*    </Col>*/}
-                {/*    <Col>*/}
-                {/*        <Card>*/}
-                {/*            <CardItem style={{selfAlign: 'center'}}>*/}
-                {/*                <Left>*/}
-                {/*                    <Body>*/}
-                {/*                        <Text style={{fontSize: 15, fontWeight: '8'}}>Orange Chicken</Text>*/}
-                {/*                    </Body>*/}
-                {/*                </Left>*/}
-                {/*            </CardItem>*/}
-                {/*            <CardItem cardBody>*/}
-                {/*                <Image source={meal} style={{height: 100, flex: 1,}}/>*/}
-                {/*            </CardItem>*/}
-                {/*            <CardItem style={{height: 30, paddingLeft: 15, paddingRight: 8}}>*/}
-                {/*                <Left>*/}
-                {/*                    <Button transparent title="show modal" onPress={this.props.data}>*/}
-                {/*                        <Icon active name="ios-bonfire"/>*/}
-                {/*                        <Text style={{fontSize: 12, paddingLeft: 5}}>Cook</Text>*/}
-                {/*                    </Button>*/}
-                {/*                </Left>*/}
-                {/*                <Right>*/}
-                {/*                    <Button transparent>*/}
-                {/*                        <Icon active name="ios-trash"/>*/}
-                {/*                        <Text style={{fontSize: 12, paddingLeft: 5}}>Delete</Text>*/}
-                {/*                    </Button>*/}
-                {/*                </Right>*/}
-                {/*            </CardItem>*/}
-                {/*        </Card>*/}
-                {/*        <Card>*/}
-                {/*            <CardItem style={{selfAlign: 'center'}}>*/}
-                {/*                <Left>*/}
-                {/*                    <Body>*/}
-                {/*                        <Text style={{fontSize: 15, fontWeight: '8'}}>Orange Chicken</Text>*/}
-                {/*                    </Body>*/}
-                {/*                </Left>*/}
-                {/*            </CardItem>*/}
-                {/*            <CardItem cardBody>*/}
-                {/*                <Image source={meal} style={{height: 100, flex: 1,}}/>*/}
-                {/*            </CardItem>*/}
-                {/*            <CardItem style={{height: 30, paddingLeft: 15, paddingRight: 8}}>*/}
-                {/*                <Left>*/}
-                {/*                    <Button transparent title="show modal" onPress={this.props.data}>*/}
-                {/*                        <Icon active name="ios-bonfire"/>*/}
-                {/*                        <Text style={{fontSize: 12, paddingLeft: 5}}>Cook</Text>*/}
-                {/*                    </Button>*/}
-                {/*                </Left>*/}
-                {/*                <Right>*/}
-                {/*                    <Button transparent>*/}
-                {/*                        <Icon active name="ios-trash"/>*/}
-                {/*                        <Text style={{fontSize: 12, paddingLeft: 5}}>Delete</Text>*/}
-                {/*                    </Button>*/}
-                {/*                </Right>*/}
-
-                {/*            </CardItem>*/}
-                {/*        </Card>*/}
-                {/*    </Col>*/}
-                {/*</Grid>*/}
-
-
             </View>
         );
     }
@@ -384,7 +284,7 @@ class MealPlan extends Component {
                         renderItem={this.renderItem.bind(this)}
                         renderEmptyDate={this.renderEmptyDate.bind(this)}
                         rowHasChanged={this.rowHasChanged.bind(this)}
-                        //style={{}}
+                        style={{flexDirection: 'row',justifyContent: 'flex-start'}}
                         // markingType={'period'}
                         // markedDates={{
                         //    '2017-05-08': {textColor: '#43515c'},
@@ -455,3 +355,150 @@ export default MealPlan;
 //         });
 //     }, 1000);
 // }
+
+
+//render items fake data
+{/*<TouchableOpacity*/}
+{/*    style={styles.item}*/}
+{/*    //onPress={() => Alert.alert("Show Recipe Details")}*/}
+{/*>*/}
+{/*    <Card>*/}
+{/*        <CardItem style={{selfAlign: 'center'}}>*/}
+{/*            <Left>*/}
+{/*                <Body>*/}
+{/*                    <Text style={{fontSize: 15, fontWeight: '8'}}>Orange Chicken</Text>*/}
+{/*                </Body>*/}
+{/*            </Left>*/}
+{/*        </CardItem>*/}
+{/*        <CardItem cardBody>*/}
+{/*            <Image source={meal} style={{height: 100, flex: 1,}}/>*/}
+{/*        </CardItem>*/}
+{/*        <CardItem style={{height: 30, paddingLeft: 15, paddingRight: 8}}>*/}
+{/*            <Left>*/}
+{/*                <Button transparent title="show modal" onPress={this.props.data}>*/}
+{/*                    <Icon active name="ios-bonfire"/>*/}
+{/*                    <Text style={{fontSize: 12, paddingLeft: 5}}>Cook</Text>*/}
+{/*                </Button>*/}
+{/*            </Left>*/}
+{/*            <Right>*/}
+{/*                <Button transparent>*/}
+{/*                    <Icon active name="ios-trash"/>*/}
+{/*                    <Text style={{fontSize: 12, paddingLeft: 5}}>Delete</Text>*/}
+{/*                </Button>*/}
+{/*            </Right>*/}
+{/*        </CardItem>*/}
+{/*    </Card>*/}
+{/*</TouchableOpacity>*/}
+
+{/*<Grid >*/}
+{/*    <Col>*/}
+{/*        <Card>*/}
+{/*            <CardItem style={{selfAlign: 'center'}}>*/}
+{/*                <Left>*/}
+{/*                    <Body>*/}
+{/*                        <Text style={{fontSize: 15, fontWeight: '8'}}>Orange Chicken</Text>*/}
+{/*                    </Body>*/}
+{/*                </Left>*/}
+{/*            </CardItem>*/}
+{/*            <CardItem cardBody>*/}
+{/*                <Image source={meal} style={{height: 100, flex: 1,}}/>*/}
+{/*            </CardItem>*/}
+{/*            <CardItem style={{height: 30, paddingLeft: 15, paddingRight: 8}}>*/}
+{/*                <Left>*/}
+{/*                    <Button transparent title="show modal" onPress={this.props.data}>*/}
+{/*                        <Icon active name="ios-bonfire"/>*/}
+{/*                        <Text style={{fontSize: 12, paddingLeft: 5}}>Cook</Text>*/}
+{/*                    </Button>*/}
+{/*                </Left>*/}
+{/*                <Right>*/}
+{/*                    <Button transparent>*/}
+{/*                        <Icon active name="ios-trash"/>*/}
+{/*                        <Text style={{fontSize: 12, paddingLeft: 5}}>Delete</Text>*/}
+{/*                    </Button>*/}
+{/*                </Right>*/}
+{/*            </CardItem>*/}
+{/*        </Card>*/}
+{/*        <Card>*/}
+{/*            <CardItem style={{selfAlign: 'center'}}>*/}
+{/*                <Left>*/}
+{/*                    <Body>*/}
+{/*                        <Text style={{fontSize: 15, fontWeight: '8'}}>Orange Chicken</Text>*/}
+{/*                    </Body>*/}
+{/*                </Left>*/}
+{/*            </CardItem>*/}
+{/*            <CardItem cardBody>*/}
+{/*                <Image source={meal} style={{height: 100, flex: 1,}}/>*/}
+{/*            </CardItem>*/}
+{/*            <CardItem style={{height: 30, paddingLeft: 15, paddingRight: 8}}>*/}
+{/*                <Left>*/}
+{/*                    <Button transparent title="show modal" onPress={this.props.data}>*/}
+{/*                        <Icon active name="ios-bonfire"/>*/}
+{/*                        <Text style={{fontSize: 12, paddingLeft: 5}}>Cook</Text>*/}
+{/*                    </Button>*/}
+{/*                </Left>*/}
+{/*                <Right>*/}
+{/*                    <Button transparent>*/}
+{/*                        <Icon active name="ios-trash"/>*/}
+{/*                        <Text style={{fontSize: 12, paddingLeft: 5}}>Delete</Text>*/}
+{/*                    </Button>*/}
+{/*                </Right>*/}
+
+{/*            </CardItem>*/}
+{/*        </Card>*/}
+{/*    </Col>*/}
+{/*    <Col>*/}
+{/*        <Card>*/}
+{/*            <CardItem style={{selfAlign: 'center'}}>*/}
+{/*                <Left>*/}
+{/*                    <Body>*/}
+{/*                        <Text style={{fontSize: 15, fontWeight: '8'}}>Orange Chicken</Text>*/}
+{/*                    </Body>*/}
+{/*                </Left>*/}
+{/*            </CardItem>*/}
+{/*            <CardItem cardBody>*/}
+{/*                <Image source={meal} style={{height: 100, flex: 1,}}/>*/}
+{/*            </CardItem>*/}
+{/*            <CardItem style={{height: 30, paddingLeft: 15, paddingRight: 8}}>*/}
+{/*                <Left>*/}
+{/*                    <Button transparent title="show modal" onPress={this.props.data}>*/}
+{/*                        <Icon active name="ios-bonfire"/>*/}
+{/*                        <Text style={{fontSize: 12, paddingLeft: 5}}>Cook</Text>*/}
+{/*                    </Button>*/}
+{/*                </Left>*/}
+{/*                <Right>*/}
+{/*                    <Button transparent>*/}
+{/*                        <Icon active name="ios-trash"/>*/}
+{/*                        <Text style={{fontSize: 12, paddingLeft: 5}}>Delete</Text>*/}
+{/*                    </Button>*/}
+{/*                </Right>*/}
+{/*            </CardItem>*/}
+{/*        </Card>*/}
+{/*        <Card>*/}
+{/*            <CardItem style={{selfAlign: 'center'}}>*/}
+{/*                <Left>*/}
+{/*                    <Body>*/}
+{/*                        <Text style={{fontSize: 15, fontWeight: '8'}}>Orange Chicken</Text>*/}
+{/*                    </Body>*/}
+{/*                </Left>*/}
+{/*            </CardItem>*/}
+{/*            <CardItem cardBody>*/}
+{/*                <Image source={meal} style={{height: 100, flex: 1,}}/>*/}
+{/*            </CardItem>*/}
+{/*            <CardItem style={{height: 30, paddingLeft: 15, paddingRight: 8}}>*/}
+{/*                <Left>*/}
+{/*                    <Button transparent title="show modal" onPress={this.props.data}>*/}
+{/*                        <Icon active name="ios-bonfire"/>*/}
+{/*                        <Text style={{fontSize: 12, paddingLeft: 5}}>Cook</Text>*/}
+{/*                    </Button>*/}
+{/*                </Left>*/}
+{/*                <Right>*/}
+{/*                    <Button transparent>*/}
+{/*                        <Icon active name="ios-trash"/>*/}
+{/*                        <Text style={{fontSize: 12, paddingLeft: 5}}>Delete</Text>*/}
+{/*                    </Button>*/}
+{/*                </Right>*/}
+
+{/*            </CardItem>*/}
+{/*        </Card>*/}
+{/*    </Col>*/}
+{/*</Grid>*/}
