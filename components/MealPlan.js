@@ -41,7 +41,9 @@ class MealPlan extends Component {
             //         {name: 'Chicken Parmesan', image: 'https://img.sndimg.com/food/image/upload/w_621,h_349,c_fill,fl_progressive,q_80/v1/img/recipes/19/13/5/AKvKcJgQWqe5WpAZ4bTu_chicken-parmesan-5.jpg'},
             //         {name: 'Zuppa Toscana', image: 'https://img.sndimg.com/food/image/upload/fl_progressive,c_fill,q_80,h_349,w_621/v1/img/recipes/38/29/8/Z8MMxtVfQfCLy4zZJtZU_0S9A7184.jpg'}],
             // },
-            items: {},
+            items: {
+                '2020-02-20': [],
+            },
             loading: true,
             showModal: false,
         };
@@ -92,6 +94,7 @@ class MealPlan extends Component {
                                 status: status
                             })
                         }
+
                         const newItems = {};
                         Object.keys(this.state.items).forEach(key => {
                             newItems[key] = this.state.items[key];
@@ -109,32 +112,36 @@ class MealPlan extends Component {
                 console.log(`Error in fetching inventory list --> ${error}`);
             })
 
-        // setTimeout(() => {
-        //     for (let i = 0; i < 10; i++) {
-        //         const time = day.timestamp + i * 24 * 60 * 60 * 1000;
-        //         const strTime = this.timeToString(time);
-        //         if (!this.state.items[strTime]) {
-        //             this.state.items[strTime] = [];
-        //             const numItems = Math.floor(Math.random() * 5);
-        //             for (let j = 0; j < numItems; j++) {
-        //                 this.state.items[strTime].push({
-        //                         name: 'Item for ' + strTime + ' #' + j,
-        //                         height: Math.max(50, Math.floor(Math.random() * 150))
-        //                     }
-        //                 );
-        //             }
-        //         }
-        //     }
-        //     const newItems = {};
-        //     Object.keys(this.state.items).forEach(key => {
-        //         newItems[key] = this.state.items[key];
-        //     });
-        //     this.setState({
-        //         items: newItems
-        //     });
-        // }, 1000);
+    //     setTimeout(() => {
+    //         for (let i = 0; i < 7; i++) {
+    //             const time = day.timestamp + i * 24 * 60 * 60 * 1000;
+    //             const strTime = this.timeToString(time);
+    //             if (!this.state.items[strTime]) {
+    //                 this.state.items[strTime] = [];
+    //                 const numItems = Math.floor(Math.random() * 5);
+    //                 for (let j = 0; j < 0; j++) {
+    //                     this.state.items[strTime].push({
+    //                             name: 'Item for ' + strTime + ' #' + j,
+    //                             height: Math.max(50, Math.floor(Math.random() * 150))
+    //                         }
+    //                     );
+    //                 }
+    //             }
+    //         }
+    //         const newItems = {};
+    //         Object.keys(this.state.items).forEach(key => {
+    //             newItems[key] = this.state.items[key];
+    //         });
+    //         this.setState({
+    //             items: newItems
+    //         });
+    //     }, 1000);
     }
 
+
+    // componentDidMount() {
+    //     this.loadItems();
+    // }
 
     //日期和加号
     renderDay(day, items) {
@@ -174,7 +181,6 @@ class MealPlan extends Component {
             <View style={{}}>
                 <TouchableOpacity
                     style={[styles.listItem]}
-                    onPress={() => alert("Show Recipe Details")}
                 >
                     <List style={{width: 320}}>
                         <ListItem thumbnail>
@@ -322,7 +328,7 @@ class MealPlan extends Component {
                         renderItem={this.renderItem.bind(this)}
                         renderEmptyDate={this.renderEmptyDate.bind(this)}
                         rowHasChanged={this.rowHasChanged.bind(this)}
-                        style={{numberColumns: 2}}
+                        //style={{numberColumns: 2}}
                         // markingType={'period'}
                         // markedDates={{
                         //    '2017-05-08': {textColor: '#43515c'},
