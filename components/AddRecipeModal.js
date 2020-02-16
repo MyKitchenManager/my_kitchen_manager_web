@@ -11,7 +11,7 @@ class AddRecipeModal extends Component {
         super(props);
         this.state = {
             showModal: false,
-            recipeId: 1,
+            recipeId: 0,
             searchable: []
         }
     }
@@ -19,6 +19,7 @@ class AddRecipeModal extends Component {
     showAddRecipeModal() {
         this.setState({
             showModal: true,
+            recipeId: 0
         })
     }
 
@@ -50,6 +51,9 @@ class AddRecipeModal extends Component {
     }
 
     onAddItem(){
+        if(this.state.recipeId==0){
+            alert("Please select a recipe");
+        }
         AsyncStorage.getItem(TOKEN_KEY)
             .then((accessToken)=>{
                 if(accessToken!=null){
@@ -109,14 +113,15 @@ class AddRecipeModal extends Component {
                         <Picker
                             mode="dropdown"
                             iosIcon={<Icon name={"arrow-down"}/>}
-                            placeholder = "Select Recipe"
+                            placeholder = {<Text>Select Recipe</Text>}
                             placeholderStyle={{ color: "#bfc6ea" }}
                             placeholderIconColor="deepskyblue"
                             selectedValue={this.state.recipeId}
                             onValueChange = {this.onValueChange.bind(this)}
                         >
+                            <Picker.Item label={<Text style={{color: "#bfc6ea"}}>Select Recipe</Text>} value={0}/>
                             {this.state.searchable.map((item)=>{
-                                return <Picker.Item label={item.recipeName} value={item.id}/>
+                                return <Picker.Item label={item.recipeName} value={item.id} key={item.id}/>
                             })}
                         </Picker>
                     </Form>
