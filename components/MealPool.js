@@ -44,8 +44,14 @@ class MealPool extends Component {
         this.refs.AddRecipeModal.showAddRecipeModal();
     }
 
-    onPressImage() {
-        this.refs.RecipeDetailModal.showRecipeDetailModal();
+    onPressImage(item) {
+        const recipe ={
+            name: item.recipeName,
+            image: item.recipeImageUrl,
+            detail: item.recipeDetails,
+            method: item.instructions
+        }
+        this.refs.RecipeDetailModal.showRecipeDetailModal(recipe);
     }
 
     scanRecipes(){
@@ -65,19 +71,7 @@ class MealPool extends Component {
                             alert(`Error in fetching data --> status ${response.status}`);
                         }
                     }).then((responseData)=>{
-                        for(let i = 0; i < responseData.length; i++){
-                            console.log(responseData[i]);
-                            let id = responseData[i].id;
-                            let name = responseData[i].recipeName;
-                            let image = responseData[i].recipeImageUrl;
-                            const item = {
-                                id: id,
-                                name: name,
-                                image: image
-                            }
-                            const list = this.state.Items.concat(item);
-                            this.setState({Items: list, loading: false});
-                        }
+                       this.setState({Items: responseData});
                     }).done()
                 }
             })
@@ -200,14 +194,14 @@ class MealPool extends Component {
                             renderItem={({item}) =>(
                                 <Card style={{padding: 20, height: 160}}>
                                     <CardItem cardBody>
-                                        <Button transparent style={{margin:10}} onPress = {() => this.onPressImage()}>
-                                            <Thumbnail source={meal} style ={{height: 120, width: 140, marginTop: 30}}/>
+                                        <Button transparent style={{margin:10}} onPress = {() => this.onPressImage(item)}>
+                                            <Thumbnail source={{uri:item.recipeImageUrl}} style ={{height: 120, width: 140, marginTop: 30}}/>
                                         </Button>
                                     </CardItem>
                                     <CardItem style={{marginTop: 40, textAlign: 'center', backgroundColor: 'transparent'}}>
                                         <Left>
                                             <Body>
-                                                <Text style = {{fontWeight:"bold", fontSize:13}}>{item.name}</Text>
+                                                <Text style = {{fontWeight:"bold", fontSize:13}}>{item.recipeName}</Text>
                                             </Body>
                                         </Left>
                                     </CardItem>

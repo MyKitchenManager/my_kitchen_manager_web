@@ -12,7 +12,13 @@ class AddRecipeModal extends Component {
         this.state = {
             showModal: false,
             recipeId: 0,
-            searchable: []
+            recipeName:"",
+            instructions: "",
+            ingredients: [{}],
+            searchable: [],
+            ingredientId: 0,
+            ingredientVolume: 0,
+            unit: 6
         }
     }
 
@@ -24,15 +30,26 @@ class AddRecipeModal extends Component {
     }
 
     onValueChange(value){
-        this.setState({recipeId: value});
+        this.setState({ingredientId: value})
     }
 
+    onPressAdd(){
+        const item = {
+            ingredientId : this.state.ingredientId,
+            ingredientVolume : this.state.ingredientVolume,
+            unitsOfMeasure : this.state.unit
+        }
+        this.setState(prevState=>({
+            ingredients: [...prevState.ingredients, item]
+        }));
+        console.log(this.state.ingredients);
+    }
     componentDidMount() {
         this.setState({searchable:[]});
         AsyncStorage.getItem(TOKEN_KEY)
             .then((accessToken)=>{
                 if(accessToken!=null){
-                    fetch(`${API_URL}/recipe/all`,{
+                    fetch(`${API_URL}/listentry/ingredients`,{
                         method: "GET",
                         headers:{
                             "Authorization": accessToken
@@ -41,9 +58,10 @@ class AddRecipeModal extends Component {
                         if(response.status=="200"){
                             return response.json();
                         }else{
-                            alert("Cannot get recipe list");
+                            alert("Cannot get ingredient list");
                         }
                     }).then((responseData)=>{
+                        console.log(responseData);
                         this.setState({searchable:responseData});
                     }).done()
                 }
@@ -110,20 +128,53 @@ class AddRecipeModal extends Component {
 
                 <View style={{ paddingVertical: 20 }}>
                     <Form>
-                        <Picker
-                            mode="dropdown"
-                            iosIcon={<Icon name={"arrow-down"}/>}
-                            placeholder = {<Text>Select Recipe</Text>}
-                            placeholderStyle={{ color: "#bfc6ea" }}
-                            placeholderIconColor="deepskyblue"
-                            selectedValue={this.state.recipeId}
-                            onValueChange = {this.onValueChange.bind(this)}
-                        >
-                            <Picker.Item label={<Text style={{color: "#bfc6ea"}}>Select Recipe</Text>} value={0}/>
-                            {this.state.searchable.map((item)=>{
-                                return <Picker.Item label={item.recipeName} value={item.id} key={item.id}/>
-                            })}
-                        </Picker>
+                        <Item rounded style={{margin: 10, width: 290, height:50, alignSelf: "center"}}>
+                            <Icon name="ios-search"/>
+                            <Input
+                                placeholder='Enter Recipe Name'
+                                value={this.state.recipeName}
+                                onChangeText={(text) => this.setState({recipeName: text})}
+                            />
+                            <Right>
+                                <Button transparent onPress={
+                                    ()=>{
+                                        if(this.state.recipeName!=""){
+                                            this.setState({recipeName:""});
+                                        }
+                                    }
+                                }>
+                                    <Icon type="MaterialIcons" name="clear"></Icon>
+                                </Button>
+                            </Right>
+                        </Item>
+                        {this.state.ingredients.map((item)=>{
+                            return <Item rounded style={{margin: 10, width: 290, height:50, alignSelf: "center"}}>
+                                <Picker
+                                    mode="dropdown"
+                                    iosIcon={<Icon name="arrow-down" />}
+                                    placeholder="Select Ingredient"
+                                    placeholderStyle={{ color: "#bfc6ea" }}
+                                    placeholderIconColor="#007aff"
+                                    style={{ width: 160 }}
+                                    selectedValue={this.state.ingredientId}
+                                    onValueChange={this.onValueChange.bind(this)}
+                                >
+                                    {this.state.searchable.map((item)=>{
+                                        return <Picker.Item label={item.ingredientName} value={item.ingredientId}/>
+                                    })}
+                                </Picker>
+                                <Right>
+                                   <Input
+                                       placeholder='Amount'
+                                       value={this.state.ingredientVolume}
+                                       onChangeText={(text) => this.setState({ingredientVolume: parseInt(text)})}
+                                   />
+                                </Right>
+                            </Item>
+                        })}
+                        <Button transparent onPress = {() => this.onPressAdd()}>
+                            <Icon name='add-circle' />
+                        </Button>
                     </Form>
                 </View>
 

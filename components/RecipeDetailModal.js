@@ -9,13 +9,16 @@ class RecipeDetailModal extends Component {
         super(props);
         this.state = {
             showModal: false,
+            recipe: {}
         }
     }
 
-    showRecipeDetailModal() {
+    showRecipeDetailModal(item) {
         this.setState({
-            showModal: true
+            showModal: true,
+            recipe: item
         });
+        console.log(this.state.recipe);
     }
     render() {
         return (
@@ -35,14 +38,14 @@ class RecipeDetailModal extends Component {
             >
 
                 <View style={{ paddingVertical: 20 }}>
-                    <Thumbnail source={meal} style ={{height: 200, width: 200, alignSelf:"center"}}/>
+                    <Thumbnail source={{uri:this.state.recipe.image}} style ={{height: 200, width: 200, alignSelf:"center"}}/>
                     <View>
-                        <Text style={{fontSize: 25, fontWeight: '4', alignSelf: 'center', margin: 20}}>Orange Chicken</Text>
+                        <Text style={{fontSize: 25, fontWeight: '4', alignSelf: 'center', margin: 20}}>{this.state.recipe.name}</Text>
                     </View>
 
                     <WhiteSpace />
 
-                    <ScrollView>
+                    <ScrollView style = {{height: 270}}>
                         <Text style={{marginRight: 10, fontSize: 20, marginBottom:10, fontWeight: "bold"}}>Recipe</Text>
                         <List>
                             <ListItem>
@@ -54,24 +57,18 @@ class RecipeDetailModal extends Component {
                                     <Text style={{marginRight: 10}}>Amount</Text>
                                 </Right>
                             </ListItem>
-                            <ListItem>
-                                <Left>
-                                    <Text>Saffron</Text>
-                                </Left>
+                            {this.state.recipe.detail?this.state.recipe.detail.map((item)=>{
+                                return <ListItem>
+                                    <Left>
+                                        <Text>{item.ingredientIdJoin.ingredientName}</Text>
+                                    </Left>
 
-                                <Right style={{width: 50}}>
-                                    <Text style={{marginRight: 10}}>10 g</Text>
-                                </Right>
-                            </ListItem>
-                            <ListItem>
-                                <Left>
-                                    <Text>Yam</Text>
-                                </Left>
+                                    <Right style={{width: 50}}>
+                                        <Text style={{marginRight: 10}}>{`${item.ingredientVolume} ${item.unitsOfMeasureListEntry.entry}`}</Text>
+                                    </Right>
+                                </ListItem>
+                            }):<ListItem></ListItem>}
 
-                                <Right style={{width: 50}}>
-                                    <Text style={{marginRight: 10}}>50 g</Text>
-                                </Right>
-                            </ListItem>
                         </List>
 
 
