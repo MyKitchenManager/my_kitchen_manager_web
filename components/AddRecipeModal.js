@@ -4,8 +4,9 @@ import {Modal} from "@ant-design/react-native";
 import {AsyncStorage, TextInput, ScrollView} from "react-native"
 import {API_URL, TOKEN_KEY} from "../constant"
 import * as ImagePicker from "expo-image-picker";
-import * as Permissions from "expo-permissions";
 import Constants from "expo-constants";
+
+
 
 class AddRecipeModal extends Component {
     constructor(props) {
