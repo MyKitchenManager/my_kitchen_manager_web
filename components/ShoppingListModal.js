@@ -25,8 +25,6 @@ import Constants from 'expo-constants';
 import meal from '../assets/meal.jpeg';
 import {API_URL, TOKEN_KEY} from "../constant";
 
-
-
 class ShoppingListModal extends Component {
     constructor(props) {
         super(props);
@@ -171,25 +169,9 @@ class ShoppingListModal extends Component {
                     }}>
                     <Text >Finish Shopping</Text>
                 </Button>
-
             </Modal>
         );
     }
 }
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        marginTop: Constants.statusBarHeight,
-    },
-    item: {
-        backgroundColor: '#f9c2ff',
-        padding: 20,
-        marginVertical: 8,
-        marginHorizontal: 16,
-    },
-    title: {
-        fontSize: 32,
-    },
-});
 export default ShoppingListModal;
