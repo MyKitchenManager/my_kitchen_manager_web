@@ -1,10 +1,11 @@
 import React, {Component} from 'react';
-import {Button, Icon, Input, Item, Right, Text, View, Picker, Form, Left, ListItem, Textarea} from "native-base";
-// import ImagePicker from 'react-native-image-picker';
+import {Button, Icon, Input, Item, Right, Text, View, Picker, Form, Left, ListItem, Image} from "native-base";
 import {Modal} from "@ant-design/react-native";
 import {AsyncStorage, TextInput, ScrollView} from "react-native"
 import {API_URL, TOKEN_KEY} from "../constant"
-
+import * as ImagePicker from "expo-image-picker";
+import * as Permissions from "expo-permissions";
+import Constants from "expo-constants";
 
 class AddRecipeModal extends Component {
     constructor(props) {
@@ -19,7 +20,7 @@ class AddRecipeModal extends Component {
             ingredientItem: {},
             ingredientVolume: 0,
             unit: 6,
-            photoFile:[]
+            image: null
         }
     }
 
@@ -33,8 +34,29 @@ class AddRecipeModal extends Component {
     onValueChange(value){
         this.setState({ingredientItem: value})
     }
-    onChangeText(value){
-        this.setState({instructions: value})
+
+    getPermissionAsync = async () => {
+        if (Constants.platform.ios) {
+            const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+            if (status !== 'granted') {
+                alert('Sorry, we need camera roll permissions to make this work!');
+            }
+        }
+    }
+
+    _pickImage = async ()=>{
+        let result = await ImagePicker.launchImageLibraryAsync({
+            mediaTypes: ImagePicker.MediaTypeOptions.All,
+            allowsEditing: true,
+            aspect: [4, 3],
+            quality: 1
+        });
+
+        console.log(result);
+
+        if (!result.cancelled) {
+            this.setState({ image: result.uri });
+        }
     }
 
     onPressAdd(){
@@ -52,6 +74,7 @@ class AddRecipeModal extends Component {
     }
     componentDidMount() {
         this.setState({searchable:[]});
+        this.getPermissionAsync();
         AsyncStorage.getItem(TOKEN_KEY)
             .then((accessToken)=>{
                 if(accessToken!=null){
@@ -91,31 +114,50 @@ class AddRecipeModal extends Component {
             .then((accessToken)=>{
                    if(accessToken!=null) {
                        console.log(list);
-                       fetch(`${API_URL}/recipe/add`, {
-                           method: "POST",
-                           headers: {
+                       let formData = new FormData();
+                       formData.append("image", this.state.image);
+                       fetch(`${API_URL}/uploadimage`, {
+                           method:"POST",
+                           headers:{
+                               'Content-Type':'multipart/form-data',
                                'Authorization': accessToken,
-                               'Accept': 'application/json',
-                               'Content-Type': 'application/json',
                            },
-                           body: JSON.stringify({
-                               contributorId: 241,
-                               prepTime: 10,
-                               timesCooked: 10,
-                               recipeName: this.state.recipeName,
-                               instructions: this.state.instructions,
-                               recipeDetails: list
-                           }),
-                       }).then((response) => {
-                           if (response.status == "200") {
-                               console.log("Successfully Added recipe");
+                           body: formData
+                       }).then((response)=>{
+                           console.log(response.status);
+                           if(response.status=="200"){
+                               console.log(response.body);
+                               fetch(`${API_URL}/recipe/add`, {
+                                   method: "POST",
+                                   headers: {
+                                       'Authorization': accessToken,
+                                       'Accept': 'application/json',
+                                       'Content-Type': 'application/json',
+                                   },
+                                   body: JSON.stringify({
+                                       contributorId: 241,
+                                       prepTime: 10,
+                                       timesCooked: 10,
+                                       recipeName: this.state.recipeName,
+                                       instructions: this.state.instructions,
+                                       recipeDetails: list,
+                                       recipeImageUrl: response.body
+                                   }),
+                               }).then((response) => {
+                                   if (response.status == "200") {
+                                       console.log("Successfully Added recipe");
+                                   }
+                               }).then(() => {
+                                   this.props.data();
+                               })
+                                   .catch((error) => {
+                                       console.log(`Unable to add recipe -->${error}`);
+                                   })
                            }
-                       }).then(() => {
-                           this.props.data();
+                       }).catch((error) => {
+                           console.log(`Unable to upload image -->${error}`);
                        })
-                           .catch((error) => {
-                               console.log(`Unable to add recipe -->${error}`);
-                           })
+
                    }
             }).catch((error)=>{
                 console.log(`Unable to get token --> ${error}`);
@@ -210,9 +252,10 @@ class AddRecipeModal extends Component {
                         />
                     </Form>
 
-                    <Button transparent>
+                    <Button transparent onPress={this._pickImage}>
                         <Icon name="camera"/>
                     </Button>
+
 
                 </View>
 
