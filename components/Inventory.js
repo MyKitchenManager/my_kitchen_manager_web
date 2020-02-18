@@ -14,7 +14,6 @@ class Inventory extends Component {
         super(props);
         this.state={
             search : "",
-            userId: 241,
             Items: [],
             loading: true
         }
@@ -55,8 +54,8 @@ class Inventory extends Component {
                         this.scanInventory();
                     })
                         .catch((error)=>{
-                        console.log(`Error in adding item in inventory --> ${error}`);
-                    })
+                            console.log(`Error in adding item in inventory --> ${error}`);
+                        })
                 }
             })
     }
@@ -67,7 +66,7 @@ class Inventory extends Component {
             .then((accessToken)=>{
                 if(accessToken!=null){
                     //let newItem = [];
-                    fetch(`${API_URL}/inventory/userId/${this.props.data}`, {
+                    fetch(`${API_URL}/inventory/users`, {
                         method:"GET",
                         headers:{
                             "Authorization" : accessToken
@@ -161,67 +160,67 @@ class Inventory extends Component {
                 </Content>
             </Container>
             :(
-            <Provider>
-            <Container>
-                <Header>
-                    <Left>
+                <Provider>
+                    <Container>
+                        <Header>
+                            <Left>
 
-                    </Left>
-                    <Body>
-                        <Title style={{alignSelf:'center',
-                            justifyContent:'center',}}>My Inventory</Title>
-                    </Body>
-                    <Right>
-                        <Button transparent onPress = {() => this.onPressAdd()}>
-                            <Icon name='add-circle' />
-                        </Button>
-                    </Right>
-                </Header>
-                <Content>
-                    <Item rounded style={{margin: 10, width: 380, height:50, alignSelf: "center", marginLeft: 10}}>
-                        <Icon name="ios-search"/>
-                        <Input
-                            placeholder = "Find Ingredient"
-                            onChangeText = {(data)=>{this.setState({search: data})}}
-                            value = {this.state.search}
-                        />
-                        <Right>
-                            <Button transparent onPress={
-                                ()=>{
-                                    if(this.state.search!=""){
-                                        this.setState({search:""});
-                                    }
-                                }
-                            }>
-                                <Icon type="MaterialIcons" name="clear"></Icon>
-                            </Button>
-                        </Right>
-                    </Item>
-                    <FlatList
-                        data ={this.state.Items}
-                        renderItem={({item})=>(
-                            <Card style={{margin: 15, paddingTop: 10, width: 130, height: 140}}>
-                                <CardItem cardBody>
-                                    <Button transparent style={{margin:10}} onPress = {() => this.onPressImage(item)}>
-                                        <Thumbnail source={{uri: item.image}} style ={{marginTop: 30, height: 100, width: 100}}/>
+                            </Left>
+                            <Body>
+                                <Title style={{alignSelf:'center',
+                                    justifyContent:'center',}}>My Inventory</Title>
+                            </Body>
+                            <Right>
+                                <Button transparent onPress = {() => this.onPressAdd()}>
+                                    <Icon name='add-circle' />
+                                </Button>
+                            </Right>
+                        </Header>
+                        <Content>
+                            <Item rounded style={{margin: 10, width: 380, height:50, alignSelf: "center", marginLeft: 10}}>
+                                <Icon name="ios-search"/>
+                                <Input
+                                    placeholder = "Find Ingredient"
+                                    onChangeText = {(data)=>{this.setState({search: data})}}
+                                    value = {this.state.search}
+                                />
+                                <Right>
+                                    <Button transparent onPress={
+                                        ()=>{
+                                            if(this.state.search!=""){
+                                                this.setState({search:""});
+                                            }
+                                        }
+                                    }>
+                                        <Icon type="MaterialIcons" name="clear"></Icon>
                                     </Button>
-                                </CardItem>
-                                <CardItem footer>
-                                    <Text style = {{fontWeight:"bold", fontSize:13}}>{`${item.name} ${item.amount}${item.unit}`}</Text>
-                                </CardItem>
-                            </Card>
-                        )}
-                        numColumns = {3}
-                        keyExtractor = {item=>item.id}
-                    />
+                                </Right>
+                            </Item>
+                            <FlatList
+                                data ={this.state.Items}
+                                renderItem={({item})=>(
+                                    <Card style={{margin: 15, paddingTop: 10, width: 130, height: 140}}>
+                                        <CardItem cardBody>
+                                            <Button transparent style={{margin:10}} onPress = {() => this.onPressImage(item)}>
+                                                <Thumbnail source={{uri: item.image}} style ={{marginTop: 30, height: 100, width: 100}}/>
+                                            </Button>
+                                        </CardItem>
+                                        <CardItem footer>
+                                            <Text style = {{fontWeight:"bold", fontSize:13}}>{`${item.name} ${item.amount}${item.unit}`}</Text>
+                                        </CardItem>
+                                    </Card>
+                                )}
+                                numColumns = {3}
+                                keyExtractor = {item=>item.id}
+                            />
 
-                    <AddIngredientModal ref={'AddIngredientModal'} data={this.props.data} data2 = {this.scanInventory.bind(this)}/>
-                    <IngredientDetailModal ref={'IngredientDetailModal'} handleDeleteItem={this.handleDeleteItem.bind(this)} />
+                            <AddIngredientModal ref={'AddIngredientModal'} data={this.props.data} data2 = {this.scanInventory.bind(this)}/>
+                            <IngredientDetailModal ref={'IngredientDetailModal'} handleDeleteItem={this.handleDeleteItem.bind(this)} />
 
-                </Content>
-            </Container>
-            </Provider>
-        );
+                        </Content>
+                    </Container>
+                </Provider>
+            );
     }
 }
 

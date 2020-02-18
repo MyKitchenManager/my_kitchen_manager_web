@@ -1,24 +1,33 @@
 import React, {Component} from 'react';
-import {Button, Text, View} from "native-base";
-import {Modal} from "@ant-design/react-native";
-
+import {Button, Card, CardItem, Item, Right, Text, Thumbnail, View, Container, List, ListItem, Left} from "native-base";
+import {ScrollView} from "react-native";
+import {Col, Grid} from "react-native-easy-grid";
+import {Modal, WhiteSpace} from "@ant-design/react-native";
+import meal from "../assets/meal.jpeg";
 class RecipeDetailModal extends Component {
     constructor(props) {
         super(props);
         this.state = {
             showModal: false,
+            recipe: {}
         }
     }
 
-    showRecipeDetailModal() {
+    onUpdate(){
+
+    }
+
+    showRecipeDetailModal(item) {
         this.setState({
-            showModal: true
+            showModal: true,
+            recipe: item
         });
+        console.log(this.state.recipe);
     }
     render() {
         return (
             <Modal
-                style={{width: 320}}
+                style={{width: 380}}
                 ref={"RecipeDetailModal"}
                 title="Title"
                 transparent
@@ -33,7 +42,47 @@ class RecipeDetailModal extends Component {
             >
 
                 <View style={{ paddingVertical: 20 }}>
-                    <Text>See recipe details here</Text>
+                    <Thumbnail source={{uri:this.state.recipe.image}} style ={{height: 200, width: 200, alignSelf:"center"}}/>
+                    <View>
+                        <Text style={{fontSize: 25, fontWeight: '4', alignSelf: 'center', margin: 20}}>{this.state.recipe.name}</Text>
+                    </View>
+
+                    <WhiteSpace />
+
+                    <ScrollView style = {{height: 270}}>
+                        <Text style={{marginRight: 10, fontSize: 20, marginBottom:10, fontWeight: "bold"}}>Recipe</Text>
+                        <List>
+                            <ListItem>
+                                <Left>
+                                    <Text>Name</Text>
+                                </Left>
+
+                                <Right style={{width: 50}}>
+                                    <Text style={{marginRight: 10}}>Amount</Text>
+                                </Right>
+                            </ListItem>
+                            {this.state.recipe.detail?this.state.recipe.detail.map((item)=>{
+                                return <ListItem>
+                                    <Left>
+                                        <Text>{item.ingredientIdJoin.ingredientName}</Text>
+                                    </Left>
+
+                                    <Right style={{width: 50}}>
+                                        <Text style={{marginRight: 10}}>{`${item.ingredientVolume} ${item.unitsOfMeasureListEntry.entry}`}</Text>
+                                    </Right>
+                                </ListItem>
+                            }):<ListItem></ListItem>}
+
+                        </List>
+
+
+
+                        <View>
+                            <Text style={{marginRight: 10, fontSize: 20, marginBottom:15, marginTop: 20, fontWeight: "bold"}}>Method</Text>
+                            <WhiteSpace/>
+                            <Text>this is the detail of cooking this food</Text>
+                        </View>
+                    </ScrollView>
                 </View>
 
                 <Button
@@ -44,8 +93,8 @@ class RecipeDetailModal extends Component {
                         backgroundColor:"deepskyblue",
                         width:200}}
                     onPress={()=>{
-                        this.setState({showModal: false
-                        })
+                        this.onUpdate.bind(this);
+                        this.setState({showModal: false})
                     }}>
                     <Text >Update</Text>
                 </Button>

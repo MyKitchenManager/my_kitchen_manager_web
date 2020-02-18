@@ -63,9 +63,9 @@ class Home extends Component {
                 break;
         }
         return (
-           <Container>
+            <Container>
 
-               {view}
+                {view}
 
                 <Footer style={{height: 60}}>
                     <FooterTab style={{paddingBottom: 30}}>
@@ -100,7 +100,7 @@ class Home extends Component {
                         </Button>
                     </FooterTab>
                 </Footer>
-           </Container>
+            </Container>
         );
     }
 }
