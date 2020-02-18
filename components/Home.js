@@ -8,7 +8,8 @@ import styles from '../styles/styles.js';
 import Profile from "./Profile"
 import {AsyncStorage} from "react-native"
 import {API_URL, TOKEN_KEY} from "../constant"
-
+import MealPlanRecipe from "./MealPlanRecipe";
+import MealPlanStack from "../routes/MealPlanStack";
 
 class Home extends Component {
     constructor(props) {
@@ -64,7 +65,6 @@ class Home extends Component {
         }
         return (
             <Container>
-
                 {view}
 
                 <Footer style={{height: 60}}>

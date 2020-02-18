@@ -21,12 +21,14 @@ import {
 } from "native-base"
 import {TouchableOpacity, StyleSheet, Image, FlatList, AsyncStorage, Alert} from "react-native";
 import {Provider, Modal} from "@ant-design/react-native"
-import RecipeCard from "./RecipeCard";
 import {Agenda} from "react-native-calendars";
 import meal from "../assets/meal.jpeg";
 import {API_URL, TOKEN_KEY} from "../constant";
 import ShoppingListModal from "./ShoppingListModal";
 import CookModal from "./CookModal";
+import {Actions} from "react-native-router-flux";
+
+
 
 class MealPlan extends Component {
     constructor(props) {
@@ -115,6 +117,12 @@ class MealPlan extends Component {
         }, 1000);
     }
 
+    onPressAddButton(day) {
+        //alert('fail');
+        console.log('add to which day:' + day);
+        Actions.recipe();
+    }
+
     renderDay(day, items) {
         return (
             <View>
@@ -134,7 +142,7 @@ class MealPlan extends Component {
                             {/*    alignSelf: 'center',*/}
                             {/*    marginTop: 20*/}
                             {/*}}>{day.weekNumbers}</Text>*/}
-                            <Button transparent>
+                            <Button transparent onPress={() => this.onPressAddButton(day)}>
                                 <Icon name='add-circle' style={{fontSize: 34, color: '#00BBF2'}}/>
                             </Button>
                         </View>
@@ -204,6 +212,7 @@ class MealPlan extends Component {
 
     renderItem(item) {
         return (
+
             <View style={{}}>
                 <TouchableOpacity
                     style={[styles.listItem]}
