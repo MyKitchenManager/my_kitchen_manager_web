@@ -26,6 +26,7 @@ import {Agenda} from "react-native-calendars";
 import meal from "../assets/meal.jpeg";
 import {API_URL, TOKEN_KEY} from "../constant";
 import ShoppingListModal from "./ShoppingListModal";
+import CookModal from "./CookModal";
 
 class MealPlan extends Component {
     constructor(props) {
@@ -38,6 +39,7 @@ class MealPlan extends Component {
             showModal: false,
         };
         this.onPressShoppingButton = this.onPressShoppingButton.bind(this);
+        this.onPressCookButton = this.onPressCookButton.bind(this);
     }
 
     componentDidMount() {
@@ -67,6 +69,9 @@ class MealPlan extends Component {
                             let date = responseData[i].mealDate;
                             let image = responseData[i].recipeIdJoin.recipeImageUrl;
                             let status = responseData[i].status;
+                            let recipeDetails = responseData[i].recipeIdJoin.recipeDetails;
+                            let instructions = responseData[i].recipeIdJoin.instructions;
+
                             if (!this.state.allItems[date]) {
                                 this.state.allItems[date] = [];
                             }
@@ -74,7 +79,9 @@ class MealPlan extends Component {
                                 id: id,
                                 name: name,
                                 image: image,
-                                status: status
+                                status: status,
+                                recipeDetails: recipeDetails,
+                                instructions: instructions
                             })
                         }
                     }).then(()=>{
@@ -158,13 +165,41 @@ class MealPlan extends Component {
                         }
                     })
                     //     .then(()=>{
-                    //     this.loadItems(day.day);
+                    //     this.forceUpdate();
                     // })
                         .catch((error)=>{
                             console.log(`Error in adding item in inventory --> ${error}`);
                         })
                 }
             })
+    }
+
+    onPressDeleteButton(item) {
+        Alert.alert(
+            'Pay Attention',
+            'Do you really want to delete this item?',
+            [
+                {
+                    text: 'Cancel',
+                    onPress: () => console.log('Cancel Pressed'),
+                    style: 'cancel',
+                },
+                {text: 'Yes', onPress: () => {this.onPressYes(item)}},
+            ],
+            {cancelable: false},
+        )
+    }
+
+    onPressCookButton(item) {
+        console.log('Originitem:' + item);
+        const recipe ={
+            name: item.name,
+            image: item.image,
+            detail: item.recipeDetails,
+            method: item.instructions
+        }
+        console.log('recipe:' + recipe);
+        this.refs.CookModal.showCookModal(recipe);
     }
 
     renderItem(item) {
@@ -181,27 +216,12 @@ class MealPlan extends Component {
                             <Body style={{paddingTop: 8, paddingBottom: 5 }}>
                                 <Text style={{fontSize: 16}}>{item.name}</Text>
                                 <Row style={{paddingLeft: 0, marginTop: 10, marginBottom: 2}}>
-                                    <Button transparent>
+                                    <Button transparent onPress={()=>{this.onPressCookButton(item)}}>
                                         <Icon active name="ios-bonfire" style={{fontSize: 18, marginLeft: 0, color: '#00BBF2'}}/>
                                         <Text style={{fontSize: 12, paddingLeft: 5, color: '#00BBF2'}}>Cook</Text>
                                     </Button>
 
-                                    <Button transparent
-                                            onPress={()=>{
-                                                Alert.alert(
-                                                    'Pay Attention',
-                                                    'Do you really want to delete this item?',
-                                                    [
-                                                        {
-                                                            text: 'Cancel',
-                                                            onPress: () => console.log('Cancel Pressed'),
-                                                            style: 'cancel',
-                                                        },
-                                                        {text: 'Yes', onPress: () => {this.onPressYes(item)}},
-                                                    ],
-                                                    {cancelable: false},
-                                                );
-                                            }}>
+                                    <Button transparent onPress={()=>{this.onPressDeleteButton(item)}}>
                                         <Icon active name="ios-trash" style={{fontSize: 18, color: '#00BBF2'}}/>
                                         <Text style={{fontSize: 12, paddingLeft: 5, color: '#00BBF2'}}>Delete</Text>
                                     </Button>
@@ -293,7 +313,9 @@ class MealPlan extends Component {
                         renderEmptyDate={this.renderEmptyDate.bind(this)}
                         rowHasChanged={this.rowHasChanged.bind(this)}
                     />
+
                     <ShoppingListModal ref={'ShoppingListModal'}/>
+                    <CookModal ref={'CookModal'}/>
                 </Container>
             </Provider>
         );
