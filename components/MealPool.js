@@ -192,10 +192,10 @@ class MealPool extends Component {
                         <FlatList
                             data={this.state.Items}
                             renderItem={({item}) =>(
-                                <Card style={{padding: 20, height: 160}}>
+                                <Card style={{padding: 20, height: 170, borderRadius: 15}}>
                                     <CardItem cardBody>
                                         <Button transparent style={{margin:10}} onPress = {() => this.onPressImage(item)}>
-                                            <Thumbnail source={{uri:item.image}} style ={{height: 120, width: 140, marginTop: 30}}/>
+                                            <Thumbnail source={{uri:item.recipeImageUrl}} style ={{height: 120, width: 140, marginTop: 30}}/>
                                         </Button>
                                     </CardItem>
                                     <CardItem style={{marginTop: 40, textAlign: 'center', backgroundColor: 'transparent'}}>

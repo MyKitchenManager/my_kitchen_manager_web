@@ -142,9 +142,9 @@ class AddRecipeModal extends Component {
                 <View style={{ paddingVertical: 20 }}>
                     <Form>
                         <Item rounded style={{margin: 10, width: 290, height:50, alignSelf: "center"}}>
-                            <Icon name="ios-search"/>
+                            {/*<Icon name="ios-search"/>*/}
                             <Input
-                                placeholder='Enter Recipe Name'
+                                placeholder='Recipe Name'
                                 value={this.state.recipeName}
                                 onChangeText={(text) => this.setState({recipeName: text})}
                             />
