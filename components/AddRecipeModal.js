@@ -1,8 +1,8 @@
 import React, {Component} from 'react';
-import {Button, Icon, Input, Item, Right, Text, View, Picker, Form} from "native-base";
+import {Button, Icon, Input, Item, Right, Text, View, Picker, Form, Left, ListItem, Textarea} from "native-base";
 import ModalDropdown from "react-native-modal-dropdown";
 import {Modal} from "@ant-design/react-native";
-import {AsyncStorage} from "react-native"
+import {AsyncStorage, TextInput, ScrollView} from "react-native"
 import {API_URL, TOKEN_KEY} from "../constant"
 import {acc} from "react-native-reanimated"
 
@@ -14,9 +14,9 @@ class AddRecipeModal extends Component {
             recipeId: 0,
             recipeName:"",
             instructions: "",
-            ingredients: [{}],
+            ingredients: [],
             searchable: [],
-            ingredientId: 0,
+            ingredientItem: {},
             ingredientVolume: 0,
             unit: 6
         }
@@ -30,14 +30,18 @@ class AddRecipeModal extends Component {
     }
 
     onValueChange(value){
-        this.setState({ingredientId: value})
+        this.setState({ingredientItem: value})
+    }
+    onChangeText(value){
+        this.setState({instructions: value})
     }
 
     onPressAdd(){
         const item = {
-            ingredientId : this.state.ingredientId,
+            ingredientId : this.state.ingredientItem.ingredientId,
+            ingredientName: this.state.ingredientItem.ingredientName,
             ingredientVolume : this.state.ingredientVolume,
-            unitsOfMeasure : this.state.unit
+            unitsOfMeasure : "g"
         }
         this.setState(prevState=>({
             ingredients: [...prevState.ingredients, item]
@@ -69,14 +73,18 @@ class AddRecipeModal extends Component {
     }
 
     onAddItem(){
-        if(this.state.recipeId==0){
-            alert("Please select a recipe");
-        }
         AsyncStorage.getItem(TOKEN_KEY)
             .then((accessToken)=>{
                 if(accessToken!=null){
-                    let list = this.state.searchable;
-                    let id = this.state.recipeId;
+                    let list = [];
+                    for(let i = 0; i < this.state.ingredients.length; i++){
+                        let item = {
+                            "ingredientId": this.state.ingredients[i].ingredientId,
+                            "ingredientVolume": this.state.ingredients[i].ingredientVolume,
+                            "unitsOfMeasure": 6
+                        }
+                        list.concat(item);
+                    }
                     fetch(`${API_URL}/recipe/add`, {
                         method:"POST",
                         headers:{
@@ -85,13 +93,12 @@ class AddRecipeModal extends Component {
                             'Content-Type': 'application/json',
                         },
                         body: JSON.stringify({
-                            recipeCategory: list[id-1].recipeCategory,
                             contributorId: 241,
                             prepTime: 10,
                             timesCooked: 10,
-                            recipeName: list[id-1].recipeName,
-                            instructions: list[id-1].instructions,
-                            recipeDetails: list[id-1].recipeDetails
+                            recipeName: this.state.recipeName,
+                            instructions: this.state.instructions,
+                            recipeDetails: list
                         }),
                     }).then((response)=>{
                         if(response.status=="200"){
@@ -147,34 +154,54 @@ class AddRecipeModal extends Component {
                                 </Button>
                             </Right>
                         </Item>
-                        {this.state.ingredients.map((item)=>{
-                            return <Item rounded style={{margin: 10, width: 290, height:50, alignSelf: "center"}}>
-                                <Picker
-                                    mode="dropdown"
-                                    iosIcon={<Icon name="arrow-down" />}
-                                    placeholder="Select Ingredient"
-                                    placeholderStyle={{ color: "#bfc6ea" }}
-                                    placeholderIconColor="#007aff"
-                                    style={{ width: 160 }}
-                                    selectedValue={this.state.ingredientId}
-                                    onValueChange={this.onValueChange.bind(this)}
-                                >
-                                    {this.state.searchable.map((item)=>{
-                                        return <Picker.Item label={item.ingredientName} value={item.ingredientId}/>
-                                    })}
-                                </Picker>
-                                <Right>
-                                   <Input
-                                       placeholder='Amount'
-                                       value={this.state.ingredientVolume}
-                                       onChangeText={(text) => this.setState({ingredientVolume: parseInt(text)})}
-                                   />
-                                </Right>
-                            </Item>
-                        })}
+                        <Item rounded style={{margin: 10, width: 290, height:50, alignSelf: "center"}}>
+                            <Picker
+                                mode="dropdown"
+                                iosIcon={<Icon name="arrow-down" />}
+                                placeholder="Select Ingredient"
+                                placeholderStyle={{ color: "#bfc6ea" }}
+                                placeholderIconColor="#007aff"
+                                style={{ width: 160 }}
+                                selectedValue={this.state.ingredientItem}
+                                onValueChange={this.onValueChange.bind(this)}
+                            >
+                                {this.state.searchable.map((item)=>{
+                                    return <Picker.Item label={item.ingredientName} value={item}/>
+                                })}
+                            </Picker>
+                            <Right>
+                                <Input
+                                    placeholder='Amount'
+                                    style={{marginRight:10, width: 75}}
+                                    value={this.state.ingredientVolume}
+                                    onChangeText={(text) => this.setState({ingredientVolume: parseInt(text)})}
+                                />
+                            </Right>
+                        </Item>
+                        <ScrollView>
+                            {this.state.ingredients.map((item)=>{
+                                return <ListItem>
+                                    <Left>
+                                        <Text>{item.ingredientName}</Text>
+                                    </Left>
+
+                                    <Right style={{width: 50}}>
+                                        <Text style={{marginRight: 10}}>{`${item.ingredientVolume} ${item.unitsOfMeasure}`}</Text>
+                                    </Right>
+                                </ListItem>
+                            })}
+                        </ScrollView>
                         <Button transparent onPress = {() => this.onPressAdd()}>
                             <Icon name='add-circle' />
                         </Button>
+
+                        <TextInput
+                            multiline
+                            style={{height: 100, margin:10, paddingTop:10, borderColor:"grey",borderWidth:1, elevation:5}}
+                            placeholder="Type your method!"
+                            onChangeText={text=>this.setState({instructions: text})}
+                            value = {this.state.instructions}
+                        />
                     </Form>
                 </View>
 
