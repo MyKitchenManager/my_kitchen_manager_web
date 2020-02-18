@@ -32,7 +32,7 @@ class ShoppingListModal extends Component {
             showModal: false,
             loading: true,
             checkedBox: [],
-            items: []
+            items: [],
         }
     }
 
@@ -41,35 +41,46 @@ class ShoppingListModal extends Component {
         AsyncStorage.getItem(TOKEN_KEY)
             .then((accessToken)=>{
                 if(accessToken!=null){
-                    fetch(`${API_URL}/shoppinglist/241`, {
-                        method: "GET",
-                        headers:{
-                            "Authorization": accessToken
+                    fetch(`${API_URL}/`, {
+                        method: 'GET',
+                        headers: {
+                            'Authorization': accessToken
                         }
-                    }).then((response)=>{
-                        if(response.status=="200"){
+                    }).then((response) => {
+                        if (response.status == '200') {
                             return response.json();
-                        }else{
-                            alert(`Error in fetching data --> status ${response.status}`);
                         }
-                    }).then((responseData)=>{
-                        for (let i = 0; i < responseData[0].length; i++) {
-                            console.log('responseData[i]:' + responseData[0][i]);
-                            let id = responseData[0][i].i.ingredientId
-                            let name = responseData[0][i].i.ingredientName;
-                            let image = responseData[0][i].i.imageUrl;
-                            let volume = responseData[0][i].volume;
-                            const item = {
-                                id: id,
-                                name: name,
-                                image: image,
-                                volume: volume
-                            };
-                            const list = this.state.items.concat(item);
-                            this.setState({items: list, loading: false});
-                        }
-
-                    }).done()
+                    }).then((responseData) => {
+                        let userId = responseData.userId;
+                        fetch(`${API_URL}/shoppinglist/${userId}`, {
+                            method: "GET",
+                            headers:{
+                                "Authorization": accessToken
+                            }
+                        }).then((response)=>{
+                            if(response.status == "200"){
+                                return response.json();
+                            }else{
+                                alert(`Error in fetching data --> status ${response.status}`);
+                            }
+                        }).then((responseData)=>{
+                            for (let i = 0; i < responseData[0].length; i++) {
+                                console.log('responseData[i]:' + responseData[0][i]);
+                                let id = responseData[0][i].i.ingredientId
+                                let name = responseData[0][i].i.ingredientName;
+                                let image = responseData[0][i].i.imageUrl;
+                                let volume = responseData[0][i].volume;
+                                const item = {
+                                    id: id,
+                                    name: name,
+                                    image: image,
+                                    volume: volume
+                                };
+                                const list = this.state.items.concat(item);
+                                this.setState({items: list, loading: false});
+                            }
+                        }).done()
+                    })
                 }
             })
             .catch((error)=>{
