@@ -19,7 +19,7 @@ import {
     List,
     ListItem, Row
 } from "native-base"
-import {TouchableOpacity, StyleSheet, Image, FlatList, AsyncStorage} from "react-native";
+import {TouchableOpacity, StyleSheet, Image, FlatList, AsyncStorage, Alert} from "react-native";
 import {Provider, Modal} from "@ant-design/react-native"
 import RecipeCard from "./RecipeCard";
 import {Agenda} from "react-native-calendars";
@@ -139,6 +139,34 @@ class MealPlan extends Component {
         )
     }
 
+    onPressYes(item) {
+        console.log('An item is deleted');
+        AsyncStorage.getItem(TOKEN_KEY)
+            .then((accessToken)=>{
+                if(accessToken!=null){
+                    console.log(accessToken);
+                    fetch(`${API_URL}/mealplan/${item.id}`, {
+                        method: "DELETE",
+                        headers: {
+                            'Authorization':  accessToken
+                        }
+                    }).then((response)=>{
+                        if(response.status == "200"){
+                            alert("Item successfully deleted");
+                        }else{
+                            console.log(response.status);
+                        }
+                    })
+                    //     .then(()=>{
+                    //     this.loadItems(day.day);
+                    // })
+                        .catch((error)=>{
+                            console.log(`Error in adding item in inventory --> ${error}`);
+                        })
+                }
+            })
+    }
+
     renderItem(item) {
         return (
             <View style={{}}>
@@ -158,7 +186,22 @@ class MealPlan extends Component {
                                         <Text style={{fontSize: 12, paddingLeft: 5, color: '#00BBF2'}}>Cook</Text>
                                     </Button>
 
-                                    <Button transparent>
+                                    <Button transparent
+                                            onPress={()=>{
+                                                Alert.alert(
+                                                    'Pay Attention',
+                                                    'Do you really want to delete this item?',
+                                                    [
+                                                        {
+                                                            text: 'Cancel',
+                                                            onPress: () => console.log('Cancel Pressed'),
+                                                            style: 'cancel',
+                                                        },
+                                                        {text: 'Yes', onPress: () => {this.onPressYes(item)}},
+                                                    ],
+                                                    {cancelable: false},
+                                                );
+                                            }}>
                                         <Icon active name="ios-trash" style={{fontSize: 18, color: '#00BBF2'}}/>
                                         <Text style={{fontSize: 12, paddingLeft: 5, color: '#00BBF2'}}>Delete</Text>
                                     </Button>
