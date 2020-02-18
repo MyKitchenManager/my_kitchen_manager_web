@@ -57,6 +57,7 @@ class AddRecipeModal extends Component {
         if (!result.cancelled) {
             this.setState({ image: result.uri });
         }
+        console.log('image URL in state:' + this.state.image);
     }
 
     onPressAdd(){
@@ -115,7 +116,7 @@ class AddRecipeModal extends Component {
                    if(accessToken!=null) {
                        console.log(list);
                        let formData = new FormData();
-                       formData.append("image", this.state.image);
+                       formData.append('image', this.state.image);
                        fetch(`${API_URL}/uploadimage`, {
                            method:"POST",
                            headers:{
@@ -124,7 +125,7 @@ class AddRecipeModal extends Component {
                            },
                            body: formData
                        }).then((response)=>{
-                           console.log(response.status);
+                           console.log('getImageURL:' + response.status);
                            if(response.status=="200"){
                                console.log(response.body);
                                fetch(`${API_URL}/recipe/add`, {
