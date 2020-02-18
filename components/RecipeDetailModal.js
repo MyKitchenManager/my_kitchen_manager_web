@@ -13,6 +13,10 @@ class RecipeDetailModal extends Component {
         }
     }
 
+    onUpdate(){
+
+    }
+
     showRecipeDetailModal(item) {
         this.setState({
             showModal: true,
@@ -89,8 +93,8 @@ class RecipeDetailModal extends Component {
                         backgroundColor:"deepskyblue",
                         width:200}}
                     onPress={()=>{
-                        this.setState({showModal: false
-                        })
+                        this.onUpdate.bind(this);
+                        this.setState({showModal: false})
                     }}>
                     <Text >Update</Text>
                 </Button>

@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
 import {Button, Icon, Input, Item, Right, Text, View, Picker, Form, Left, ListItem, Textarea} from "native-base";
-import ModalDropdown from "react-native-modal-dropdown";
+// import ImagePicker from 'react-native-image-picker';
 import {Modal} from "@ant-design/react-native";
 import {AsyncStorage, TextInput, ScrollView} from "react-native"
 import {API_URL, TOKEN_KEY} from "../constant"
-import {acc} from "react-native-reanimated"
+
 
 class AddRecipeModal extends Component {
     constructor(props) {
@@ -18,7 +18,8 @@ class AddRecipeModal extends Component {
             searchable: [],
             ingredientItem: {},
             ingredientVolume: 0,
-            unit: 6
+            unit: 6,
+            photoFile:[]
         }
     }
 
@@ -37,6 +38,7 @@ class AddRecipeModal extends Component {
     }
 
     onPressAdd(){
+        console.log(this.state.ingredientItem);
         const item = {
             ingredientId : this.state.ingredientItem.ingredientId,
             ingredientName: this.state.ingredientItem.ingredientName,
@@ -73,44 +75,48 @@ class AddRecipeModal extends Component {
     }
 
     onAddItem(){
+        let list = [];
+            console.log(this.state.ingredients);
+            for (let i = 0; i < this.state.ingredients.length; i++) {
+                let item = {
+                    ingredientId: this.state.ingredients[i].ingredientId,
+                    ingredientVolume: this.state.ingredients[i].ingredientVolume,
+                    unitsOfMeasure: 6
+                }
+                console.log(item);
+                list.push(item);
+            }
+        console.log(list);
         AsyncStorage.getItem(TOKEN_KEY)
             .then((accessToken)=>{
-                if(accessToken!=null){
-                    let list = [];
-                    for(let i = 0; i < this.state.ingredients.length; i++){
-                        let item = {
-                            "ingredientId": this.state.ingredients[i].ingredientId,
-                            "ingredientVolume": this.state.ingredients[i].ingredientVolume,
-                            "unitsOfMeasure": 6
-                        }
-                        list.concat(item);
-                    }
-                    fetch(`${API_URL}/recipe/add`, {
-                        method:"POST",
-                        headers:{
-                            'Authorization':accessToken,
-                            'Accept': 'application/json',
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({
-                            contributorId: 241,
-                            prepTime: 10,
-                            timesCooked: 10,
-                            recipeName: this.state.recipeName,
-                            instructions: this.state.instructions,
-                            recipeDetails: list
-                        }),
-                    }).then((response)=>{
-                        if(response.status=="200"){
-                            console.log("Successfully Added recipe");
-                        }
-                    }).then(()=>{
-                        this.props.data();
-                    })
-                        .catch((error)=>{
-                        console.log(`Unable to add recipe -->${error}`);
-                    })
-                }
+                   if(accessToken!=null) {
+                       console.log(list);
+                       fetch(`${API_URL}/recipe/add`, {
+                           method: "POST",
+                           headers: {
+                               'Authorization': accessToken,
+                               'Accept': 'application/json',
+                               'Content-Type': 'application/json',
+                           },
+                           body: JSON.stringify({
+                               contributorId: 241,
+                               prepTime: 10,
+                               timesCooked: 10,
+                               recipeName: this.state.recipeName,
+                               instructions: this.state.instructions,
+                               recipeDetails: list
+                           }),
+                       }).then((response) => {
+                           if (response.status == "200") {
+                               console.log("Successfully Added recipe");
+                           }
+                       }).then(() => {
+                           this.props.data();
+                       })
+                           .catch((error) => {
+                               console.log(`Unable to add recipe -->${error}`);
+                           })
+                   }
             }).catch((error)=>{
                 console.log(`Unable to get token --> ${error}`);
         })
@@ -203,6 +209,11 @@ class AddRecipeModal extends Component {
                             value = {this.state.instructions}
                         />
                     </Form>
+
+                    <Button transparent>
+                        <Icon name="camera"/>
+                    </Button>
+
                 </View>
 
                 <Button
