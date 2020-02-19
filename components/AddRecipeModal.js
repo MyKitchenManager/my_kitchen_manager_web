@@ -4,8 +4,9 @@ import {Modal} from "@ant-design/react-native";
 import {AsyncStorage, TextInput, ScrollView} from "react-native"
 import {API_URL, TOKEN_KEY} from "../constant"
 import * as ImagePicker from "expo-image-picker";
-import * as Permissions from "expo-permissions";
 import Constants from "expo-constants";
+
+
 
 class AddRecipeModal extends Component {
     constructor(props) {
@@ -57,6 +58,7 @@ class AddRecipeModal extends Component {
         if (!result.cancelled) {
             this.setState({ image: result.uri });
         }
+        console.log('image URL in state:' + this.state.image);
     }
 
     onPressAdd(){
@@ -121,6 +123,7 @@ class AddRecipeModal extends Component {
                            name: 'image'
                        });
                        console.log(formData);
+
                        fetch(`${API_URL}/uploadimage`, {
                            method:"POST",
                            headers:{
@@ -129,7 +132,7 @@ class AddRecipeModal extends Component {
                            },
                            body: formData
                        }).then((response)=>{
-                           console.log(response.status);
+                           console.log('getImageURL:' + response.status);
                            if(response.status=="200"){
                                console.log(response);
                                fetch(`${API_URL}/recipe/add`, {
@@ -189,9 +192,9 @@ class AddRecipeModal extends Component {
                 <View style={{ paddingVertical: 20 }}>
                     <Form>
                         <Item rounded style={{margin: 10, width: 290, height:50, alignSelf: "center"}}>
-                            <Icon name="ios-search"/>
+                            {/*<Icon name="ios-search"/>*/}
                             <Input
-                                placeholder='Enter Recipe Name'
+                                placeholder='Recipe Name'
                                 value={this.state.recipeName}
                                 onChangeText={(text) => this.setState({recipeName: text})}
                             />

@@ -16,13 +16,6 @@ import {
 } from "native-base"
 import {Provider} from "@ant-design/react-native";
 import {FlatList, Image} from "react-native";
-import AddIngredientModal from "./AddIngredientModal";
-import IngredientDetailModal from "./IngredientDetailModal";
-import RecipeCard from "./RecipeCard";
-import meal from "../assets/meal.jpeg";
-import {Grid, Row, Col} from "react-native-easy-grid";
-import {getAutoFocusEnabled} from "expo/build/AR";
-import {lefthandObjectDiff} from "react-native/Libraries/Utilities/verifyComponentAttributeEquivalence";
 import AddRecipeModal from "./AddRecipeModal";
 import RecipeDetailModal from "./RecipeDetailModal";
 import {AsyncStorage} from "react-native"
@@ -125,77 +118,16 @@ class MealPool extends Component {
                             </Right>
                         </Item>
 
-                        {/*<Grid>*/}
-                        {/*    <Col>*/}
-                        {/*       <Card style={{padding: 20, height: 160}}>*/}
-                        {/*            <CardItem cardBody>*/}
-                        {/*                <Button transparent style={{margin:10}} onPress = {() => this.onPressImage()}>*/}
-                        {/*                    <Thumbnail source={meal} style ={{height: 120, width: 140, marginTop: 30}}/>*/}
-                        {/*                </Button>*/}
-                        {/*            </CardItem>*/}
-                        {/*           <CardItem style={{marginTop: 40, textAlign: 'center', backgroundColor: 'transparent'}}>*/}
-                        {/*               <Left>*/}
-                        {/*                   <Body>*/}
-                        {/*                       <Text style = {{fontWeight:"bold", fontSize:13}}>Orange Chicken</Text>*/}
-                        {/*                   </Body>*/}
-                        {/*               </Left>*/}
-                        {/*           </CardItem>*/}
-                        {/*        </Card>*/}
-                        {/*        <Card style={{padding: 20, height: 160}}>*/}
-                        {/*            <CardItem cardBody>*/}
-                        {/*                <Button transparent style={{margin:10}} onPress = {() => this.onPressImage()}>*/}
-                        {/*                    <Thumbnail source={meal} style ={{height: 120, width: 140, marginTop: 30}}/>*/}
-                        {/*                </Button>*/}
-                        {/*            </CardItem>*/}
-                        {/*            <CardItem style={{marginTop: 40, textAlign: 'center', backgroundColor: 'transparent'}}>*/}
-                        {/*                <Left>*/}
-                        {/*                    <Body>*/}
-                        {/*                        <Text style = {{fontWeight:"bold", fontSize:13}}>Orange Chicken</Text>*/}
-                        {/*                    </Body>*/}
-                        {/*                </Left>*/}
-                        {/*            </CardItem>*/}
-                        {/*        </Card>*/}
-                        {/*    </Col>*/}
-
-                        {/*    <Col>*/}
-                        {/*        <Card style={{padding: 20, height: 160}}>*/}
-                        {/*            <CardItem cardBody>*/}
-                        {/*                <Button transparent style={{margin:10}} onPress = {() => this.onPressImage()}>*/}
-                        {/*                    <Thumbnail source={meal} style ={{height: 120, width: 140, marginTop: 30}}/>*/}
-                        {/*                </Button>*/}
-                        {/*            </CardItem>*/}
-                        {/*            <CardItem style={{marginTop: 40, textAlign: 'center', backgroundColor: 'transparent'}}>*/}
-                        {/*                <Left>*/}
-                        {/*                    <Body>*/}
-                        {/*                        <Text style = {{fontWeight:"bold", fontSize:13}}>Orange Chicken</Text>*/}
-                        {/*                    </Body>*/}
-                        {/*                </Left>*/}
-                        {/*            </CardItem>*/}
-                        {/*        </Card>*/}
-                        {/*        <Card style={{padding: 20, height: 160}}>*/}
-                        {/*            <CardItem cardBody>*/}
-                        {/*                <Button transparent style={{margin:10}} onPress = {() => this.onPressImage()}>*/}
-                        {/*                    <Thumbnail source={meal} style ={{height: 120, width: 140, marginTop: 30}}/>*/}
-                        {/*                </Button>*/}
-                        {/*            </CardItem>*/}
-                        {/*            <CardItem style={{marginTop: 40, textAlign: 'center', backgroundColor: 'transparent'}}>*/}
-                        {/*                <Left>*/}
-                        {/*                    <Body>*/}
-                        {/*                        <Text style = {{fontWeight:"bold", fontSize:13}}>Orange Chicken</Text>*/}
-                        {/*                    </Body>*/}
-                        {/*                </Left>*/}
-                        {/*            </CardItem>*/}
-                        {/*        </Card>*/}
-                        {/*    </Col>*/}
-                        {/*</Grid>*/}
 
                         <FlatList
                             data={this.state.Items}
                             renderItem={({item}) =>(
-                                <Card style={{padding: 20, height: 160}}>
+                                <Card style={{padding: 20, height: 170, borderRadius: 15}}>
                                     <CardItem cardBody>
                                         <Button transparent style={{margin:10}} onPress = {() => this.onPressImage(item)}>
-                                            <Thumbnail source={meal} style ={{height: 120, width: 140, marginTop: 30}}/>
+
+                                            <Thumbnail source={{uri:item.recipeImageUrl}} style ={{height: 120, width: 140, marginTop: 30}}/>
+
                                         </Button>
                                     </CardItem>
                                     <CardItem style={{marginTop: 40, textAlign: 'center', backgroundColor: 'transparent'}}>
@@ -219,6 +151,5 @@ class MealPool extends Component {
         )
     }
 }
-
 
 export default MealPool;
