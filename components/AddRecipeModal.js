@@ -115,7 +115,12 @@ class AddRecipeModal extends Component {
                    if(accessToken!=null) {
                        console.log(list);
                        let formData = new FormData();
-                       formData.append("image", this.state.image);
+                       formData.append("image", {
+                           uri: this.state.image,
+                           type: 'image',
+                           name: 'image'
+                       });
+                       console.log(formData);
                        fetch(`${API_URL}/uploadimage`, {
                            method:"POST",
                            headers:{
@@ -126,7 +131,7 @@ class AddRecipeModal extends Component {
                        }).then((response)=>{
                            console.log(response.status);
                            if(response.status=="200"){
-                               console.log(response.body);
+                               console.log(response);
                                fetch(`${API_URL}/recipe/add`, {
                                    method: "POST",
                                    headers: {
