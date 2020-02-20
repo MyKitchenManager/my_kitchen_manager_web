@@ -19,39 +19,29 @@ import {
     List,
     ListItem, Row
 } from "native-base"
-import {TouchableOpacity, StyleSheet, Image, FlatList, AsyncStorage} from "react-native";
+import {TouchableOpacity, StyleSheet, Image, FlatList, AsyncStorage, Alert} from "react-native";
 import {Provider, Modal} from "@ant-design/react-native"
-import RecipeCard from "./RecipeCard";
 import {Agenda} from "react-native-calendars";
 import meal from "../assets/meal.jpeg";
 import {API_URL, TOKEN_KEY} from "../constant";
 import ShoppingListModal from "./ShoppingListModal";
+import CookModal from "./CookModal";
+import {Actions} from "react-native-router-flux";
+
+
 
 class MealPlan extends Component {
-
     constructor(props) {
         super(props);
 
         this.state = {
-            // items: {
-            //     '2020-02-15' : [
-            //         {name: 'Chicken Parmesan', image: 'https://img.sndimg.com/food/image/upload/w_621,h_349,c_fill,fl_progressive,q_80/v1/img/recipes/19/13/5/AKvKcJgQWqe5WpAZ4bTu_chicken-parmesan-5.jpg'},
-            //         {name: 'Zuppa Toscana', image: 'https://img.sndimg.com/food/image/upload/fl_progressive,c_fill,q_80,h_349,w_621/v1/img/recipes/38/29/8/Z8MMxtVfQfCLy4zZJtZU_0S9A7184.jpg'}],
-            //     '2020-02-16' : [
-            //         {name: 'Chicken Parmesan', image: 'https://img.sndimg.com/food/image/upload/w_621,h_349,c_fill,fl_progressive,q_80/v1/img/recipes/19/13/5/AKvKcJgQWqe5WpAZ4bTu_chicken-parmesan-5.jpg'},
-            //         {name: 'Zuppa Toscana', image: 'https://img.sndimg.com/food/image/upload/fl_progressive,c_fill,q_80,h_349,w_621/v1/img/recipes/38/29/8/Z8MMxtVfQfCLy4zZJtZU_0S9A7184.jpg'}],
-            // },
             items: {},
             allItems: {},
             loading: true,
             showModal: false,
         };
         this.onPressShoppingButton = this.onPressShoppingButton.bind(this);
-    }
-
-
-    openModal() {
-        this.setState({showModal: true});
+        this.onPressCookButton = this.onPressCookButton.bind(this);
     }
 
     componentDidMount() {
@@ -81,6 +71,9 @@ class MealPlan extends Component {
                             let date = responseData[i].mealDate;
                             let image = responseData[i].recipeIdJoin.recipeImageUrl;
                             let status = responseData[i].status;
+                            let recipeDetails = responseData[i].recipeIdJoin.recipeDetails;
+                            let instructions = responseData[i].recipeIdJoin.instructions;
+
                             if (!this.state.allItems[date]) {
                                 this.state.allItems[date] = [];
                             }
@@ -88,11 +81,11 @@ class MealPlan extends Component {
                                 id: id,
                                 name: name,
                                 image: image,
-                                status: status
+                                status: status,
+                                recipeDetails: recipeDetails,
+                                instructions: instructions
                             })
                         }
-
-
                     }).then(()=>{
                         console.log(this.state.allItems);
                     })
@@ -103,7 +96,6 @@ class MealPlan extends Component {
             })
     }
 
-    //load 所有item
     loadItems(day) {
         setTimeout(() => {
             for (let i = 0; i < 10; i++) {
@@ -125,8 +117,12 @@ class MealPlan extends Component {
         }, 1000);
     }
 
+    onPressAddButton(day) {
+        //alert('fail');
+        console.log('add to which day:' + day);
+        Actions.recipe();
+    }
 
-    //日期和加号
     renderDay(day, items) {
         return (
             <View>
@@ -146,7 +142,7 @@ class MealPlan extends Component {
                             {/*    alignSelf: 'center',*/}
                             {/*    marginTop: 20*/}
                             {/*}}>{day.weekNumbers}</Text>*/}
-                            <Button transparent>
+                            <Button transparent onPress={() => this.onPressAddButton(day)}>
                                 <Icon name='add-circle' style={{fontSize: 34, color: '#00BBF2'}}/>
                             </Button>
                         </View>
@@ -158,13 +154,68 @@ class MealPlan extends Component {
         )
     }
 
-    //日期右侧
+    onPressYes(item) {
+        console.log('An item is deleted');
+        AsyncStorage.getItem(TOKEN_KEY)
+            .then((accessToken)=>{
+                if(accessToken!=null){
+                    console.log(accessToken);
+                    fetch(`${API_URL}/mealplan/${item.id}`, {
+                        method: "DELETE",
+                        headers: {
+                            'Authorization':  accessToken
+                        }
+                    }).then((response)=>{
+                        if(response.status == "200"){
+                            alert("Item successfully deleted");
+                        }else{
+                            console.log(response.status);
+                        }
+                    })
+                    //     .then(()=>{
+                    //     this.forceUpdate();
+                    // })
+                        .catch((error)=>{
+                            console.log(`Error in adding item in inventory --> ${error}`);
+                        })
+                }
+            })
+    }
+
+    onPressDeleteButton(item) {
+        Alert.alert(
+            'Pay Attention',
+            'Do you really want to delete this item?',
+            [
+                {
+                    text: 'Cancel',
+                    onPress: () => console.log('Cancel Pressed'),
+                    style: 'cancel',
+                },
+                {text: 'Yes', onPress: () => {this.onPressYes(item)}},
+            ],
+            {cancelable: false},
+        )
+    }
+
+    onPressCookButton(item) {
+        console.log('Originitem:' + item);
+        const recipe ={
+            name: item.name,
+            image: item.image,
+            detail: item.recipeDetails,
+            method: item.instructions
+        }
+        console.log('recipe:' + recipe);
+        this.refs.CookModal.showCookModal(recipe);
+    }
+
     renderItem(item) {
         return (
+
             <View style={{}}>
                 <TouchableOpacity
                     style={[styles.listItem]}
-                    onPress={() => alert("Show Recipe Details")}
                 >
                     <List style={{width: 320}}>
                         <ListItem thumbnail>
@@ -174,12 +225,12 @@ class MealPlan extends Component {
                             <Body style={{paddingTop: 8, paddingBottom: 5 }}>
                                 <Text style={{fontSize: 16}}>{item.name}</Text>
                                 <Row style={{paddingLeft: 0, marginTop: 10, marginBottom: 2}}>
-                                    <Button transparent>
+                                    <Button transparent onPress={()=>{this.onPressCookButton(item)}}>
                                         <Icon active name="ios-bonfire" style={{fontSize: 18, marginLeft: 0, color: '#00BBF2'}}/>
                                         <Text style={{fontSize: 12, paddingLeft: 5, color: '#00BBF2'}}>Cook</Text>
                                     </Button>
 
-                                    <Button transparent>
+                                    <Button transparent onPress={()=>{this.onPressDeleteButton(item)}}>
                                         <Icon active name="ios-trash" style={{fontSize: 18, color: '#00BBF2'}}/>
                                         <Text style={{fontSize: 12, paddingLeft: 5, color: '#00BBF2'}}>Delete</Text>
                                     </Button>
@@ -192,45 +243,6 @@ class MealPlan extends Component {
         );
     }
 
-    // renderItem(item) {
-    //     return (
-    //         <View style={{}}>
-    //             <TouchableOpacity
-    //                 style={[styles.cardItem]}
-    //                 onPress={() => alert("Show Recipe Details")}
-    //             >
-    //                 <Card>
-    //                     <CardItem style={{selfAlign: 'center'}}>
-    //                         <Left>
-    //                             <Body>
-    //                                 <Text style={{fontSize: 15, fontWeight: '8'}}>{item.name}</Text>
-    //                             </Body>
-    //                         </Left>
-    //                     </CardItem>
-    //                     <CardItem cardBody>
-    //                         <Image source={{uri: item.image}} style={{height: 100, flex: 1,}}/>
-    //                     </CardItem>
-    //                     <CardItem style={{height: 30, paddingLeft: 15, paddingRight: 8}}>
-    //                         <Left>
-    //                             <Button transparent>
-    //                                 <Icon active name="ios-bonfire"/>
-    //                                 <Text style={{fontSize: 12, paddingLeft: 5}}>Cook</Text>
-    //                             </Button>
-    //                         </Left>
-    //                         <Right>
-    //                             <Button transparent>
-    //                                 <Icon active name="ios-trash"/>
-    //                                 <Text style={{fontSize: 12, paddingLeft: 5}}>Delete</Text>
-    //                             </Button>
-    //                         </Right>
-    //                     </CardItem>
-    //                 </Card>
-    //             </TouchableOpacity>
-    //         </View>
-    //     );
-    // }
-
-    //没有item的日子，如何render
     renderEmptyDate() {
         return (
             <View style={styles.emptyDate}>
@@ -252,11 +264,8 @@ class MealPlan extends Component {
         this.refs.ShoppingListModal.showShoppingListModal();
     }
 
-
-
     render() {
         return (
-
             <Provider>
                 <Container>
                     <Modal
@@ -312,64 +321,94 @@ class MealPlan extends Component {
                         renderItem={this.renderItem.bind(this)}
                         renderEmptyDate={this.renderEmptyDate.bind(this)}
                         rowHasChanged={this.rowHasChanged.bind(this)}
-                        style={{numberColumns: 2}}
-                        // markingType={'period'}
-                        // markedDates={{
-                        //    '2017-05-08': {textColor: '#43515c'},
-                        //    '2017-05-09': {textColor: '#43515c'},
-                        //    '2017-05-14': {startingDay: true, endingDay: true, color: 'blue'},
-                        //    '2017-05-21': {startingDay: true, color: 'blue'},
-                        //    '2017-05-22': {endingDay: true, color: 'gray'},
-                        //    '2017-05-24': {startingDay: true, color: 'gray'},
-                        //    '2017-05-25': {color: 'gray'},
-                        //    '2020-02-15': {endingDay: true, color: 'gray'}}}
-                        // monthFormat={'yyyy'}
-                        //theme={{calendarBackground: 'gray', agendaKnobColor: 'red'}}
-                        // hideExtraDays={false}
                     />
 
                     <ShoppingListModal ref={'ShoppingListModal'}/>
+                    <CookModal ref={'CookModal'}/>
                 </Container>
             </Provider>
         );
     }
 
 }
-    const styles = StyleSheet.create({
-        cardItem: {
-            backgroundColor: 'white',
-            //flex: 1,
-            borderRadius: 10,
-            padding: 5,
-            marginRight: 10,
-            marginTop: 17,
-            width: 170
-        },
-        listItem: {
-            backgroundColor: 'white',
-            flex: 1,
-            borderRadius: 10,
-            marginRight: 5,
-            marginTop: 17,
-            width: 340,
-        },
-        emptyDate: {
-            height: 15,
-            flex: 1,
-            paddingTop: 30
-        },
-    })
 
+const styles = StyleSheet.create({
+    cardItem: {
+        backgroundColor: 'white',
+        //flex: 1,
+        borderRadius: 10,
+        padding: 5,
+        marginRight: 10,
+        marginTop: 17,
+        width: 170
+    },
+    listItem: {
+        backgroundColor: 'white',
+        flex: 1,
+        borderRadius: 10,
+        marginRight: 5,
+        marginTop: 17,
+        width: 340,
+    },
+    emptyDate: {
+        height: 15,
+        flex: 1,
+        paddingTop: 30
+    },
+})
 
 export default MealPlan;
 
+/*Items example*/
+// items: {
+//     '2020-02-15' : [
+//         {name: 'Chicken Parmesan', image: 'https://img.sndimg.com/food/image/upload/w_621,h_349,c_fill,fl_progressive,q_80/v1/img/recipes/19/13/5/AKvKcJgQWqe5WpAZ4bTu_chicken-parmesan-5.jpg'},
+//         {name: 'Zuppa Toscana', image: 'https://img.sndimg.com/food/image/upload/fl_progressive,c_fill,q_80,h_349,w_621/v1/img/recipes/38/29/8/Z8MMxtVfQfCLy4zZJtZU_0S9A7184.jpg'}],
+//     '2020-02-16' : [
+//         {name: 'Chicken Parmesan', image: 'https://img.sndimg.com/food/image/upload/w_621,h_349,c_fill,fl_progressive,q_80/v1/img/recipes/19/13/5/AKvKcJgQWqe5WpAZ4bTu_chicken-parmesan-5.jpg'},
+//         {name: 'Zuppa Toscana', image: 'https://img.sndimg.com/food/image/upload/fl_progressive,c_fill,q_80,h_349,w_621/v1/img/recipes/38/29/8/Z8MMxtVfQfCLy4zZJtZU_0S9A7184.jpg'}],
+// },
 
+/* render card view */
+// renderItem(item) {
+//     return (
+//         <View style={{}}>
+//             <TouchableOpacity
+//                 style={[styles.cardItem]}
+//                 onPress={() => alert("Show Recipe Details")}
+//             >
+//                 <Card>
+//                     <CardItem style={{selfAlign: 'center'}}>
+//                         <Left>
+//                             <Body>
+//                                 <Text style={{fontSize: 15, fontWeight: '8'}}>{item.name}</Text>
+//                             </Body>
+//                         </Left>
+//                     </CardItem>
+//                     <CardItem cardBody>
+//                         <Image source={{uri: item.image}} style={{height: 100, flex: 1,}}/>
+//                     </CardItem>
+//                     <CardItem style={{height: 30, paddingLeft: 15, paddingRight: 8}}>
+//                         <Left>
+//                             <Button transparent>
+//                                 <Icon active name="ios-bonfire"/>
+//                                 <Text style={{fontSize: 12, paddingLeft: 5}}>Cook</Text>
+//                             </Button>
+//                         </Left>
+//                         <Right>
+//                             <Button transparent>
+//                                 <Icon active name="ios-trash"/>
+//                                 <Text style={{fontSize: 12, paddingLeft: 5}}>Delete</Text>
+//                             </Button>
+//                         </Right>
+//                     </CardItem>
+//                 </Card>
+//             </TouchableOpacity>
+//         </View>
+//     );
+// }
 
-
-
-
-{/*<RecipeCard data={this.openModal.bind(this)}/>*/}
-
+/* load items example */
 // loadItems(day) {
 //     setTimeout(() => {
 //         for (let i = 0; i < 10; i++) {
@@ -396,150 +435,3 @@ export default MealPlan;
 //         });
 //     }, 1000);
 // }
-
-
-//render items fake data
-{/*<TouchableOpacity*/}
-{/*    style={styles.item}*/}
-{/*    //onPress={() => Alert.alert("Show Recipe Details")}*/}
-{/*>*/}
-{/*    <Card>*/}
-{/*        <CardItem style={{selfAlign: 'center'}}>*/}
-{/*            <Left>*/}
-{/*                <Body>*/}
-{/*                    <Text style={{fontSize: 15, fontWeight: '8'}}>Orange Chicken</Text>*/}
-{/*                </Body>*/}
-{/*            </Left>*/}
-{/*        </CardItem>*/}
-{/*        <CardItem cardBody>*/}
-{/*            <Image source={meal} style={{height: 100, flex: 1,}}/>*/}
-{/*        </CardItem>*/}
-{/*        <CardItem style={{height: 30, paddingLeft: 15, paddingRight: 8}}>*/}
-{/*            <Left>*/}
-{/*                <Button transparent title="show modal" onPress={this.props.data}>*/}
-{/*                    <Icon active name="ios-bonfire"/>*/}
-{/*                    <Text style={{fontSize: 12, paddingLeft: 5}}>Cook</Text>*/}
-{/*                </Button>*/}
-{/*            </Left>*/}
-{/*            <Right>*/}
-{/*                <Button transparent>*/}
-{/*                    <Icon active name="ios-trash"/>*/}
-{/*                    <Text style={{fontSize: 12, paddingLeft: 5}}>Delete</Text>*/}
-{/*                </Button>*/}
-{/*            </Right>*/}
-{/*        </CardItem>*/}
-{/*    </Card>*/}
-{/*</TouchableOpacity>*/}
-
-{/*<Grid >*/}
-{/*    <Col>*/}
-{/*        <Card>*/}
-{/*            <CardItem style={{selfAlign: 'center'}}>*/}
-{/*                <Left>*/}
-{/*                    <Body>*/}
-{/*                        <Text style={{fontSize: 15, fontWeight: '8'}}>Orange Chicken</Text>*/}
-{/*                    </Body>*/}
-{/*                </Left>*/}
-{/*            </CardItem>*/}
-{/*            <CardItem cardBody>*/}
-{/*                <Image source={meal} style={{height: 100, flex: 1,}}/>*/}
-{/*            </CardItem>*/}
-{/*            <CardItem style={{height: 30, paddingLeft: 15, paddingRight: 8}}>*/}
-{/*                <Left>*/}
-{/*                    <Button transparent title="show modal" onPress={this.props.data}>*/}
-{/*                        <Icon active name="ios-bonfire"/>*/}
-{/*                        <Text style={{fontSize: 12, paddingLeft: 5}}>Cook</Text>*/}
-{/*                    </Button>*/}
-{/*                </Left>*/}
-{/*                <Right>*/}
-{/*                    <Button transparent>*/}
-{/*                        <Icon active name="ios-trash"/>*/}
-{/*                        <Text style={{fontSize: 12, paddingLeft: 5}}>Delete</Text>*/}
-{/*                    </Button>*/}
-{/*                </Right>*/}
-{/*            </CardItem>*/}
-{/*        </Card>*/}
-{/*        <Card>*/}
-{/*            <CardItem style={{selfAlign: 'center'}}>*/}
-{/*                <Left>*/}
-{/*                    <Body>*/}
-{/*                        <Text style={{fontSize: 15, fontWeight: '8'}}>Orange Chicken</Text>*/}
-{/*                    </Body>*/}
-{/*                </Left>*/}
-{/*            </CardItem>*/}
-{/*            <CardItem cardBody>*/}
-{/*                <Image source={meal} style={{height: 100, flex: 1,}}/>*/}
-{/*            </CardItem>*/}
-{/*            <CardItem style={{height: 30, paddingLeft: 15, paddingRight: 8}}>*/}
-{/*                <Left>*/}
-{/*                    <Button transparent title="show modal" onPress={this.props.data}>*/}
-{/*                        <Icon active name="ios-bonfire"/>*/}
-{/*                        <Text style={{fontSize: 12, paddingLeft: 5}}>Cook</Text>*/}
-{/*                    </Button>*/}
-{/*                </Left>*/}
-{/*                <Right>*/}
-{/*                    <Button transparent>*/}
-{/*                        <Icon active name="ios-trash"/>*/}
-{/*                        <Text style={{fontSize: 12, paddingLeft: 5}}>Delete</Text>*/}
-{/*                    </Button>*/}
-{/*                </Right>*/}
-
-{/*            </CardItem>*/}
-{/*        </Card>*/}
-{/*    </Col>*/}
-{/*    <Col>*/}
-{/*        <Card>*/}
-{/*            <CardItem style={{selfAlign: 'center'}}>*/}
-{/*                <Left>*/}
-{/*                    <Body>*/}
-{/*                        <Text style={{fontSize: 15, fontWeight: '8'}}>Orange Chicken</Text>*/}
-{/*                    </Body>*/}
-{/*                </Left>*/}
-{/*            </CardItem>*/}
-{/*            <CardItem cardBody>*/}
-{/*                <Image source={meal} style={{height: 100, flex: 1,}}/>*/}
-{/*            </CardItem>*/}
-{/*            <CardItem style={{height: 30, paddingLeft: 15, paddingRight: 8}}>*/}
-{/*                <Left>*/}
-{/*                    <Button transparent title="show modal" onPress={this.props.data}>*/}
-{/*                        <Icon active name="ios-bonfire"/>*/}
-{/*                        <Text style={{fontSize: 12, paddingLeft: 5}}>Cook</Text>*/}
-{/*                    </Button>*/}
-{/*                </Left>*/}
-{/*                <Right>*/}
-{/*                    <Button transparent>*/}
-{/*                        <Icon active name="ios-trash"/>*/}
-{/*                        <Text style={{fontSize: 12, paddingLeft: 5}}>Delete</Text>*/}
-{/*                    </Button>*/}
-{/*                </Right>*/}
-{/*            </CardItem>*/}
-{/*        </Card>*/}
-{/*        <Card>*/}
-{/*            <CardItem style={{selfAlign: 'center'}}>*/}
-{/*                <Left>*/}
-{/*                    <Body>*/}
-{/*                        <Text style={{fontSize: 15, fontWeight: '8'}}>Orange Chicken</Text>*/}
-{/*                    </Body>*/}
-{/*                </Left>*/}
-{/*            </CardItem>*/}
-{/*            <CardItem cardBody>*/}
-{/*                <Image source={meal} style={{height: 100, flex: 1,}}/>*/}
-{/*            </CardItem>*/}
-{/*            <CardItem style={{height: 30, paddingLeft: 15, paddingRight: 8}}>*/}
-{/*                <Left>*/}
-{/*                    <Button transparent title="show modal" onPress={this.props.data}>*/}
-{/*                        <Icon active name="ios-bonfire"/>*/}
-{/*                        <Text style={{fontSize: 12, paddingLeft: 5}}>Cook</Text>*/}
-{/*                    </Button>*/}
-{/*                </Left>*/}
-{/*                <Right>*/}
-{/*                    <Button transparent>*/}
-{/*                        <Icon active name="ios-trash"/>*/}
-{/*                        <Text style={{fontSize: 12, paddingLeft: 5}}>Delete</Text>*/}
-{/*                    </Button>*/}
-{/*                </Right>*/}
-
-{/*            </CardItem>*/}
-{/*        </Card>*/}
-{/*    </Col>*/}
-{/*</Grid>*/}

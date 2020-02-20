@@ -15,11 +15,29 @@ class Inventory extends Component {
         this.state={
             search : "",
             Items: [],
+            display: [],
             loading: true
         }
         this.onPressAdd = this.onPressAdd.bind(this);
         this.onPressImage = this.onPressImage.bind(this);
 
+    }
+
+    onSearch(data){
+        let text = data.toLowerCase();
+        let trucks = this.state.Items;
+        let filtered = trucks.filter((item)=>{
+            return item.name.toLowerCase().match(text);
+        });
+        if(!text||text==""){
+            this.setState({
+                display: trucks
+            })
+        }else if(!Array.isArray(filtered) && !filtered.length){
+            this.setState({display: []});
+        }else if(Array.isArray(filtered)){
+            this.setState({display: filtered});
+        }
     }
 
     onPressAdd(){
@@ -132,7 +150,7 @@ class Inventory extends Component {
                                 purchaseDate: purchaseDate.substr(0, 10)
                             };
                             const list = this.state.Items.concat(item);
-                            this.setState({Items: list, loading: false});
+                            this.setState({Items: list, display: list, loading: false});
                         }
                     }).done();
 
@@ -181,7 +199,10 @@ class Inventory extends Component {
                                 <Icon name="ios-search"/>
                                 <Input
                                     placeholder = "Find Ingredient"
-                                    onChangeText = {(data)=>{this.setState({search: data})}}
+                                    onChangeText = {(data)=>{
+                                        this.setState({search: data})
+                                        this.onSearch(data);
+                                    }}
                                     value = {this.state.search}
                                 />
                                 <Right>
@@ -197,7 +218,7 @@ class Inventory extends Component {
                                 </Right>
                             </Item>
                             <FlatList
-                                data ={this.state.Items}
+                                data ={this.state.display}
                                 renderItem={({item})=>(
                                     <Card style={{margin: 15, paddingTop: 10, width: 130, height: 140}}>
                                         <CardItem cardBody>
