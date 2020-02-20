@@ -33,6 +33,7 @@ class RecipeDetailModal extends Component {
                 transparent
                 onClose={()=>{
                     this.setState({showModal:false});
+
                 }}
                 maskClosable
                 animationType = 'slide'

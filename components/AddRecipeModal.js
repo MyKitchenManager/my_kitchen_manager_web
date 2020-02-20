@@ -13,6 +13,7 @@ class AddRecipeModal extends Component {
         super(props);
         this.state = {
             showModal: false,
+            contributorId: 0,
             recipeId: 0,
             recipeName:"",
             instructions: "",
@@ -20,7 +21,7 @@ class AddRecipeModal extends Component {
             searchable: [],
             ingredientItem: {},
             ingredientVolume: 0,
-            unit: 6,
+            unit: 12,
             image: null
         }
     }
@@ -95,8 +96,26 @@ class AddRecipeModal extends Component {
                         console.log(responseData);
                         this.setState({searchable:responseData});
                     }).done()
+                    return accessToken;
                 }
-            })
+            }).then((accessToken)=>{
+                if(accessToken!=null){
+                    fetch(`${API_URL}/`,{
+                        method: "GET",
+                        headers:{
+                            "Authorization": accessToken
+                        }
+                    }).then((response)=>{
+                        if(response.status=='200'){
+                            return response.json();
+                        }
+                    }).then((responseData)=>{
+                        this.setState({contributorId: responseData.userId});
+                    }).catch((error)=>{
+                        console.log(`Error in fetching user id --> ${error}`);
+                    })
+                }
+        })
     }
 
     onAddItem(){
@@ -150,7 +169,7 @@ class AddRecipeModal extends Component {
                                    'Content-Type': 'application/json',
                                },
                                body: JSON.stringify({
-                                   contributorId: 241,
+                                   contributorId: this.state.contributorId,
                                    prepTime: 10,
                                    timesCooked: 10,
                                    recipeName: this.state.recipeName,
@@ -189,7 +208,14 @@ class AddRecipeModal extends Component {
                 title="Title"
                 transparent
                 onClose={()=>{
-                    this.setState({showModal:false});
+                    this.setState({
+                        showModal:false,
+                        recipeName:"",
+                        instructions: "",
+                        ingredientItem: {},
+                        ingredients:[],
+                        ingredientVolume: 0
+                    });
                 }}
                 maskClosable
                 animationType = 'slide'

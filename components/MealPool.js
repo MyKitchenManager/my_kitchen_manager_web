@@ -27,6 +27,7 @@ class MealPool extends Component {
         this.state = {
             search: "",
             Items: [],
+            display: [],
             loading: true
         }
         this.onPressAdd = this.onPressAdd.bind(this);
@@ -35,6 +36,23 @@ class MealPool extends Component {
 
     onPressAdd(){
         this.refs.AddRecipeModal.showAddRecipeModal();
+    }
+
+    onSearch(data){
+        let text = data.toLowerCase();
+        let trucks = this.state.Items;
+        let filtered = trucks.filter((item)=>{
+            return item.recipeName.toLowerCase().match(text);
+        });
+        if(!text||text==""){
+            this.setState({
+                display: trucks
+            })
+        }else if(!Array.isArray(filtered) && !filtered.length){
+            this.setState({display: []});
+        }else if(Array.isArray(filtered)){
+            this.setState({display: filtered});
+        }
     }
 
     onPressImage(item) {
@@ -64,7 +82,7 @@ class MealPool extends Component {
                             alert(`Error in fetching data --> status ${response.status}`);
                         }
                     }).then((responseData)=>{
-                       this.setState({Items: responseData});
+                       this.setState({Items: responseData, display: responseData});
                     }).done()
                 }
             })
@@ -102,14 +120,17 @@ class MealPool extends Component {
                             <Icon name="ios-search"/>
                             <Input
                                 placeholder = "Find Recipe"
-                                onChangeText = {(data)=>{this.setState({search: data})}}
+                                onChangeText = {(data)=>{
+                                    this.setState({search: data});
+                                    this.onSearch(data);
+                                }}
                                 value = {this.state.search}
                             />
                             <Right>
                                 <Button transparent onPress={
                                     ()=>{
                                         if(this.state.search!=""){
-                                            this.setState({search:""});
+                                            this.setState({search:"", display: this.state.Items});
                                         }
                                     }
                                 }>
@@ -120,7 +141,7 @@ class MealPool extends Component {
 
 
                         <FlatList
-                            data={this.state.Items}
+                            data={this.state.display}
                             renderItem={({item}) =>(
                                 <Card style={{padding: 20, height: 170, borderRadius: 15}}>
                                     <CardItem cardBody>
