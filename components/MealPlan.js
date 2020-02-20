@@ -39,6 +39,8 @@ class MealPlan extends Component {
             allItems: {},
             loading: true,
             showModal: false,
+            finishcook: false,
+            userId: ''
         };
         this.onPressShoppingButton = this.onPressShoppingButton.bind(this);
         this.onPressCookButton = this.onPressCookButton.bind(this);
@@ -119,8 +121,34 @@ class MealPlan extends Component {
 
     onPressAddButton(day) {
         //alert('fail');
-        console.log('add to which day:' + day);
-        Actions.recipe();
+        //yyyy-mm-dd
+        console.log('add to which day:' + day.dateString);
+        AsyncStorage.getItem(TOKEN_KEY)
+            .then((accessToken)=>{
+                if(accessToken!=null){
+                    return fetch(`${API_URL}/`, {
+                        method: 'GET',
+                        headers: {
+                            'Authorization': accessToken
+                        }
+                    }).then((response)=>{
+                        if(response.status=='200'){
+                            return response.json();
+                        }
+                    }).then((responseData)=>{
+                        //this.setState({userId: responseData.userId});
+                        console.log('userId:' + responseData.userId);
+                        Actions.recipe({
+                            date: day.dateString,
+                            userId: responseData.userId
+                        });
+                    }).catch((error)=>{
+                        console.log(`Error in fetching user id --> ${error}`);
+                    })
+                }
+            })
+        //pass params via Actions as object
+        //Actions.recipe({date: day.dateString});
     }
 
     renderDay(day) {
@@ -135,13 +163,13 @@ class MealPlan extends Component {
                                 alignSelf: 'center',
                                 marginTop: 20
                             }}>{day.day}</Text>
-                            {/*how to get weekday*/}
+
                             {/*<Text style={{*/}
                             {/*    color: '#43515c',*/}
                             {/*    fontSize: 28,*/}
                             {/*    alignSelf: 'center',*/}
                             {/*    marginTop: 20*/}
-                            {/*}}>{day.weekNumbers}</Text>*/}
+                            {/*}}>{day.dateString}</Text>*/}
                             <Button transparent onPress={() => this.onPressAddButton(day)}>
                                 <Icon name='add-circle' style={{fontSize: 34, color: '#00BBF2'}}/>
                             </Button>
@@ -333,7 +361,7 @@ class MealPlan extends Component {
                         <Right>
                             <Button transparent onPress={() => this.onPressShoppingButton()}>
                                 {/*<Icon name='ios-cart' />*/}
-                                <Text style={{color: '#00BBF2'}}>Shopping</Text>
+                                <Text style={{color: '#00BBF2', fontWeight: 'bold'}}>Shopping</Text>
                             </Button>
                         </Right>
                     </Header>
