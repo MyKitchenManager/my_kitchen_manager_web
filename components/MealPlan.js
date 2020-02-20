@@ -197,6 +197,8 @@ class MealPlan extends Component {
                     }).then((response)=>{
                         if(response.status == "200"){
                             alert("Item successfully deleted");
+                            //for rerender
+                            Actions.home();
                         }else{
                             console.log(response.status);
                         }
@@ -338,6 +340,8 @@ class MealPlan extends Component {
                         if(response.status == "200"){
                             //alert('Enjoy meal');
                             console.log('finish cooking');
+                            //for rerender
+                            Actions.home();
                         }else{
                             console.log(response.status);
                         }

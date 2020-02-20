@@ -94,24 +94,13 @@ class MealPlanRecipe extends Component {
                                 'Content-Type': 'application/json',
                                 'Authorization': accessToken
                             },
-                            body: JSON.stringify(this.state.selectedRecipes
-                                //     [
-                                //     {
-                                //         userId: this.state.userId,
-                                //         recipeId: "7",
-                                //         mealDate: this.state.mealDate
-                                //     },
-                                //     {
-                                //         userId: this.state.userId,
-                                //         recipeId: "4",
-                                //         mealDate: this.state.mealDate
-                                //     }
-                                // ]
-                            )
+                            body: JSON.stringify(this.state.selectedRecipes)
                         }).then((response) => {
                             if (response.status == "200") {
                                 console.log('Recipe successfully added');
                                 alert("Item successfully added");
+                                // for rerender
+                                Actions.home();
                             } else {
                                 console.log(response.status);
                             }

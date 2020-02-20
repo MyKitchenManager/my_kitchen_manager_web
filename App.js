@@ -8,6 +8,7 @@ import {AsyncStorage} from "react-native"
 import {TOKEN_KEY, API_URL} from "./constant";
 import MealPlanStack from './routes/MealPlanStack';
 import MealPlanRecipe from "./components/MealPlanRecipe";
+import MealPlan from './components/MealPlan';
 
 export default class App extends Component {
     state = {
