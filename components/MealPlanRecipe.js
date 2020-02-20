@@ -27,7 +27,10 @@ class MealPlanRecipe extends Component {
             showModal: false,
             items: [],
             loading: false,
-            checkedBox: []
+            checkedBox: [],
+            mealDate: this.props.date,
+            userId: this.props.userId,
+            selectedRecipes: []
         }
         this.onPressImage = this.onPressImage.bind(this);
     }
@@ -65,25 +68,86 @@ class MealPlanRecipe extends Component {
     onAddButton() {
         //fetch add mealplan
         Actions.pop();
-
+        AsyncStorage.getItem(TOKEN_KEY)
+            .then((accessToken)=>{
+                if(accessToken!=null){
+                    console.log(accessToken);
+                    fetch(`${API_URL}/`, {
+                        method: 'GET',
+                        headers: {
+                            'Authorization': accessToken
+                        }
+                    }).then((response) => {
+                        if (response.status == '200') {
+                            return response.json();
+                        }
+                    }).then((responseData) => {
+                        this.setState({userId: responseData.userId});
+                        console.log('Step1: userId:' + this.state.userId);
+                        // this.getSelectedRecipes();
+                        console.log('Step3: selectedRecipres:' + this.state.selectedRecipes);
+                    }).then((selectedRecipes) =>
+                        fetch(`${API_URL}/mealplan/add`, {
+                            method: "POST",
+                            headers: {
+                                'Accept': 'application/json',
+                                'Content-Type': 'application/json',
+                                'Authorization': accessToken
+                            },
+                            body: JSON.stringify(this.state.selectedRecipes
+                                //     [
+                                //     {
+                                //         userId: this.state.userId,
+                                //         recipeId: "7",
+                                //         mealDate: this.state.mealDate
+                                //     },
+                                //     {
+                                //         userId: this.state.userId,
+                                //         recipeId: "4",
+                                //         mealDate: this.state.mealDate
+                                //     }
+                                // ]
+                            )
+                        }).then((response) => {
+                            if (response.status == "200") {
+                                console.log('Recipe successfully added');
+                                alert("Item successfully added");
+                            } else {
+                                console.log(response.status);
+                            }
+                        }).catch((error) => {
+                            console.log(`Error in adding item in inventory --> ${error}`);
+                        })
+                    )
+                }
+            })
     }
 
     componentDidMount() {
+        //get date from MealPlan
+        console.log('dateString from actions params:' + this.props.date);
+        console.log('dateString in state:' + this.state.mealDate);
+        console.log('userId in recipe:' + this.state.userId);
         this.loadAllRecipes();
     }
 
     onPressCheckBox(id) {
         let tmp = this.state.checkedBox;
-
         if ( tmp.includes( id ) ) {
             tmp.splice( tmp.indexOf(id), 1 );
         } else {
             tmp.push( id );
+            this.state.selectedRecipes.push({
+                userId: this.state.userId,
+                recipeId: id,
+                mealDate: this.state.mealDate
+            })
         }
-
         this.setState({
             checkedBox: tmp
         });
+        console.log(this.state.checkedBox);
+        console.log(this.state.selectedRecipes)
     }
 
     onPressImage(item) {
@@ -103,7 +167,7 @@ class MealPlanRecipe extends Component {
                    <Header>
                        <Left>
                            <Button transparent onPress={() => {Actions.pop()}}>
-                               <Icon name='arrow-back' />
+                               <Icon name='arrow-back' style={{color: '#00BBF2'}}/>
                            </Button>
                        </Left>
                        <Body>
@@ -158,12 +222,12 @@ class MealPlanRecipe extends Component {
                            }}
                            onPress={()=>{
                                this.onAddButton(),
-                                   this.setState({
-                                       showModal: false,
-                                       items: [],
-                                       loading: false,
-                                       checkedBox: []
-                                   })
+                               this.setState({
+                                   showModal: false,
+                                   items: [],
+                                   loading: false,
+                                   checkedBox: []
+                               })
                            }}>
                            <Text >ADD</Text>
                        </Button>
