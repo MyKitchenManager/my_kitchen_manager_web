@@ -74,13 +74,10 @@ class RecipeDetailModal extends Component {
                             }):<ListItem></ListItem>}
 
                         </List>
-
-
-
                         <View>
                             <Text style={{marginRight: 10, fontSize: 20, marginBottom:15, marginTop: 20, fontWeight: "bold"}}>Method</Text>
                             <WhiteSpace/>
-                            <Text>this is the detail of cooking this food</Text>
+                            <Text>{this.state.recipe.method}</Text>
                         </View>
                     </ScrollView>
                 </View>
