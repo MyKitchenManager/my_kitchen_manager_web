@@ -130,8 +130,8 @@ class MealPlanRecipe extends Component {
 
                                                    </Left>
                                                    <Body>
-                                                       <Text style={{fontSize: 16, fontWeight: '15', marginBottom: 5}}>{item.recipeName}</Text>
-                                                       <Text note numberOfLines={1} style={{fontWeight: '15'}}>PrepTime: {item.prepTime}   CookTime: {item.timesCooked}</Text>
+                                                       <Text style={{fontSize: 16, fontWeight: 'bold', marginBottom: 5}}>{item.recipeName}</Text>
+                                                       <Text note numberOfLines={1} style={{fontWeight: 'bold'}}>PrepTime: {item.prepTime}   CookTime: {item.timesCooked}</Text>
                                                    </Body>
                                                    <Right>
                                                        <CheckBox style={{marginRight: 20}} checked={this.state.checkedBox.includes(item.id) ? true : false}

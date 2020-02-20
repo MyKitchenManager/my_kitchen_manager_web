@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Button, Card, CardItem, Item, Right, Text, Thumbnail, View, Container, List, ListItem, Left} from "native-base";
-import {ScrollView} from "react-native";
+import {Alert, ScrollView} from "react-native";
 import {Col, Grid} from "react-native-easy-grid";
 import {Modal, WhiteSpace} from "@ant-design/react-native";
 import meal from "../assets/meal.jpeg";
@@ -9,7 +9,8 @@ class RecipeDetailModal extends Component {
         super(props);
         this.state = {
             showModal: false,
-            recipe: {}
+            recipe: {},
+            hasCooked: false
         }
     }
 
@@ -18,12 +19,20 @@ class RecipeDetailModal extends Component {
     }
 
     showCookModal(item) {
-        console.log("what's in item:" + item);
         this.setState({
             showModal: true,
-            recipe: item
+            recipe: item,
         });
-        console.log('recipe:' + this.state.recipe);
+        console.log('recipe in CookModal:' + this.state.recipe);
+    }
+
+    onPressYes() {
+        // close modal
+        this.setState({showModal: false});
+
+        //delete item on parent page (inventory)
+        console.log(this.state.Item);
+        this.props.data(this.state.recipe.id);
     }
 
     render() {
@@ -46,7 +55,7 @@ class RecipeDetailModal extends Component {
                 <View style={{ paddingVertical: 20 }}>
                     <Thumbnail source={{uri:this.state.recipe.image}} style ={{height: 200, width: 200, alignSelf:"center"}}/>
                     <View>
-                        <Text style={{fontSize: 25, fontWeight: '4', alignSelf: 'center', margin: 20}}>{this.state.recipe.name}</Text>
+                        <Text style={{fontSize: 25, fontWeight: '400', alignSelf: 'center', margin: 20}}>{this.state.recipe.name}</Text>
                     </View>
 
                     <WhiteSpace />
@@ -63,8 +72,8 @@ class RecipeDetailModal extends Component {
                                     <Text style={{marginRight: 10}}>Amount</Text>
                                 </Right>
                             </ListItem>
-                            {this.state.recipe.detail?this.state.recipe.detail.map((item)=>{
-                                return <ListItem>
+                            {this.state.recipe.detail?this.state.recipe.detail.map((item, index)=>{
+                                return <ListItem key = {index}>
                                     <Left>
                                         <Text>{item.ingredientIdJoin.ingredientName}</Text>
                                     </Left>
@@ -94,7 +103,24 @@ class RecipeDetailModal extends Component {
                         width:200}}
                     onPress={()=>{
                         this.onUpdate.bind(this);
-                        this.setState({showModal: false})
+                        this.setState({
+                            showModal: false,
+                            hasCooked: true
+                        });
+                        //this.props.data(this.state.recipe.id);
+                        Alert.alert(
+                            'Pay Attention',
+                            'Finish Cooking Already?',
+                            [
+                                {
+                                    text: 'Cancel',
+                                    onPress: () => console.log('Cancel Pressed'),
+                                    style: 'cancel',
+                                },
+                                {text: 'Yes', onPress: () => {this.onPressYes()}},
+                            ],
+                            {cancelable: false},
+                        );
                     }}>
                     <Text >Finish Cook</Text>
                 </Button>

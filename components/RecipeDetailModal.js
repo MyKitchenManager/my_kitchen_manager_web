@@ -45,7 +45,7 @@ class RecipeDetailModal extends Component {
                 <View style={{ paddingVertical: 20 }}>
                     <Thumbnail source={{uri:this.state.recipe.image}} style ={{height: 200, width: 200, alignSelf:"center"}}/>
                     <View>
-                        <Text style={{fontSize: 25, fontWeight: '4', alignSelf: 'center', margin: 20}}>{this.state.recipe.name}</Text>
+                        <Text style={{fontSize: 25, fontWeight: '400', alignSelf: 'center', margin: 20}}>{this.state.recipe.name}</Text>
                     </View>
 
                     <WhiteSpace />

@@ -123,7 +123,7 @@ class MealPlan extends Component {
         Actions.recipe();
     }
 
-    renderDay(day, items) {
+    renderDay(day) {
         return (
             <View>
                 {
@@ -154,6 +154,7 @@ class MealPlan extends Component {
         )
     }
 
+    //How to rerender???
     onPressYes(item) {
         console.log('An item is deleted');
         AsyncStorage.getItem(TOKEN_KEY)
@@ -171,15 +172,12 @@ class MealPlan extends Component {
                         }else{
                             console.log(response.status);
                         }
-                    })
-                    //     .then(()=>{
-                    //     this.forceUpdate();
-                    // })
-                        .catch((error)=>{
+                    }).catch((error)=>{
                             console.log(`Error in adding item in inventory --> ${error}`);
                         })
                 }
             })
+
     }
 
     onPressDeleteButton(item) {
@@ -204,41 +202,73 @@ class MealPlan extends Component {
             name: item.name,
             image: item.image,
             detail: item.recipeDetails,
-            method: item.instructions
+            method: item.instructions,
+            id: item.id,
+            status: item.status
         }
         console.log('recipe:' + recipe);
+        console.log(item.status);
         this.refs.CookModal.showCookModal(recipe);
     }
 
     renderItem(item) {
         return (
 
-            <View style={{}}>
-                <TouchableOpacity
-                    style={[styles.listItem]}
-                >
-                    <List style={{width: 320}}>
-                        <ListItem thumbnail>
-                            <Left style={{}}>
-                                <Thumbnail square source={{uri: item.image}} style={{height: 80, width: 80, borderRadius: 10}} />
-                            </Left>
-                            <Body style={{paddingTop: 8, paddingBottom: 5 }}>
-                                <Text style={{fontSize: 16}}>{item.name}</Text>
-                                <Row style={{paddingLeft: 0, marginTop: 10, marginBottom: 2}}>
-                                    <Button transparent onPress={()=>{this.onPressCookButton(item)}}>
-                                        <Icon active name="ios-bonfire" style={{fontSize: 18, marginLeft: 0, color: '#00BBF2'}}/>
-                                        <Text style={{fontSize: 12, paddingLeft: 5, color: '#00BBF2'}}>Cook</Text>
-                                    </Button>
+            <View>
+                {
+                    item.status !== 'inactive' ?
+                        <TouchableOpacity
+                            style={[styles.listItem, ]}
+                        >
+                            <List style={{width: 320}}>
+                                <ListItem thumbnail>
+                                    <Left style={{}}>
+                                        <Thumbnail square source={{uri: item.image}} style={{height: 80, width: 80, borderRadius: 10}} />
+                                    </Left>
+                                    <Body style={{paddingTop: 8, paddingBottom: 5 }}>
+                                        <Text style={{fontSize: 16}}>{item.name}</Text>
+                                        <Row style={{paddingLeft: 0, marginTop: 10, marginBottom: 2}}>
+                                            <Button transparent onPress={()=>{this.onPressCookButton(item)}}>
+                                                <Icon active name="ios-bonfire" style={{fontSize: 18, marginLeft: 0, color: '#00BBF2'}}/>
+                                                <Text style={{fontSize: 12, paddingLeft: 5, color: '#00BBF2'}}>Cook</Text>
+                                            </Button>
 
-                                    <Button transparent onPress={()=>{this.onPressDeleteButton(item)}}>
-                                        <Icon active name="ios-trash" style={{fontSize: 18, color: '#00BBF2'}}/>
-                                        <Text style={{fontSize: 12, paddingLeft: 5, color: '#00BBF2'}}>Delete</Text>
-                                    </Button>
-                                </Row>
-                            </Body>
-                        </ListItem>
-                    </List>
-                </TouchableOpacity>
+                                            <Button transparent onPress={()=>{this.onPressDeleteButton(item)}}>
+                                                <Icon active name="ios-trash" style={{fontSize: 18, color: '#00BBF2'}}/>
+                                                <Text style={{fontSize: 12, paddingLeft: 5, color: '#00BBF2'}}>Delete</Text>
+                                            </Button>
+                                        </Row>
+                                    </Body>
+                                </ListItem>
+                            </List>
+                        </TouchableOpacity>
+                        :
+                        <TouchableOpacity
+                            style={[styles.listItem, {backgroundColor: '#f5f5f5'} ]}
+                        >
+                            <List style={{width: 320}}>
+                                <ListItem thumbnail>
+                                    <Left style={{}}>
+                                        <Thumbnail square source={{uri: item.image}} style={{height: 80, width: 80, borderRadius: 10, opacity: .6}} />
+                                    </Left>
+                                    <Body style={{paddingTop: 8, paddingBottom: 5 }}>
+                                        <Text style={{fontSize: 16, color: '#696969'}}>{item.name}</Text>
+                                        <Row style={{paddingLeft: 0, marginTop: 10, marginBottom: 2}}>
+                                            <Button transparent onPress={()=>{this.onPressCookButton(item)}}>
+                                                <Icon active name="ios-bonfire" style={{fontSize: 18, marginLeft: 0, color: '#696969'}}/>
+                                                <Text style={{fontSize: 12, paddingLeft: 5, color: '#696969'}}>Cook</Text>
+                                            </Button>
+
+                                            <Button transparent onPress={()=>{this.onPressDeleteButton(item)}}>
+                                                <Icon active name="ios-trash" style={{fontSize: 18, color: '#696969'}}/>
+                                                <Text style={{fontSize: 12, paddingLeft: 5, color: '#696969'}}>Delete</Text>
+                                            </Button>
+                                        </Row>
+                                    </Body>
+                                </ListItem>
+                            </List>
+                        </TouchableOpacity>
+                }
             </View>
         );
     }
@@ -264,40 +294,36 @@ class MealPlan extends Component {
         this.refs.ShoppingListModal.showShoppingListModal();
     }
 
+    onPressFinishCook(id) {
+        console.log('finished meal id:' + id);
+        AsyncStorage.getItem(TOKEN_KEY)
+            .then((accessToken)=>{
+                if(accessToken!=null){
+                    console.log(accessToken);
+                    fetch(`${API_URL}/mealplan/finishCook/mealPlanId/${id}`, {
+                        method: "POST",
+                        headers: {
+                            'Accept': 'application/json',
+                            'Authorization':  accessToken
+                        }
+                    }).then((response)=>{
+                        if(response.status == "200"){
+                            //alert('Enjoy meal');
+                            console.log('finish cooking');
+                        }else{
+                            console.log(response.status);
+                        }
+                    }).catch((error)=>{
+                        console.log(`Error in adding item in inventory --> ${error}`);
+                    })
+                }
+            })
+    }
+
     render() {
         return (
             <Provider>
                 <Container>
-                    <Modal
-                        title="Title"
-                        transparent
-                        onClose={() => {
-                            this.setState({showModal: false});
-                        }}
-                        maskClosable
-                        animationType='slide'
-                        visible={this.state.showModal}
-                        title={<Text style={{fontWeight: "bold", fontSize: 18, textAlign: "center"}}>Details</Text>}
-                        closable
-                    >
-                        <View style={{paddingVertical: 20}}>
-                            <Text style={{textAlign: 'center', padding: 10}}>Content...</Text>
-                            <Text style={{textAlign: 'center', padding: 10}}>Content...</Text>
-                        </View>
-                        <Button style={{
-                            margin: 10,
-                            padding: 15,
-                            alignSelf: 'center',
-                            justifyContent: 'center',
-                            backgroundColor: "deepskyblue",
-                            width: 200
-                        }} onPress={() => {
-                            this.setState({showModal: false})
-                        }}>
-                            <Text>Finish Cook</Text>
-                        </Button>
-                    </Modal>
-
                     <Header>
                         <Left>
                         </Left>
@@ -324,12 +350,11 @@ class MealPlan extends Component {
                     />
 
                     <ShoppingListModal ref={'ShoppingListModal'}/>
-                    <CookModal ref={'CookModal'}/>
+                    <CookModal ref={'CookModal'} data={this.onPressFinishCook.bind(this)}/>
                 </Container>
             </Provider>
         );
     }
-
 }
 
 const styles = StyleSheet.create({
