@@ -9,6 +9,7 @@ import {TOKEN_KEY, API_URL} from "./constant";
 import MealPlanStack from './routes/MealPlanStack';
 import MealPlanRecipe from "./components/MealPlanRecipe";
 import MealPlan from './components/MealPlan';
+import MealPool from './components/MealPool';
 
 export default class App extends Component {
     state = {

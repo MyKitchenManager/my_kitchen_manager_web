@@ -4,6 +4,8 @@ import {ScrollView} from "react-native";
 import {Col, Grid} from "react-native-easy-grid";
 import {Modal, WhiteSpace} from "@ant-design/react-native";
 import meal from "../assets/meal.jpeg";
+import {Actions} from 'react-native-router-flux';
+
 class RecipeDetailModal extends Component {
     constructor(props) {
         super(props);
@@ -83,19 +85,27 @@ class RecipeDetailModal extends Component {
                     </ScrollView>
                 </View>
 
-                <Button
-                    style = {{margin: 10,
-                        padding: 15,
-                        alignSelf:'center',
-                        justifyContent:'center',
-                        backgroundColor:"deepskyblue",
-                        width:200}}
-                    onPress={()=>{
-                        this.onUpdate.bind(this);
-                        this.setState({showModal: false})
-                    }}>
-                    <Text >Update</Text>
-                </Button>
+                {
+                    Actions.currentScene == 'recipe' ?
+                        <View></View>
+                        :
+                        <View>
+                            <Button
+                                style = {{margin: 10,
+                                    padding: 15,
+                                    alignSelf:'center',
+                                    justifyContent:'center',
+                                    backgroundColor:"deepskyblue",
+                                    width:200}}
+                                onPress={()=>{
+                                    this.onUpdate.bind(this);
+                                    this.setState({showModal: false})
+                                }}>
+                                <Text >Update</Text>
+                            </Button>
+                        </View>
+                }
+
             </Modal>
         );
     }
