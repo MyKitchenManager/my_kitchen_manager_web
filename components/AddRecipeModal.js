@@ -208,7 +208,14 @@ class AddRecipeModal extends Component {
                 title="Title"
                 transparent
                 onClose={()=>{
-                    this.setState({showModal:false});
+                    this.setState({
+                        showModal:false,
+                        recipeName:"",
+                        instructions: "",
+                        ingredientItem: {},
+                        ingredients:[],
+                        ingredientVolume: 0
+                    });
                 }}
                 maskClosable
                 animationType = 'slide'
