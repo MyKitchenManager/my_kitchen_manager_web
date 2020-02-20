@@ -42,12 +42,7 @@ class MealPlan extends Component {
         };
         this.onPressShoppingButton = this.onPressShoppingButton.bind(this);
         this.onPressCookButton = this.onPressCookButton.bind(this);
-        this.forceUpdateHandler = this.forceUpdateHandler.bind(this);
     }
-
-    forceUpdateHandler(){
-        this.forceUpdate();
-    };
 
     componentDidMount() {
         this.setState({items: [], loading: true})
@@ -177,11 +172,7 @@ class MealPlan extends Component {
                         }else{
                             console.log(response.status);
                         }
-                    })
-                        .then(() => {
-                            this.forceUpdateHandler();
-                        })
-                        .catch((error)=>{
+                    }).catch((error)=>{
                             console.log(`Error in adding item in inventory --> ${error}`);
                         })
                 }
@@ -258,7 +249,7 @@ class MealPlan extends Component {
                             <List style={{width: 320}}>
                                 <ListItem thumbnail>
                                     <Left style={{}}>
-                                        <Thumbnail square source={{uri: item.image}} style={{height: 80, width: 80, borderRadius: 10, opacity: '.6'}} />
+                                        <Thumbnail square source={{uri: item.image}} style={{height: 80, width: 80, borderRadius: 10, opacity: .6}} />
                                     </Left>
                                     <Body style={{paddingTop: 8, paddingBottom: 5 }}>
                                         <Text style={{fontSize: 16, color: '#696969'}}>{item.name}</Text>
@@ -317,7 +308,7 @@ class MealPlan extends Component {
                         }
                     }).then((response)=>{
                         if(response.status == "200"){
-                            alert('Enjoy meal');
+                            //alert('Enjoy meal');
                             console.log('finish cooking');
                         }else{
                             console.log(response.status);
@@ -364,7 +355,6 @@ class MealPlan extends Component {
             </Provider>
         );
     }
-
 }
 
 const styles = StyleSheet.create({
