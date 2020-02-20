@@ -127,13 +127,19 @@ class AddRecipeModal extends Component {
                        fetch(`${API_URL}/uploadimage`, {
                            method:"POST",
                            headers:{
+                               'Accept': 'application/json',
                                'Content-Type':'multipart/form-data',
                                'Authorization': accessToken,
                            },
                            body: formData
-                       }).then((response)=>{
+                       })
+                           .then(response => {return response.json()}
+                       )
+                           .then(response  => {
+                               console.log('result below:-----');
+                           console.log(response.image_url);
                            console.log('getImageURL:' + response.status);
-                           if(response.status=="200"){
+                           // if(response.status =="200"){
                                console.log(response);
                                fetch(`${API_URL}/recipe/add`, {
                                    method: "POST",
@@ -149,7 +155,7 @@ class AddRecipeModal extends Component {
                                        recipeName: this.state.recipeName,
                                        instructions: this.state.instructions,
                                        recipeDetails: list,
-                                       recipeImageUrl: response.body
+                                       recipeImageUrl: response.image_url
                                    }),
                                }).then((response) => {
                                    if (response.status == "200") {
@@ -161,7 +167,7 @@ class AddRecipeModal extends Component {
                                    .catch((error) => {
                                        console.log(`Unable to add recipe -->${error}`);
                                    })
-                           }
+                           // }
                        }).catch((error) => {
                            console.log(`Unable to upload image -->${error}`);
                        })
