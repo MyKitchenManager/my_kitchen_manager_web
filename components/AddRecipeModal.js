@@ -132,42 +132,45 @@ class AddRecipeModal extends Component {
                                'Authorization': accessToken,
                            },
                            body: formData
-                       })
-                           .then(response => {return response.json()}
-                       )
-                           .then(response  => {
-                               console.log('result below:-----');
+                       }).then(response => {
+                           if (response.status == "200") {
+                               console.log('Get image url successfully');
+                               return response.json();
+                           } else {
+                               alert("Cannot get image response");
+                           }
+                       }).then(response  => {
+                           console.log('result below:-----');
                            console.log(response.image_url);
-                           console.log('getImageURL:' + response.status);
-                           // if(response.status =="200"){
-                               console.log(response);
-                               fetch(`${API_URL}/recipe/add`, {
-                                   method: "POST",
-                                   headers: {
-                                       'Authorization': accessToken,
-                                       'Accept': 'application/json',
-                                       'Content-Type': 'application/json',
-                                   },
-                                   body: JSON.stringify({
-                                       contributorId: 241,
-                                       prepTime: 10,
-                                       timesCooked: 10,
-                                       recipeName: this.state.recipeName,
-                                       instructions: this.state.instructions,
-                                       recipeDetails: list,
-                                       recipeImageUrl: response.image_url
-                                   }),
-                               }).then((response) => {
-                                   if (response.status == "200") {
-                                       console.log("Successfully Added recipe");
-                                   }
-                               }).then(() => {
-                                   this.props.data();
+                           fetch(`${API_URL}/recipe/add`, {
+                               method: "POST",
+                               headers: {
+                                   'Authorization': accessToken,
+                                   'Accept': 'application/json',
+                                   'Content-Type': 'application/json',
+                               },
+                               body: JSON.stringify({
+                                   contributorId: 241,
+                                   prepTime: 10,
+                                   timesCooked: 10,
+                                   recipeName: this.state.recipeName,
+                                   instructions: this.state.instructions,
+                                   recipeDetails: list,
+                                   recipeImageUrl: response.image_url
+                               }),
+                           }).then((response) => {
+                               if (response.status == "200") {
+                                   console.log("Successfully Added recipe");
+                               } else {
+                                   console.log('fail to add recipe');
+                                   console.log(response);
+                               }
+                           }).then(() => {
+                               this.props.data();
+                           })
+                               .catch((error) => {
+                                   console.log(`Unable to add recipe -->${error}`);
                                })
-                                   .catch((error) => {
-                                       console.log(`Unable to add recipe -->${error}`);
-                                   })
-                           // }
                        }).catch((error) => {
                            console.log(`Unable to upload image -->${error}`);
                        })
