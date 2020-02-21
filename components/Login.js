@@ -42,20 +42,20 @@ export default class Login extends Component {
             }),
         })
             .then((response) => {
+                console.log(response.status);
                 if (response.status == "200") {
-                    Actions.home();
+                    return response.headers;
                 } else {
                     alert('User does not exist')
                 }
-
-                console.log(response.status);
-                return response.headers;
             })
             .then((headers) => {
                 console.log('Success:', headers);
                 let accessToken = headers.get('authorization').toString();
                 //console.log(accessToken);
                 this._onValueChange(accessToken);
+            }).then(()=>{
+                Actions.home();
             })
             .catch((error) => {
                 console.error('Error:', error);

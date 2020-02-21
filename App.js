@@ -41,6 +41,8 @@ export default class App extends Component {
 
     }
 
+
+
     userInfoHandler(accessToken){
         return fetch(`${API_URL}/`, {
             method: 'GET',
@@ -63,7 +65,7 @@ export default class App extends Component {
                 <Scene key="root">
                     <Scene key="login"  component={Login} hideNavBar={true} title="Login" initial={this.state.init}/>
                     <Scene key="signup" component={SignUp} hideNavBar={true} title="SignUp"/>
-                    <Scene key="home" data={this.state.userId} component={Home} hideNavBar={true} title = "My Kitchen Manager" initial={!this.state.init}/>
+                    <Scene key="home" data={this.state.userId}  component={Home} hideNavBar={true} title = "My Kitchen Manager" initial={!this.state.init}/>
                     <Scene key="recipe" component={MealPlanRecipe} hideNavBar={true} title="MealPlanRecipe" />
                 </Scene>
               </Router>
