@@ -18,7 +18,7 @@ class AddIngredientModal extends Component {
             selected2: undefined,
             searchable: [],
             searchIngredient: "",
-            newItemName: "",
+            newItemId: 80,
             newItemVolume: "",
             newItemUnit: "",
         }
@@ -78,9 +78,9 @@ class AddIngredientModal extends Component {
                                 'Authorization':  accessToken
                             },
                             body: JSON.stringify({
-                                ingredientId : 80,
+                                ingredientId : this.state.newItemId,
                                 inventoryVolume: this.state.newItemVolume,
-                                unitsOfMeasure: 13,
+                                unitsOfMeasure: 12,
                                 userId: this.props.data,
                                 purchaseDate:"2020-02-04T12:00:00.000+0000",
                                 expirationDate:"2020-02-19T12:00:00.000+0000"
@@ -149,7 +149,7 @@ class AddIngredientModal extends Component {
                                         backgroundColor: '#DDDDDD',
                                         padding: 5}}
                                     onPress={() => {
-                                    this.setState({ searchIngredient: item.ingredientName })
+                                    this.setState({ searchIngredient: item.ingredientName, newItemId: item.ingredientId })
                                     search = [];
                                 }}>
                                     <Text>
