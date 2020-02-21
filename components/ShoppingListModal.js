@@ -33,6 +33,21 @@ class ShoppingListModal extends Component {
             loading: true,
             checkedBox: [],
             items: [],
+            purchasedIngredient: [{
+                ingredientId : 20,
+                inventoryVolume: 34,
+                unitsOfMeasure: 13,
+                userId: 241,
+                purchaseDate:"2020-02-04T12:00:00.000+0000",
+                expirationDate:"2020-02-19T12:00:00.000+0000"
+            }, {
+                ingredientId : 80,
+                inventoryVolume: 200,
+                unitsOfMeasure: 13,
+                userId: 241,
+                purchaseDate:"2020-02-04T12:00:00.000+0000",
+                expirationDate:"2020-02-19T12:00:00.000+0000"
+            }]
         }
     }
 
@@ -97,6 +112,39 @@ class ShoppingListModal extends Component {
 
     onFinishShoppingButton() {
         console.log('pressed finish shopping button')
+        AsyncStorage.getItem(TOKEN_KEY)
+            .then((accessToken)=>{
+                if(accessToken!=null){
+                    console.log(accessToken);
+                    fetch(`${API_URL}/inventory/addAll`, {
+                        method: "POST",
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json',
+                            'Authorization':  accessToken
+                        },
+                        body: JSON.stringify(this.state.purchasedIngredient
+                        //     {
+                        //     ingredientId : 80,
+                        //     inventoryVolume: this.state.newItemVolume,
+                        //     unitsOfMeasure: 13,
+                        //     userId: this.props.data,
+                        //     purchaseDate:"2020-02-04T12:00:00.000+0000",
+                        //     expirationDate:"2020-02-19T12:00:00.000+0000"
+                        // }
+                        )
+                    }).then((response)=>{
+                        if(response.status == "200"){
+                            alert("Purchased Items have been added to Inventory");
+                            console.log('Purchased Items have been added to Inventory')
+                        }else{
+                            console.log(response.status);
+                        }
+                    }).catch((error)=>{
+                        console.log(`Error in adding item in inventory --> ${error}`);
+                    })
+                }
+        })
     }
 
     onPressCheckBox(id) {
