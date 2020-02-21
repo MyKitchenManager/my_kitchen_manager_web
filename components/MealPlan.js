@@ -49,53 +49,66 @@ class MealPlan extends Component {
     componentDidMount() {
         this.setState({items: [], loading: true})
         AsyncStorage.getItem(TOKEN_KEY)
-            .then((accessToken)=>{
-                if(accessToken!=null){
-                    //let newItem = [];
-                    fetch(`${API_URL}/mealplan/users`, {
-                        method:"GET",
-                        headers:{
-                            "Authorization" : accessToken
+            .then((accessToken) => {
+                if (accessToken != null) {
+                    fetch(`${API_URL}/`, {
+                        method: 'GET',
+                        headers: {
+                            'Authorization': accessToken
                         }
-                    })
-                        .then((response)=>{
-                            if(response.status=="200"){
-                                return response.json();
-                            }else{
-                                console.log(response.status);
-                            }
-
-                        }).then((responseData)=>{
-                        for(let i = 0; i< responseData.length; i++) {
-                            console.log(responseData[i]);
-                            let id = responseData[i].mealPlanId;
-                            let name = responseData[i].recipeIdJoin.recipeName;
-                            let date = responseData[i].mealDate;
-                            let image = responseData[i].recipeIdJoin.recipeImageUrl;
-                            let status = responseData[i].status;
-                            let recipeDetails = responseData[i].recipeIdJoin.recipeDetails;
-                            let instructions = responseData[i].recipeIdJoin.instructions;
-
-                            if (!this.state.allItems[date]) {
-                                this.state.allItems[date] = [];
-                            }
-                            this.state.allItems[date].push({
-                                id: id,
-                                name: name,
-                                image: image,
-                                status: status,
-                                recipeDetails: recipeDetails,
-                                instructions: instructions
-                            })
+                    }).then((response) => {
+                        if (response.status == '200') {
+                            return response.json();
                         }
-                    }).then(()=>{
-                        console.log(this.state.allItems);
-                    })
+                    }).then((responseData) => {
+                        console.log('userId:' + responseData.userId);
+                        this.setState({userId: responseData.userId});
+                    }).done()
+                    return accessToken;
+                }
+            }).then((accessToken) => {
+            fetch(`${API_URL}/mealplan/users`, {
+                method: "GET",
+                headers: {
+                    "Authorization": accessToken
                 }
             })
-            .catch((error)=>{
+                .then((response) => {
+                    if (response.status == "200") {
+                        return response.json();
+                    } else {
+                        console.log(response.status);
+                    }
+
+                }).then((responseData) => {
+                for (let i = 0; i < responseData.length; i++) {
+                    console.log(responseData[i]);
+                    let id = responseData[i].mealPlanId;
+                    let name = responseData[i].recipeIdJoin.recipeName;
+                    let date = responseData[i].mealDate;
+                    let image = responseData[i].recipeIdJoin.recipeImageUrl;
+                    let status = responseData[i].status;
+                    let recipeDetails = responseData[i].recipeIdJoin.recipeDetails;
+                    let instructions = responseData[i].recipeIdJoin.instructions;
+
+                    if (!this.state.allItems[date]) {
+                        this.state.allItems[date] = [];
+                    }
+                    this.state.allItems[date].push({
+                        id: id,
+                        name: name,
+                        image: image,
+                        status: status,
+                        recipeDetails: recipeDetails,
+                        instructions: instructions
+                    })
+                }
+            }).then(() => {
+                console.log(this.state.allItems);
+            }).catch((error) => {
                 console.log(`Error in fetching inventory list --> ${error}`);
             })
+        })
     }
 
     loadItems(day) {
@@ -123,30 +136,34 @@ class MealPlan extends Component {
         //alert('fail');
         //yyyy-mm-dd
         console.log('add to which day:' + day.dateString);
-        AsyncStorage.getItem(TOKEN_KEY)
-            .then((accessToken)=>{
-                if(accessToken!=null){
-                    return fetch(`${API_URL}/`, {
-                        method: 'GET',
-                        headers: {
-                            'Authorization': accessToken
-                        }
-                    }).then((response)=>{
-                        if(response.status=='200'){
-                            return response.json();
-                        }
-                    }).then((responseData)=>{
-                        //this.setState({userId: responseData.userId});
-                        console.log('userId:' + responseData.userId);
-                        Actions.recipe({
-                            date: day.dateString,
-                            userId: responseData.userId
-                        });
-                    }).catch((error)=>{
-                        console.log(`Error in fetching user id --> ${error}`);
-                    })
-                }
-            })
+        Actions.recipe({
+            date: day.dateString,
+            userId: this.state.userId
+        });
+        // AsyncStorage.getItem(TOKEN_KEY)
+        //     .then((accessToken)=>{
+        //         if(accessToken!=null){
+        //             return fetch(`${API_URL}/`, {
+        //                 method: 'GET',
+        //                 headers: {
+        //                     'Authorization': accessToken
+        //                 }
+        //             }).then((response)=>{
+        //                 if(response.status=='200'){
+        //                     return response.json();
+        //                 }
+        //             }).then((responseData)=>{
+        //                 //this.setState({userId: responseData.userId});
+        //                 console.log('userId:' + responseData.userId);
+        //                 Actions.recipe({
+        //                     date: day.dateString,
+        //                     userId: responseData.userId
+        //                 });
+        //             }).catch((error)=>{
+        //                 console.log(`Error in fetching user id --> ${error}`);
+        //             })
+        //         }
+        //     })
         //pass params via Actions as object
         //Actions.recipe({date: day.dateString});
     }
@@ -320,8 +337,8 @@ class MealPlan extends Component {
         return date.toISOString().split('T')[0];
     }
 
-    onPressShoppingButton() {
-        this.refs.ShoppingListModal.showShoppingListModal();
+    onPressShoppingButton(userId) {
+        this.refs.ShoppingListModal.showShoppingListModal(userId);
     }
 
     onPressFinishCook(id) {
@@ -363,7 +380,7 @@ class MealPlan extends Component {
                             <Title>My Meal Plan</Title>
                         </Body>
                         <Right>
-                            <Button transparent onPress={() => this.onPressShoppingButton()}>
+                            <Button transparent onPress={() => this.onPressShoppingButton(this.state.userId)}>
                                 {/*<Icon name='ios-cart' />*/}
                                 <Text style={{color: '#00BBF2', fontWeight: 'bold'}}>Shopping</Text>
                             </Button>
