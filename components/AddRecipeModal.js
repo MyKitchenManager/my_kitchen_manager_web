@@ -214,7 +214,8 @@ class AddRecipeModal extends Component {
                         instructions: "",
                         ingredientItem: {},
                         ingredients:[],
-                        ingredientVolume: 0
+                        ingredientVolume: 0,
+                        image: ""
                     });
                 }}
                 maskClosable
@@ -312,8 +313,15 @@ class AddRecipeModal extends Component {
                         backgroundColor:"deepskyblue",
                         width:200}}
                     onPress={()=>{
-                        this.setState({showModal: false
-                        })
+                        this.setState({
+                            showModal:false,
+                            recipeName:"",
+                            instructions: "",
+                            ingredientItem: {},
+                            ingredients:[],
+                            ingredientVolume: 0,
+                            image: ""
+                        });
                         this.onAddItem();
                     }}>
                     <Text >ADD</Text>
