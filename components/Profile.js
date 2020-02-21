@@ -113,7 +113,7 @@ class Profile extends Component {
                     </Body>
                     <Right>
                         <Button transparent onPress={this.logoutHandler}>
-                            <Text>LogOut</Text>
+                            <Text style={{color: '#00BBF2'}}>LogOut</Text>
                         </Button>
                     </Right>
                 </Header>
