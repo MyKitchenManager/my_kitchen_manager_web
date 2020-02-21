@@ -66,7 +66,6 @@ export default class App extends Component {
                     <Scene key="recipe" component={MealPlanRecipe} hideNavBar={true} title="MealPlanRecipe" />
                 </Scene>
               </Router>
-
     }
 }
 

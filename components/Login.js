@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 import {Actions} from "react-native-router-flux";
 import styles from '../styles/styles.js';
 import {API_URL, TOKEN_KEY} from "../constant";
-import {AsyncStorage} from "react-native";
+import {AsyncStorage, View, KeyboardAvoidingView } from "react-native";
 
 
 export default class Login extends Component {
@@ -68,16 +68,25 @@ export default class Login extends Component {
 
         return (
             <Container>
-                <Header>
-                    <Text style = {{fontWeight: "bold", paddingTop:10, fontSize:17}}>
-                        Login
-                    </Text>
-                </Header>
+                {/*<Header>*/}
+                {/*    <Text style = {{fontWeight: "bold", paddingTop:10, fontSize:17}}>*/}
+                {/*        Login*/}
+                {/*    </Text>*/}
+                {/*</Header>*/}
+
 
                 {
                     <Content>
-                        <List style={{paddingTop: 10, paddingBottom: 15}}>
-                            <ListItem>
+                        <View style={{marginTop: 200, alignSelf: "center", alignItems: "center",}}>
+                            <Text style={{fontSize: 26, fontWeight: 'bold'}}>
+                                Your kitchen.
+                                <Text style={{fontSize: 26, fontWeight: 'bold', color: '#00BBF2'}}> Manager </Text>
+                            </Text>
+                            <Text style={{color:'#C5CCD6', fontSize: 18}}>Enjoy fast and health meal</Text>
+                        </View>
+                        <KeyboardAvoidingView behavior="position">
+                        <List style={{paddingTop: 200, paddingBottom: 15, width: 350, paddingLeft: 15}}>
+                            <ListItem style={{borderColor: 'white'}}>
                                 <InputGroup>
                                     <Icon name="ios-person" style={{color: '#fe6e32'}}/>
                                     <Item floatingLabel>
@@ -89,7 +98,7 @@ export default class Login extends Component {
                                     </Item>
                                 </InputGroup>
                             </ListItem>
-                            <ListItem>
+                            <ListItem style={{borderColor: 'white'}}>
                                 <InputGroup>
                                     <Icon name="ios-unlock" style={{color: '#fe6e32'}}/>
                                     <Item floatingLabel>
@@ -103,18 +112,19 @@ export default class Login extends Component {
                                 </InputGroup>
                             </ListItem>
                         </List>
-                        <Button style={styles.primaryButton} onPress={this.loginHandler.bind(this)}>
+                        <Button style={[styles.primaryButton, {width: 340}]}onPress={this.loginHandler.bind(this)}>
                             <Text style={{fontWeight: "bold"}}>Log in</Text>
                         </Button>
 
                         <Text style = {{alignSelf: "center", paddingTop: 10}}>Or New Here?</Text>
-                        <Button onPress={()=>Actions.signup()} style={styles.primaryButton}>
+                        <Button onPress={()=>Actions.signup()} style={[styles.primaryButton, {width: 340}]}>
                             <Text style={{fontWeight: "bold"}}>Register</Text>
                         </Button>
 
                         {/*<Text style = {{alignSelf: "center", paddingTop: 10}}>*/}
                         {/*    Or New Here? Try <Text onPress={()=>Actions.signup()} style={{fontWeight: "bold", color:"#47c1fe"}}>Register</Text>*/}
                         {/*</Text>*/}
+                        </KeyboardAvoidingView>
 
                     </Content>
                 }
