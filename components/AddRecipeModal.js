@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
-import {Button, Icon, Input, Item, Right, Text, View, Picker, Form, Left, ListItem, Image} from "native-base";
+import {Button, Icon, Input, Item, Right, Text, View, Picker, Form, Left, ListItem} from "native-base";
 import {Modal} from "@ant-design/react-native";
-import {AsyncStorage, TextInput, ScrollView} from "react-native"
+import {AsyncStorage, TextInput, ScrollView, Image} from "react-native"
 import {API_URL, TOKEN_KEY} from "../constant"
 import * as ImagePicker from "expo-image-picker";
 import Constants from "expo-constants";
@@ -22,7 +22,7 @@ class AddRecipeModal extends Component {
             ingredientItem: {},
             ingredientVolume: 0,
             unit: 12,
-            image: null
+            image: ""
         }
     }
 
@@ -125,7 +125,7 @@ class AddRecipeModal extends Component {
                 let item = {
                     ingredientId: this.state.ingredients[i].ingredientId,
                     ingredientVolume: this.state.ingredients[i].ingredientVolume,
-                    unitsOfMeasure: 6
+                    unitsOfMeasure: this.state.unit
                 }
                 console.log(item);
                 list.push(item);
@@ -298,7 +298,9 @@ class AddRecipeModal extends Component {
                     <Button transparent onPress={this._pickImage}>
                         <Icon name="camera"/>
                     </Button>
-
+                    {this.state.image?
+                        <Image source={{ uri: this.state.image }} style={{ width: 200, height: 200 }} />
+                        : <View></View>}
 
                 </View>
 
