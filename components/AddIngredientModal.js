@@ -115,8 +115,7 @@ class AddIngredientModal extends Component {
     }
 
     render() {
-        const search = this.findIngredient(this.state.searchIngredient);
-        console.log(search);
+        let search = this.findIngredient(this.state.searchIngredient);
         return (
             <Modal
                 style={{width: 320}}
@@ -135,18 +134,26 @@ class AddIngredientModal extends Component {
 
                 <View style={{ paddingVertical: 20 }}>
                     {/*Search Bar*/}
-                    <Item rounded style={{margin: 10, width: 290, height:50, alignSelf: "center"}}>
+                    <Item rounded style={{margin: 10, width: 290, height:50, alignSelf: "center", marginBottom: 50}}>
                         <Icon name="ios-search"/>
                         <Autocomplete
                             onChangeText={text=>this.setState({searchIngredient: text})}
+                            value={this.state.searchIngredient}
                             placeholder="Search Ingredient"
                             data = {search}
-                            inputContainerStyle={{width: 100}}
-                            listContainerStyle={{width: 100}}
-                            renderItem={({ingredientName})=>(
-                                <TouchableOpacity onPress={() => this.setState({ searchIngredient: ingredientName })}>
+                            inputContainerStyle={{width: 200, borderColor: "white"}}
+                            listContainerStyle={{width: 200}}
+                            renderItem={({item})=>(
+                                <TouchableOpacity
+                                    style={{alignItems: 'center',
+                                        backgroundColor: '#DDDDDD',
+                                        padding: 5}}
+                                    onPress={() => {
+                                    this.setState({ searchIngredient: item.ingredientName })
+                                    search = [];
+                                }}>
                                     <Text>
-                                        {ingredientName}
+                                        {item.ingredientName}
                                     </Text>
                                 </TouchableOpacity>
                             )}
@@ -165,7 +172,7 @@ class AddIngredientModal extends Component {
                         </Right>
                     </Item>
 
-                    <Item  rounded style={{ alignSelf: "center", margin: 10, width: 290, height: 50 }}>
+                    <Item rounded style={{ alignSelf: "center", margin: 10, width: 290, height: 50}}>
                         <Input
                             style={{marginLeft: 10}}
                             placeholder='Volume'
