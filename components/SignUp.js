@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {
+    Body,
     Button,
     Container,
     Content,
@@ -8,14 +9,15 @@ import {
     Input,
     InputGroup,
     Item,
-    Label,
+    Label, Left,
     List,
-    ListItem, Text,
+    ListItem, Right, Text,
     Title
 } from "native-base"
 import styles from "../styles/styles"
 import {Actions} from "react-native-router-flux";
 import {API_URL} from "../constant";
+import { KeyboardAvoidingView } from 'react-native';
 
 class SignUp extends Component {
     state = {
@@ -69,14 +71,21 @@ class SignUp extends Component {
         return (
             <Container>
                 <Header>
-                    <Text style = {{fontWeight: "bold", paddingTop:10, fontSize:17}}>
-                        Sign Up
-                    </Text>
+                    <Left>
+                        <Button transparent onPress={() => {Actions.pop()}}>
+                            <Icon name='arrow-back' style={{color: '#00BBF2', paddingLeft: 15}}/>
+                        </Button>
+                    </Left>
+                    <Body>
+                        <Title>Sign Up</Title>
+                    </Body>
+                    <Right />
                 </Header>
                 {
                     <Content>
-                        <List style={{paddingTop: 10, paddingBottom: 15}}>
-                            <ListItem>
+                        <KeyboardAvoidingView behavoir='position'>
+                        <List style={{paddingTop: 150, paddingBottom: 15, width: 340, paddingLeft: 15}}>
+                            <ListItem style={{borderColor: 'white'}}>
                                 <InputGroup>
                                     <Icon name="ios-person" style={{color: '#fe6e32'}}/>
                                     <Item floatingLabel>
@@ -88,7 +97,7 @@ class SignUp extends Component {
                                     </Item>
                                 </InputGroup>
                             </ListItem>
-                            <ListItem>
+                            <ListItem style={{borderColor: 'white'}}>
                                 <InputGroup>
                                     <Icon type="MaterialIcons" name="mail" style={{color: '#fe6e32'}}/>
                                     <Item floatingLabel>
@@ -100,7 +109,7 @@ class SignUp extends Component {
                                     </Item>
                                 </InputGroup>
                             </ListItem>
-                            <ListItem>
+                            <ListItem style={{borderColor: 'white'}}>
                                 <InputGroup>
                                     <Icon name="ios-unlock" style={{color: '#fe6e32'}}/>
                                     <Item floatingLabel>
@@ -113,7 +122,7 @@ class SignUp extends Component {
                                     </Item>
                                 </InputGroup>
                             </ListItem>
-                            <ListItem>
+                            <ListItem style={{borderColor: 'white'}}>
                                 <InputGroup>
                                     <Icon type="MaterialIcons" name="done" style={{color: '#fe6e32'}}/>
                                     <Item floatingLabel>
@@ -127,14 +136,15 @@ class SignUp extends Component {
                                 </InputGroup>
                             </ListItem>
                         </List>
-                        <Button style={styles.primaryButton} onPress={this.handlerSignUp.bind(this)}>
+                        <Button style={[styles.primaryButton, {width: 340}]} onPress={this.handlerSignUp.bind(this)}>
                             <Text style={{fontWeight: "bold"}}>Sign Up</Text>
                         </Button>
 
 
-                        <Button style={styles.primaryButton} onPress={()=>Actions.pop()}>
-                            <Text style={{fontWeight: "bold"}}>Back to Login</Text>
-                        </Button>
+                        {/*<Button style={[styles.primaryButton, {width: 340}]} onPress={()=>Actions.pop()}>*/}
+                        {/*    <Text style={{fontWeight: "bold"}}>Back to Login</Text>*/}
+                        {/*</Button>*/}
+                        </KeyboardAvoidingView>
 
                     </Content>
                 }

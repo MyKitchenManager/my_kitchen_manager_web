@@ -4,6 +4,7 @@ import {Alert, ScrollView} from "react-native";
 import {Col, Grid} from "react-native-easy-grid";
 import {Modal, WhiteSpace} from "@ant-design/react-native";
 import meal from "../assets/meal.jpeg";
+import Actions from 'react-native-router-flux';
 class RecipeDetailModal extends Component {
     constructor(props) {
         super(props);
