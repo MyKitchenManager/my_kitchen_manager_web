@@ -18,6 +18,8 @@ export default class App extends Component {
     }
 
     componentDidMount(){
+        console.disableYellowBox = true;
+        // console.ignoredYellowBox = ['Warning:'];
         AsyncStorage.getItem(TOKEN_KEY)
             .then((accessToken)=>{
                 if(accessToken!=null){
@@ -40,7 +42,6 @@ export default class App extends Component {
         });
 
     }
-
 
 
     userInfoHandler(accessToken){

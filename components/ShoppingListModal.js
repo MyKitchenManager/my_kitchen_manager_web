@@ -33,6 +33,8 @@ class ShoppingListModal extends Component {
             loading: true,
             checkedBox: [],
             items: [],
+            purchasedIngredient: [],
+            userId: ''
         }
     }
 
@@ -64,20 +66,27 @@ class ShoppingListModal extends Component {
                                 alert(`Error in fetching data --> status ${response.status}`);
                             }
                         }).then((responseData)=>{
-                            for (let i = 0; i < responseData[0].length; i++) {
-                                console.log('responseData[i]:' + responseData[0][i]);
-                                let id = responseData[0][i].i.ingredientId
-                                let name = responseData[0][i].i.ingredientName;
-                                let image = responseData[0][i].i.imageUrl;
-                                let volume = responseData[0][i].volume;
-                                const item = {
-                                    id: id,
-                                    name: name,
-                                    image: image,
-                                    volume: volume
-                                };
-                                const list = this.state.items.concat(item);
-                                this.setState({items: list, loading: false});
+                            if (responseData[0].length === 0) {
+                                this.setState({
+                                    items: [],
+                                    loading: false
+                                });
+                            } else {
+                                for (let i = 0; i < responseData[0].length; i++) {
+                                    console.log('responseData[i]:' + responseData[0][i]);
+                                    let id = responseData[0][i].i.ingredientId
+                                    let name = responseData[0][i].i.ingredientName;
+                                    let image = responseData[0][i].i.imageUrl;
+                                    let volume = responseData[0][i].volume;
+                                    const item = {
+                                        id: id,
+                                        name: name,
+                                        image: image,
+                                        volume: volume
+                                    };
+                                    const list = this.state.items.concat(item);
+                                    this.setState({items: list, loading: false});
+                                }
                             }
                         }).done()
                     })
@@ -88,15 +97,41 @@ class ShoppingListModal extends Component {
             })
     }
 
-    showShoppingListModal = () => {
+    showShoppingListModal = (userId) => {
+        console.log('userId:' + userId);
         this.setState({
             showModal: true,
+            userId: userId
         })
         this.getShoppingList();
     }
 
     onFinishShoppingButton() {
         console.log('pressed finish shopping button')
+        AsyncStorage.getItem(TOKEN_KEY)
+            .then((accessToken)=>{
+                if(accessToken!=null){
+                    console.log(accessToken);
+                    fetch(`${API_URL}/inventory/addAll`, {
+                        method: "POST",
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json',
+                            'Authorization':  accessToken
+                        },
+                        body: JSON.stringify(this.state.purchasedIngredient)
+                    }).then((response)=>{
+                        if(response.status == "200"){
+                            alert("Purchased Items have been added to Inventory");
+                            console.log('Purchased Items have been added to Inventory')
+                        }else{
+                            console.log(response.status);
+                        }
+                    }).catch((error)=>{
+                        console.log(`Error in adding item in inventory --> ${error}`);
+                    })
+                }
+        })
     }
 
     onPressCheckBox(id) {
@@ -106,12 +141,32 @@ class ShoppingListModal extends Component {
             tmp.splice( tmp.indexOf(id), 1 );
         } else {
             tmp.push( id );
+            //get volume
+            let volume;
+            for (let i = 0; i < this.state.items.length; i++) {
+                if (this.state.items[i].id === id) {
+                    volume = this.state.items[i].volume;
+                    break;
+                }
+            }
+
+            this.state.purchasedIngredient.push({
+                ingredientId : id,
+                inventoryVolume: volume,
+                unitsOfMeasure: 13,
+                userId: this.state.userId,
+                purchaseDate:"2020-02-04T12:00:00.000+0000",
+                expirationDate:"2020-02-19T12:00:00.000+0000"
+            })
         }
 
         this.setState({
             checkedBox: tmp
         });
+        console.log(this.state.checkedBox);
+        console.log(this.state.purchasedIngredient);
     }
+
 
     render() {
         return (

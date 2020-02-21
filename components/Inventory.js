@@ -97,66 +97,71 @@ class Inventory extends Component {
                                 console.log(response.status);
                             }
 
-                        }).then((responseData)=>{
-                        for(let i = 0; i< responseData.length; i++) {
-                            console.log(responseData[i]);
-                            let name = responseData[i].ingredientIdJoin.ingredientName;
-                            let id = responseData[i].inventoryId;
-                            let image = responseData[i].ingredientIdJoin.imageUrl;
-                            let amount = responseData[i].inventoryVolume;
-                            let unit = responseData[i].unitsOfMeasureListEntry.entry;
-                            let expirationDate = responseData[i].expirationDate;
-                            let purchaseDate = responseData[i].purchaseDate;
-                            let category;
-                            switch(responseData[i].ingredientIdJoin.ingredientCategoryId){
-                                case 1:
-                                    category = "Vegetables";
-                                    break;
-                                case 2:
-                                    category = "Spices and Herbs";
-                                    break;
-                                case 3:
-                                    category = "Cereals and Pulses";
-                                    break;
-                                case 4:
-                                    category = "Meat";
-                                    break;
-                                case 5:
-                                    category = "Dairy Products";
-                                    break;
-                                case 6:
-                                    category = "Fruits";
-                                    break;
-                                case 7:
-                                    category = "Seafood";
-                                    break;
-                                case 8:
-                                    category = "Sugar and Sugar Products";
-                                    break;
-                                case 9:
-                                    category = "Nuts and Oilseeds";
-                                    break;
-                                default:
-                                    category = "Other Ingredients";
-                                    break;
+                        }).then((responseData)=> {
+                        if (responseData.length == 0) {
+                            this.setState({
+                                Items: [],
+                                loading: false
+                            })
+                        } else {
+                            for(let i = 0; i< responseData.length; i++) {
+                                console.log(responseData[i]);
+                                let name = responseData[i].ingredientIdJoin.ingredientName;
+                                let id = responseData[i].inventoryId;
+                                let image = responseData[i].ingredientIdJoin.imageUrl;
+                                let amount = responseData[i].inventoryVolume;
+                                let unit = responseData[i].unitsOfMeasureListEntry.entry;
+                                let expirationDate = responseData[i].expirationDate;
+                                let purchaseDate = responseData[i].purchaseDate;
+                                let category;
+                                switch(responseData[i].ingredientIdJoin.ingredientCategoryId){
+                                    case 1:
+                                        category = "Vegetables";
+                                        break;
+                                    case 2:
+                                        category = "Spices and Herbs";
+                                        break;
+                                    case 3:
+                                        category = "Cereals and Pulses";
+                                        break;
+                                    case 4:
+                                        category = "Meat";
+                                        break;
+                                    case 5:
+                                        category = "Dairy Products";
+                                        break;
+                                    case 6:
+                                        category = "Fruits";
+                                        break;
+                                    case 7:
+                                        category = "Seafood";
+                                        break;
+                                    case 8:
+                                        category = "Sugar and Sugar Products";
+                                        break;
+                                    case 9:
+                                        category = "Nuts and Oilseeds";
+                                        break;
+                                    default:
+                                        category = "Other Ingredients";
+                                        break;
+                                }
+                                const item = {
+                                    id: id,
+                                    name: name,
+                                    image: image,
+                                    amount: amount,
+                                    unit: unit,
+                                    category: category,
+                                    purchaseDate: purchaseDate.substr(0, 10)
+                                };
+                                const list = this.state.Items.concat(item);
+                                this.setState({Items: list, display: list, loading: false});
                             }
-                            const item = {
-                                id: id,
-                                name: name,
-                                image: image,
-                                amount: amount,
-                                unit: unit,
-                                category: category,
-                                purchaseDate: purchaseDate.substr(0, 10)
-                            };
-                            const list = this.state.Items.concat(item);
-                            this.setState({Items: list, display: list, loading: false});
                         }
                     }).done();
-
                 }
-            })
-            .catch((error)=>{
+            }).catch((error)=>{
                 console.log(`Error in fetching inventory list --> ${error}`);
             })
 
