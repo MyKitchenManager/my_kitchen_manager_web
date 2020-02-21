@@ -2,9 +2,9 @@ import React, {Component} from 'react';
 import {Button, Text, View, Input, Item, Form, Picker, Icon, Grid, Col, Right} from "native-base";
 import {Modal} from "@ant-design/react-native";
 import ModalDropdown from "react-native-modal-dropdown";
-import {AsyncStorage} from "react-native"
+import {AsyncStorage, TouchableOpacity} from "react-native"
 import {API_URL, TOKEN_KEY} from "../constant"
-import {acc} from "react-native-reanimated"
+import Autocomplete from "react-native-autocomplete-input";
 //import Modal from 'react-native-modalbox';
 
 /*
@@ -16,6 +16,7 @@ class AddIngredientModal extends Component {
         this.state = {
             showModal: false,
             selected2: undefined,
+            searchable: [],
             searchIngredient: "",
             newItemName: "",
             newItemVolume: "",
@@ -34,6 +35,31 @@ class AddIngredientModal extends Component {
         this.setState({
             selected2: value,
         });
+    }
+
+    componentDidMount() {
+        AsyncStorage.getItem(TOKEN_KEY)
+            .then((accessToken)=>{
+                if(accessToken!=null){
+                    fetch(`${API_URL}/listentry/ingredients`,{
+                        method: "GET",
+                        headers:{
+                            "Authorization": accessToken
+                        }
+                    }).then((response)=>{
+                        if(response.status=="200"){
+                            return response.json();
+                        }else{
+                            alert("Cannot get ingredient list");
+                        }
+                    }).then((responseData)=>{
+                        console.log(responseData);
+                        this.setState({searchable:responseData});
+                    }).done()
+                }
+            }).catch((error)=>{
+                console.log(`Cannot get Token --> ${error}`);
+        })
     }
 
     onAddItem(){
@@ -73,7 +99,24 @@ class AddIngredientModal extends Component {
             })
     }
 
+    findIngredient(query){
+        let text = query.toLowerCase();
+        let trucks = this.state.searchable;
+        let filtered = trucks.filter((item)=>{
+            return item.ingredientName.toLowerCase().match(text);
+        });
+        if(!text||text==""){
+            return [];
+        }else if(!Array.isArray(filtered) && !filtered.length){
+            return [];
+        }else if(Array.isArray(filtered)){
+            return filtered;
+        }
+    }
+
     render() {
+        const search = this.findIngredient(this.state.searchIngredient);
+        console.log(search);
         return (
             <Modal
                 style={{width: 320}}
@@ -94,11 +137,21 @@ class AddIngredientModal extends Component {
                     {/*Search Bar*/}
                     <Item rounded style={{margin: 10, width: 290, height:50, alignSelf: "center"}}>
                         <Icon name="ios-search"/>
-                        <Input
-                            placeholder='Name'
-                            value={this.state.searchIngredient}
-                            onChangeText={(text) => this.setState({searchIngredient: text})}
-                        />
+                        <Autocomplete
+                            onChangeText={text=>this.setState({searchIngredient: text})}
+                            placeholder="Search Ingredient"
+                            data = {search}
+                            inputContainerStyle={{width: 100}}
+                            listContainerStyle={{width: 100}}
+                            renderItem={({ingredientName})=>(
+                                <TouchableOpacity onPress={() => this.setState({ searchIngredient: ingredientName })}>
+                                    <Text>
+                                        {ingredientName}
+                                    </Text>
+                                </TouchableOpacity>
+                            )}
+                       />
+
                         <Right>
                             <Button transparent onPress={
                                 ()=>{
