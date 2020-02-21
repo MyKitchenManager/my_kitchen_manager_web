@@ -180,12 +180,21 @@ class AddRecipeModal extends Component {
                            }).then((response) => {
                                if (response.status == "200") {
                                    console.log("Successfully Added recipe");
+
                                } else {
                                    console.log('fail to add recipe');
                                    console.log(response);
                                }
                            }).then(() => {
                                this.props.data();
+                               this.setState({
+                                   recipeName:"",
+                                   instructions: "",
+                                   ingredientItem: {},
+                                   ingredients:[],
+                                   ingredientVolume: 0,
+                                   image: ""
+                               });
                            })
                                .catch((error) => {
                                    console.log(`Unable to add recipe -->${error}`);
@@ -283,7 +292,9 @@ class AddRecipeModal extends Component {
                                 </ListItem>
                             })}
                         </ScrollView>
-                        <Button transparent onPress = {() => this.onPressAdd()}>
+                        <Button transparent onPress = {() => {
+                            this.onPressAdd()
+                        }}>
                             <Icon name='add-circle' />
                         </Button>
 
@@ -315,12 +326,6 @@ class AddRecipeModal extends Component {
                     onPress={()=>{
                         this.setState({
                             showModal:false,
-                            recipeName:"",
-                            instructions: "",
-                            ingredientItem: {},
-                            ingredients:[],
-                            ingredientVolume: 0,
-                            image: ""
                         });
                         this.onAddItem();
                     }}>
