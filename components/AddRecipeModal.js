@@ -90,6 +90,7 @@ class AddRecipeModal extends Component {
         this.setState(prevState=>({
             ingredients: [...prevState.ingredients, item]
         }));
+        this.setState({searchIngredient: "", ingredientVolume: ""})
         console.log(this.state.ingredients);
     }
     componentDidMount() {
@@ -322,7 +323,7 @@ class AddRecipeModal extends Component {
                                 />
                             </Right>
                         </Item>
-                        <ScrollView>
+                        <ScrollView style={{height: 50}}>
                             {this.state.ingredients.map((item)=>{
                                 return <ListItem>
                                     <Left>
