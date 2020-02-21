@@ -82,7 +82,11 @@ class MealPool extends Component {
                             alert(`Error in fetching data --> status ${response.status}`);
                         }
                     }).then((responseData)=>{
-                       this.setState({Items: responseData, display: responseData});
+                       this.setState({
+                           Items: responseData,
+                           display: responseData,
+                           loading: false
+                       });
                     }).done()
                 }
             })
@@ -96,7 +100,17 @@ class MealPool extends Component {
     }
 
     render() {
-        return (
+        return this.state.loading?
+            <Container>
+                <Header>
+                    <Title style={{alignSelf:'center',
+                        justifyContent:'center',}}>Meal Pool</Title>
+                </Header>
+                <Content>
+                    <Spinner color='deepskyblue'/>
+                </Content>
+            </Container>
+            :(
             <Provider>
                 <Container>
                     <Header>

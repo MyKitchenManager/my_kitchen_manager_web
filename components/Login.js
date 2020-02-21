@@ -82,7 +82,7 @@ export default class Login extends Component {
                                 Your kitchen.
                                 <Text style={{fontSize: 26, fontWeight: 'bold', color: '#00BBF2'}}> Manager </Text>
                             </Text>
-                            <Text style={{color:'#C5CCD6', fontSize: 18}}>Enjoy fast and health meal</Text>
+                            <Text style={{color:'#C5CCD6', fontSize: 18}}>Enjoy fast and healthy meal</Text>
                         </View>
                         <KeyboardAvoidingView behavior="position">
                         <List style={{paddingTop: 200, paddingBottom: 15, width: 350, paddingLeft: 15}}>
