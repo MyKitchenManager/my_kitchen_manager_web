@@ -1,10 +1,11 @@
 import React, {Component} from 'react';
 import {Button, Icon, Input, Item, Right, Text, View, Picker, Form, Left, ListItem} from "native-base";
 import {Modal} from "@ant-design/react-native";
-import {AsyncStorage, TextInput, ScrollView, Image} from "react-native"
+import {AsyncStorage, TextInput, ScrollView, Image, TouchableOpacity} from "react-native"
 import {API_URL, TOKEN_KEY} from "../constant"
 import * as ImagePicker from "expo-image-picker";
 import Constants from "expo-constants";
+import Autocomplete from "react-native-autocomplete-input"
 
 
 
@@ -17,6 +18,7 @@ class AddRecipeModal extends Component {
             recipeId: 0,
             recipeName:"",
             instructions: "",
+            searchIngredient: "",
             ingredients: [],
             searchable: [],
             ingredientItem: {},
@@ -43,6 +45,21 @@ class AddRecipeModal extends Component {
             if (status !== 'granted') {
                 alert('Sorry, we need camera roll permissions to make this work!');
             }
+        }
+    }
+
+    findIngredient(query){
+        let text = query.toLowerCase();
+        let trucks = this.state.searchable;
+        let filtered = trucks.filter((item)=>{
+            return item.ingredientName.toLowerCase().match(text);
+        });
+        if(!text||text==""){
+            return [];
+        }else if(!Array.isArray(filtered) && !filtered.length){
+            return [];
+        }else if(Array.isArray(filtered)){
+            return filtered;
         }
     }
 
@@ -210,6 +227,7 @@ class AddRecipeModal extends Component {
     }
 
     render() {
+        let search = this.findIngredient(this.state.searchIngredient);
         return (
             <Modal
                 style={{width: 320}}
@@ -239,7 +257,8 @@ class AddRecipeModal extends Component {
                         <Item rounded style={{margin: 10, width: 290, height:50, alignSelf: "center"}}>
                             {/*<Icon name="ios-search"/>*/}
                             <Input
-                                placeholder='Recipe Name'
+                                placeholder=' Recipe Name'
+                                placeholderTextColor="lightgrey"
                                 value={this.state.recipeName}
                                 onChangeText={(text) => this.setState({recipeName: text})}
                             />
@@ -255,21 +274,45 @@ class AddRecipeModal extends Component {
                                 </Button>
                             </Right>
                         </Item>
-                        <Item rounded style={{margin: 10, width: 290, height:50, alignSelf: "center"}}>
-                            <Picker
-                                mode="dropdown"
-                                iosIcon={<Icon name="arrow-down" />}
-                                placeholder="Select Ingredient"
-                                placeholderStyle={{ color: "#bfc6ea" }}
-                                placeholderIconColor="#007aff"
-                                style={{ width: 160 }}
-                                selectedValue={this.state.ingredientItem}
-                                onValueChange={this.onValueChange.bind(this)}
-                            >
-                                {this.state.searchable.map((item)=>{
-                                    return <Picker.Item label={item.ingredientName} value={item}/>
-                                })}
-                            </Picker>
+                        <Item rounded style={{margin: 10, width: 290, height:50, alignSelf: "center", marginBottom: 50}}>
+                            {/*<Picker*/}
+                            {/*    mode="dropdown"*/}
+                            {/*    iosIcon={<Icon name="arrow-down" />}*/}
+                            {/*    placeholder="Select Ingredient"*/}
+                            {/*    placeholderStyle={{ color: "#bfc6ea" }}*/}
+                            {/*    placeholderIconColor="#007aff"*/}
+                            {/*    style={{ width: 160 }}*/}
+                            {/*    selectedValue={this.state.ingredientItem}*/}
+                            {/*    onValueChange={this.onValueChange.bind(this)}*/}
+                            {/*>*/}
+                            {/*    {this.state.searchable.map((item)=>{*/}
+                            {/*        return <Picker.Item label={item.ingredientName} value={item}/>*/}
+                            {/*    })}*/}
+                            {/*</Picker>*/}
+                            <Icon name="ios-search"/>
+                            <Autocomplete
+                                onChangeText={text=>this.setState({searchIngredient: text})}
+                                value={this.state.searchIngredient}
+                                placeholder="Search Ingredient"
+                                data = {search}
+                                inputContainerStyle={{width: 150, borderColor: "white"}}
+                                listContainerStyle={{width: 150}}
+                                renderItem={({item})=>(
+                                    <TouchableOpacity
+                                        style={{alignItems: 'center',
+                                            backgroundColor: '#DDDDDD',
+                                            padding: 5}}
+                                        onPress={() => {
+                                            this.setState({ searchIngredient: item.ingredientName, ingredientItem: item })
+                                            search = [];
+                                        }}>
+                                        <Text>
+                                            {item.ingredientName}
+                                        </Text>
+                                    </TouchableOpacity>
+                                )}
+                            />
+
                             <Right>
                                 <Input
                                     placeholder='Amount'
