@@ -38,7 +38,8 @@ class RecipeDetailModal extends Component {
                         timesCooked: 10,
                         recipeName: this.state.recipe.name,
                         instructions: this.state.recipe.method,
-                        recipeDetails: detail
+                        recipeDetails: detail,
+                        recipeImageUrl: this.state.recipe.image
                     }
                     fetch(`${API_URL}/recipe/update/${this.state.recipe.id}`, {
                         method:"PUT",
