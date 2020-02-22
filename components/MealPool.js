@@ -105,6 +105,7 @@ class MealPool extends Component {
 
     render() {
         return this.state.loading?
+            <Provider>
             <Container>
                 <Header>
                     <Title style={{alignSelf:'center',
@@ -114,6 +115,7 @@ class MealPool extends Component {
                     <Spinner color='deepskyblue'/>
                 </Content>
             </Container>
+            </Provider>
             :(
             <Provider>
                 <Container>

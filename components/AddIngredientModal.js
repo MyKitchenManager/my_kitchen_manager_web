@@ -62,42 +62,52 @@ class AddIngredientModal extends Component {
         })
     }
 
-    onAddItem(){
-        AsyncStorage.getItem(TOKEN_KEY)
-            .then((accessToken)=>{
-                if(accessToken!=null){
-                    if(this.state.newItemVolume==""||this.state.newItemUnit==""){
-                        alert("Every entry should not be empty");
-                    }else{
-                        console.log(accessToken);
-                        fetch(`${API_URL}/inventory`, {
-                            method: "POST",
-                            headers: {
-                                'Accept': 'application/json',
-                                'Content-Type': 'application/json',
-                                'Authorization':  accessToken
-                            },
-                            body: JSON.stringify({
-                                ingredientId : this.state.newItemId,
-                                inventoryVolume: this.state.newItemVolume,
-                                unitsOfMeasure: 12,
-                                userId: this.props.data,
-                                purchaseDate:"2020-02-04T12:00:00.000+0000",
-                                expirationDate:"2020-02-19T12:00:00.000+0000"
-                            })
-                        }).then((response)=>{
-                            if(response.status == "201"){
-                                alert("Item successfully added");
-                            }else{
-                                console.log(response.status);
-                            }
-                        }).catch((error)=>{
-                            console.log(`Error in adding item in inventory --> ${error}`);
-                        })
-                    }
-                }
-            })
-    }
+    // onAddItem() {
+    //     AsyncStorage.getItem(TOKEN_KEY)
+    //         .then((accessToken) => {
+    //             if (accessToken != null) {
+    //                 fetch(`${API_URL}/`, {
+    //                     method: 'GET',
+    //                     headers: {
+    //                         'Authorization': accessToken
+    //                     }
+    //                 }).then((response) => {
+    //                     if (response.status == '200') {
+    //                         return response.json();
+    //                     }
+    //                 }).then((responseData) => {
+    //                     let userId = responseData.userId;
+    //                     fetch(`${API_URL}/inventory`, {
+    //                         method: "POST",
+    //                         headers: {
+    //                             'Accept': 'application/json',
+    //                             'Content-Type': 'application/json',
+    //                             'Authorization':  accessToken
+    //                         },
+    //                         body: JSON.stringify({
+    //                             ingredientId : this.state.newItemId,
+    //                             inventoryVolume: this.state.newItemVolume,
+    //                             unitsOfMeasure: 12,
+    //                             userId: userId,
+    //                             purchaseDate:"2020-02-04T12:00:00.000+0000",
+    //                             expirationDate:"2020-02-19T12:00:00.000+0000"
+    //                         })
+    //                     }).then((response)=>{
+    //                         if(response.status == "200"){
+    //                             alert("Item successfully added");
+    //                         }else{
+    //                             console.log(response.status);
+    //                         }
+    //                     }).catch((error)=>{
+    //                         console.log(`Error in adding item in inventory --> ${error}`);
+    //                     }).done()
+    //                 })
+    //             }
+    //         })
+    //         .catch((error) => {
+    //             console.log("Error in fetching recipe list");
+    //         })
+    // }
 
     findIngredient(query){
         let text = query.toLowerCase();
@@ -207,8 +217,9 @@ class AddIngredientModal extends Component {
                     backgroundColor:"deepskyblue",
                     width:200}}
                         onPress={()=>{
-                        this.onAddItem();
-                        this.props.data2();
+                        // this.onAddItem();
+                        // this.props.data2();
+                            this.props.handleAddItem(this.state.newItemId, this.state.newItemVolume);
                         this.setState({showModal: false
                     })
                 }}>
