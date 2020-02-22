@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Button, Icon, Input, Item, Right, Text, View, Picker, Form, Left, ListItem} from "native-base";
+import {Button, Icon, Input, Item, Right, Text, View, Picker, Form, Left, ListItem, Toast} from "native-base";
 import {Modal} from "@ant-design/react-native";
 import {AsyncStorage, TextInput, ScrollView, Image, TouchableOpacity} from "react-native"
 import {API_URL, TOKEN_KEY} from "../constant"
@@ -368,10 +368,14 @@ class AddRecipeModal extends Component {
                         backgroundColor:"deepskyblue",
                         width:200}}
                     onPress={()=>{
-                        this.setState({
+                        if(this.state.image===""){
+                           alert("Please upload your image")
+                        }else{this.setState({
                             showModal:false,
                         });
-                        this.onAddItem();
+                            this.onAddItem();
+                        }
+
                     }}>
                     <Text >ADD</Text>
                 </Button>
