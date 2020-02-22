@@ -228,7 +228,7 @@ class Inventory extends Component {
                             <FlatList
                                 data ={this.state.display}
                                 renderItem={({item})=>(
-                                    <Card style={{alignItems: 'center', width: 130, height: 160, borderRadius: 15}}>
+                                    <Card style={{alignItems: 'center', width: 130, height: 160, borderRadius: 15}} key = {item.ingredientId}>
                                         <CardItem cardBody style={{alignItems: 'center', paddingTop: 25}}>
                                             <Button transparent style={{margin:10}} onPress = {() => this.onPressImage(item)}>
                                                 <Thumbnail source={{uri: item.image}} style ={{height: 100, width: 110}}/>

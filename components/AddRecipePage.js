@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, Text, TouchableOpacity, ScrollView, TextInput, Image, AsyncStorage} from 'react-native';
+import {View, Text, TouchableHighlight, ScrollView, TextInput, Image, AsyncStorage} from 'react-native';
 import {
     Body,
     Button,
@@ -291,9 +291,9 @@ class AddRecipePage extends Component {
                                         placeholder="Search Ingredient"
                                         data = {search}
                                         inputContainerStyle={{width: 150, borderColor: "white"}}
-                                        listContainerStyle={{width: 150}}
+                                        listContainerStyle={{width: 150, backgroundColor: "white", elevation:1}}
                                         renderItem={({item})=>(
-                                                <TouchableOpacity
+                                                <TouchableHighlight
                                                     style={{alignItems: 'center',
                                                         backgroundColor: 'white',
                                                         padding: 5,}}
@@ -304,10 +304,9 @@ class AddRecipePage extends Component {
                                                     <Text>
                                                         {item.ingredientName}
                                                     </Text>
-                                                </TouchableOpacity>
+                                                </TouchableHighlight>
                                         )}
                                     />
-
                                     <Right>
                                         <Input
                                             placeholder='Amount'
