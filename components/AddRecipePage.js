@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, Text, TouchableOpacity, ScrollView, TextInput, Image, AsyncStorage} from 'react-native';
+import {View, Text, TouchableOpacity, ScrollView, TextInput, Image, AsyncStorage, StyleSheet} from 'react-native';
 import {
     Body,
     Button,
@@ -24,6 +24,7 @@ import {API_URL, TOKEN_KEY} from "../constant";
 import * as ImagePicker from "expo-image-picker";
 import Constants from "expo-constants";
 import Autocomplete from "react-native-autocomplete-input"
+import {backgroundColor} from "react-native-calendars/src/style";
 
 class AddRecipePage extends Component {
     constructor(props) {
@@ -260,7 +261,7 @@ class AddRecipePage extends Component {
                     </Header>
                     <Content>
                         <ScrollView style={{height: 680}}>
-                        <View style={{ paddingVertical: 20, paddingHorizontal: 20}}>
+                        <View style={[styles.container,{ paddingVertical: 20, paddingHorizontal: 20}]}>
                             <Form >
                                 <Item rounded style={{marginBottom: 5, alignSelf: "center",marginRight: 10, marginLeft: 10}}>
                                     {/*<Icon name="ios-search"/>*/}
@@ -290,13 +291,15 @@ class AddRecipePage extends Component {
                                         value={this.state.searchIngredient}
                                         placeholder="Search Ingredient"
                                         data = {search}
+                                        containerStyle={styles.autocompleteContainer}
+                                        listStyle={{backgroundColor: 'white'}}
                                         inputContainerStyle={{width: 150, borderColor: "white"}}
                                         listContainerStyle={{width: 150}}
                                         renderItem={({item})=>(
                                                 <TouchableOpacity
                                                     style={{alignItems: 'center',
                                                         backgroundColor: 'white',
-                                                        padding: 5,}}
+                                                        padding: 5}}
                                                     onPress={() => {
                                                         this.setState({ searchIngredient: item.ingredientName, ingredientItem: item })
                                                         search = [];
@@ -327,9 +330,9 @@ class AddRecipePage extends Component {
                                 </View>
                                 </Row>
 
-                                <View>
+                                <View style={{}}>
                                     {this.state.ingredients.map((item)=>{
-                                        return <ListItem>
+                                        return<ListItem>
                                             <Left>
                                                 <Text>{item.ingredientName}</Text>
                                             </Left>
@@ -339,7 +342,7 @@ class AddRecipePage extends Component {
                                             </Right>
                                         </ListItem>
                                     })}
-                                    </View>
+                                </View>
 
                                 <TextInput
                                     multiline
@@ -383,5 +386,47 @@ class AddRecipePage extends Component {
         );
     }
 }
+
+const styles = StyleSheet.create({
+    container: {
+        backgroundColor: 'white',
+        flex: 1,
+        paddingTop: 25
+    },
+    autocompleteContainer: {
+        marginLeft: 10,
+        marginRight: 10
+    },
+    itemText: {
+        fontSize: 15,
+        margin: 2
+    },
+    descriptionContainer: {
+        // `backgroundColor` needs to be set otherwise the
+        // autocomplete input will disappear on text input.
+        backgroundColor: '#F5FCFF',
+        marginTop: 8
+    },
+    infoText: {
+        textAlign: 'center'
+    },
+    titleText: {
+        fontSize: 18,
+        fontWeight: '500',
+        marginBottom: 10,
+        marginTop: 10,
+        textAlign: 'center'
+    },
+    directorText: {
+        color: 'grey',
+        fontSize: 12,
+        marginBottom: 10,
+        textAlign: 'center'
+    },
+    openingText: {
+        textAlign: 'center'
+    }
+});
+
 
 export default AddRecipePage;
