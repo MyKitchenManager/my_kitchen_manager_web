@@ -18,7 +18,7 @@ import {Provider} from "@ant-design/react-native";
 import {FlatList, Image} from "react-native";
 import AddRecipeModal from "./AddRecipeModal";
 import RecipeDetailModal from "./RecipeDetailModal";
-import {AsyncStorage} from "react-native"
+import {AsyncStorage, View} from "react-native"
 import {API_URL, TOKEN_KEY} from "../constant"
 
 class MealPool extends Component {
@@ -153,30 +153,25 @@ class MealPool extends Component {
                             </Right>
                         </Item>
 
-
+                        <View style={{alignItems: 'center'}}>
                         <FlatList
                             data={this.state.display}
                             renderItem={({item}) =>(
-                                <Card style={{padding: 20, height: 170, borderRadius: 15}}>
-                                    <CardItem cardBody>
-                                        <Button transparent style={{margin:10}} onPress = {() => this.onPressImage(item)}>
-
-                                            <Thumbnail source={{uri:item.recipeImageUrl}} style ={{height: 120, width: 140, marginTop: 30}}/>
-
+                                <Card style={{alignItems: 'center', paddingTop: 30, height: 200, width: 190, borderRadius: 15}}>
+                                    <CardItem cardBody style={{alignItems: 'center'}}>
+                                        <Button transparent style={{margin: 10}} onPress = {() => this.onPressImage(item)}>
+                                            <Thumbnail source={{uri:item.recipeImageUrl}} style ={{height: 130, width: 160, marginTop: 30}}/>
                                         </Button>
                                     </CardItem>
-                                    <CardItem style={{marginTop: 40, textAlign: 'center', backgroundColor: 'transparent'}}>
-                                        <Left>
-                                            <Body>
-                                                <Text style = {{fontWeight:"bold", fontSize:13}}>{item.recipeName}</Text>
-                                            </Body>
-                                        </Left>
+                                    <CardItem style={{marginTop: 40, backgroundColor: 'transparent'}}>
+                                        <Text style = {{fontWeight:"bold", fontSize:13, paddingTop: 5, textAlign: 'center', width: 190}}>{item.recipeName}</Text>
                                     </CardItem>
                                 </Card>
                             )}
                             numColumns = {2}
                             keyExtractor = {item=>item.id}
                         />
+                        </View>
                         <AddRecipeModal data={this.scanRecipes.bind(this)} ref={'AddRecipeModal'} />
                         <RecipeDetailModal ref={'RecipeDetailModal'} />
 
