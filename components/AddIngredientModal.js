@@ -86,8 +86,9 @@ class AddIngredientModal extends Component {
                                 expirationDate:"2020-02-19T12:00:00.000+0000"
                             })
                         }).then((response)=>{
-                            if(response.status == "201"){
+                            if(response.status == "200"){
                                 alert("Item successfully added");
+                                this.props.data2();
                             }else{
                                 console.log(response.status);
                             }
@@ -208,7 +209,6 @@ class AddIngredientModal extends Component {
                     width:200}}
                         onPress={()=>{
                         this.onAddItem();
-                        this.props.data2();
                         this.setState({showModal: false
                     })
                 }}>
