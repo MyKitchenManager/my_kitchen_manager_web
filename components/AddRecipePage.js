@@ -259,6 +259,7 @@ class AddRecipePage extends Component {
                         <Right />
                     </Header>
                     <Content>
+                        <ScrollView style={{height: 680}}>
                         <View style={{ paddingVertical: 20, paddingHorizontal: 20}}>
                             <Form >
                                 <Item rounded style={{marginBottom: 5, alignSelf: "center",marginRight: 10, marginLeft: 10}}>
@@ -325,7 +326,8 @@ class AddRecipePage extends Component {
                                     </Button>
                                 </View>
                                 </Row>
-                                <ScrollView style={{height: 150}}>
+
+                                <View>
                                     {this.state.ingredients.map((item)=>{
                                         return <ListItem>
                                             <Left>
@@ -337,7 +339,8 @@ class AddRecipePage extends Component {
                                             </Right>
                                         </ListItem>
                                     })}
-                                </ScrollView>
+                                    </View>
+
                                 <TextInput
                                     multiline
                                     style={{height: 100, margin:10, paddingTop:10, borderColor:"grey",borderWidth:1, elevation:5}}
@@ -355,7 +358,7 @@ class AddRecipePage extends Component {
                                 : <View></View>}
                             </View>
                         </View>
-
+                        </ScrollView>
                         <Button
                             style = {{
                                 alignSelf:'center',
