@@ -27,6 +27,7 @@ import {API_URL, TOKEN_KEY} from "../constant";
 import ShoppingListModal from "./ShoppingListModal";
 import CookModal from "./CookModal";
 import {Actions} from "react-native-router-flux";
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 
 
@@ -265,11 +266,11 @@ class MealPlan extends Component {
                 {
                     item.status !== 'inactive' ?
                         <TouchableOpacity
-                            style={[styles.listItem, ]}
+                            style={[styles.listItem]}
                         >
-                            <List style={{width: 320}}>
+                            <List style={{width: wp('80%')}}>
                                 <ListItem thumbnail>
-                                    <Left style={{}}>
+                                    <Left>
                                         <Thumbnail square source={{uri: item.image}} style={{height: 80, width: 80, borderRadius: 10}} />
                                     </Left>
                                     <Body style={{paddingTop: 8, paddingBottom: 5 }}>
@@ -293,7 +294,7 @@ class MealPlan extends Component {
                         <TouchableOpacity
                             style={[styles.listItem, {backgroundColor: '#f5f5f5'} ]}
                         >
-                            <List style={{width: 320}}>
+                            <List style={{width: wp('80%')}}>
                                 <ListItem thumbnail>
                                     <Left style={{}}>
                                         <Thumbnail square source={{uri: item.image}} style={{height: 80, width: 80, borderRadius: 10, opacity: .6}} />
@@ -422,7 +423,7 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         marginRight: 5,
         marginTop: 17,
-        width: 340,
+        width: wp('80%'),
     },
     emptyDate: {
         height: 15,

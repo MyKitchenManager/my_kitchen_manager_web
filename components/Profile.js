@@ -7,6 +7,7 @@ import {SafeAreaProvider} from "react-native-safe-area-context";
 import avatar from '../assets/avatar.jpeg';
 import meal from '../assets/meal.jpeg';
 import {List} from "@ant-design/react-native";
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 class Profile extends Component {
     constructor(props) {
@@ -162,73 +163,75 @@ class Profile extends Component {
                             </View>
                         </ScrollView>
                     </View>
-                    <Text style={[styles.personalInfo, styles.subText]}>PERSONAL INFO</Text>
-                    <View style={styles.personalInfoItem}>
-                        <List style={{width: 280}}>
-                            <Item data-seed="logId">
-                                <Text style={[styles.text, {fontSize: 15, fontWeight: 'bold'}]}>Username</Text>
-                                <Right>
-                                    <Text style={styles.text}>{this.state.Username}</Text>
-                                </Right>
-                            </Item>
+                    <View style={{width: wp('100%'), alignItems: 'center'}}>
+                        <Text style={[styles.subText, {alignItems: 'center', marginTop: 20, marginBottom: 10}]}>PERSONAL INFO</Text>
+                        <View style={{width: wp('60%'), alignItems: 'center'}}>
+                            <List style={{width: 280}}>
+                                <Item data-seed="logId">
+                                    <Text style={[styles.text, {fontSize: 15, fontWeight: 'bold'}]}>Username</Text>
+                                    <Right>
+                                        <Text style={styles.text}>{this.state.Username}</Text>
+                                    </Right>
+                                </Item>
 
-                            <Item data-seed="logId">
-                                <Text style={[styles.text, {fontSize: 15, fontWeight: 'bold'}]}>First Name</Text>
-                                <Right>
-                                    <Text style={styles.text}>{this.state.FirstName}</Text>
-                                </Right>
-                            </Item>
+                                <Item data-seed="logId">
+                                    <Text style={[styles.text, {fontSize: 15, fontWeight: 'bold'}]}>First Name</Text>
+                                    <Right>
+                                        <Text style={styles.text}>{this.state.FirstName}</Text>
+                                    </Right>
+                                </Item>
 
-                            <Item data-seed="logId">
-                                <Text style={[styles.text, {fontSize: 15, fontWeight: 'bold'}]}>Last Name</Text>
-                                <Right>
-                                    <Text style={styles.text}>{this.state.LastName}</Text>
-                                </Right>
-                            </Item>
+                                <Item data-seed="logId">
+                                    <Text style={[styles.text, {fontSize: 15, fontWeight: 'bold'}]}>Last Name</Text>
+                                    <Right>
+                                        <Text style={styles.text}>{this.state.LastName}</Text>
+                                    </Right>
+                                </Item>
 
-                            <Item data-seed="logId">
-                                <Text style={[styles.text, {fontSize: 15, fontWeight: 'bold'}]}>Gender</Text>
-                                <Right>
-                                    <Text style={styles.text}>{this.state.Gender}</Text>
-                                </Right>
-                            </Item>
-                            <Item data-seed="logId">
-                                <Text style={[styles.text, {fontSize: 15, fontWeight: 'bold'}]}>Email</Text>
-                                <Right>
-                                    <Text style={styles.text}>{this.state.Email}</Text>
-                                </Right>
-                            </Item>
-                            <Item data-seed="logId">
-                                <Text style={[styles.text, {fontSize: 15, fontWeight: 'bold'}]}>Nationality</Text>
-                                <Right>
-                                    <Text style={styles.text}>{this.state.Nationality}</Text>
-                                </Right>
-                            </Item>
-                            <Item data-seed="logId">
-                                <Text style={[styles.text, {fontSize: 15, fontWeight: 'bold'}]}>Diet</Text>
-                                <Right>
-                                    <Text style={styles.text}>{this.state.Diet}</Text>
-                                </Right>
-                            </Item>
-                            {/*<Item data-seed="logId">*/}
-                            {/*    <Text style={[styles.text, {fontSize: 15, fontWeight: 'bold'}]}>Vegan</Text>*/}
-                            {/*    <Right>*/}
-                            {/*        <Text style={styles.text}>{this.state.Vegan}</Text>*/}
-                            {/*    </Right>*/}
-                            {/*</Item>*/}
-                            {/*<Item data-seed="logId">*/}
-                            {/*    <Text style={[styles.text, {fontSize: 15, fontWeight: 'bold'}]}>Lactose Intolerant</Text>*/}
-                            {/*    <Right>*/}
-                            {/*        <Text style={styles.text}>{this.state.LactoseIntolerant}</Text>*/}
-                            {/*    </Right>*/}
-                            {/*</Item>*/}
-                            {/*<Item data-seed="logId">*/}
-                            {/*    <Text style={[styles.text, {fontSize: 15, fontWeight: 'bold'}]}>Gluten Free</Text>*/}
-                            {/*    <Right>*/}
-                            {/*        <Text style={styles.text}>{this.state.GlutenFree}</Text>*/}
-                            {/*    </Right>*/}
-                            {/*</Item>*/}
-                        </List>
+                                <Item data-seed="logId">
+                                    <Text style={[styles.text, {fontSize: 15, fontWeight: 'bold'}]}>Gender</Text>
+                                    <Right>
+                                        <Text style={styles.text}>{this.state.Gender}</Text>
+                                    </Right>
+                                </Item>
+                                <Item data-seed="logId">
+                                    <Text style={[styles.text, {fontSize: 15, fontWeight: 'bold'}]}>Email</Text>
+                                    <Right>
+                                        <Text style={styles.text}>{this.state.Email}</Text>
+                                    </Right>
+                                </Item>
+                                <Item data-seed="logId">
+                                    <Text style={[styles.text, {fontSize: 15, fontWeight: 'bold'}]}>Nationality</Text>
+                                    <Right>
+                                        <Text style={styles.text}>{this.state.Nationality}</Text>
+                                    </Right>
+                                </Item>
+                                <Item data-seed="logId">
+                                    <Text style={[styles.text, {fontSize: 15, fontWeight: 'bold'}]}>Diet</Text>
+                                    <Right>
+                                        <Text style={styles.text}>{this.state.Diet}</Text>
+                                    </Right>
+                                </Item>
+                                {/*<Item data-seed="logId">*/}
+                                {/*    <Text style={[styles.text, {fontSize: 15, fontWeight: 'bold'}]}>Vegan</Text>*/}
+                                {/*    <Right>*/}
+                                {/*        <Text style={styles.text}>{this.state.Vegan}</Text>*/}
+                                {/*    </Right>*/}
+                                {/*</Item>*/}
+                                {/*<Item data-seed="logId">*/}
+                                {/*    <Text style={[styles.text, {fontSize: 15, fontWeight: 'bold'}]}>Lactose Intolerant</Text>*/}
+                                {/*    <Right>*/}
+                                {/*        <Text style={styles.text}>{this.state.LactoseIntolerant}</Text>*/}
+                                {/*    </Right>*/}
+                                {/*</Item>*/}
+                                {/*<Item data-seed="logId">*/}
+                                {/*    <Text style={[styles.text, {fontSize: 15, fontWeight: 'bold'}]}>Gluten Free</Text>*/}
+                                {/*    <Right>*/}
+                                {/*        <Text style={styles.text}>{this.state.GlutenFree}</Text>*/}
+                                {/*    </Right>*/}
+                                {/*</Item>*/}
+                            </List>
+                        </View>
                     </View>
 
                     {/*<View style={[styles.personalInfoItem, styles.text]}>*/}

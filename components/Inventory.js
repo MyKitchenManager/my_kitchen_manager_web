@@ -8,6 +8,7 @@ import spinach from '../assets/spinach.jpeg';
 import AddIngredientModal from "./AddIngredientModal";
 import {Provider} from "@ant-design/react-native";
 import IngredientDetailModal from "./IngredientDetailModal";
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 class Inventory extends Component {
     constructor(props) {
@@ -202,7 +203,7 @@ class Inventory extends Component {
                             </Right>
                         </Header>
                         <Content>
-                            <Item rounded style={{margin: 10, width: 380, height:50, alignSelf: "center", marginLeft: 10}}>
+                            <Item rounded style={{margin: 10, width: wp('91%'), height: hp('6%'), alignSelf: "center", marginLeft: 10}}>
                                 <Icon name="ios-search"/>
                                 <Input
                                     placeholder = "Find Ingredient"
@@ -224,18 +225,19 @@ class Inventory extends Component {
                                     </Button>
                                 </Right>
                             </Item>
-                            <View style={{alignItems: 'center'}}>
+                            <View style={{width: wp('100%'), alignItems: 'center'}}>
                             <FlatList
+                                contentContainerStyle={{width: wp('95%'), alignItems: 'center',}}
                                 data ={this.state.display}
                                 renderItem={({item})=>(
-                                    <Card style={{alignItems: 'center', width: 130, height: 160, borderRadius: 15}}>
+                                    <Card style={{alignItems: 'center', width: ('32%'), height: hp('20%'), borderRadius: 15}}>
                                         <CardItem cardBody style={{alignItems: 'center', paddingTop: 25}}>
-                                            <Button transparent style={{margin:10}} onPress = {() => this.onPressImage(item)}>
-                                                <Thumbnail source={{uri: item.image}} style ={{height: 100, width: 110}}/>
+                                            <Button transparent style={{marginTop: hp('1.3%'), marginBottom: hp('1.0%')}} onPress = {() => this.onPressImage(item)}>
+                                                <Thumbnail source={{uri: item.image}} style ={{height: hp('12%'), width: (wp('25%'))}}/>
                                             </Button>
                                         </CardItem>
                                         <CardItem style={{backgroundColor: 'transparent'}}>
-                                            <Text style = {{fontWeight:"bold", fontSize:13, textAlign: 'center', marginTop: 10}}>{`${item.name} ${item.amount}${item.unit}`}</Text>
+                                            <Text style = {{fontWeight:"bold", fontSize:13, textAlign: 'center', marginTop: hp('1.3%'), paddingTop: 2}}>{`${item.name} ${item.amount}${item.unit}`}</Text>
                                         </CardItem>
                                     </Card>
                                 )}
