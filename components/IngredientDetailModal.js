@@ -54,7 +54,8 @@ class IngredientDetailModal extends Component {
             ItemImage: item.image,
             ItemId: item.id,
             ItemCategory: item.category,
-            ItemDate: item.purchaseDate
+            ItemDate: item.purchaseDate,
+            IngredientId: item.ingredientId,
         })
 
     }
@@ -71,36 +72,50 @@ class IngredientDetailModal extends Component {
     onPressUpdate(ItemId) {
         console.log('ItemId:' + ItemId);
         AsyncStorage.getItem(TOKEN_KEY)
-            .then((accessToken)=>{
-                if(accessToken!=null){
-                        console.log(accessToken);
+            .then((accessToken) => {
+                if (accessToken != null) {
+                    fetch(`${API_URL}/`, {
+                        method: 'GET',
+                        headers: {
+                            'Authorization': accessToken
+                        }
+                    }).then((response) => {
+                        if (response.status == '200') {
+                            return response.json();
+                        }
+                    }).then((responseData) => {
+                        let userId = responseData.userId;
                         fetch(`${API_URL}/inventory/inventoryId/${ItemId}`, {
-                            method: "POST",
+                            method: "PUT",
                             headers: {
                                 'Accept': 'application/json',
                                 'Content-Type': 'application/json',
-                                'Authorization':  accessToken
+                                'Authorization': accessToken
                             },
                             body: JSON.stringify({
-                                ingredientId : ItemId,
+                                ingredientId: this.state.IngredientId,
                                 inventoryVolume: this.state.ItemVolume,
                                 unitsOfMeasure: 13,
-                                userId: 241,
-                                purchaseDate:"2020-02-04T12:00:00.000+0000",
-                                expirationDate:"2020-02-19T12:00:00.000+0000"
+                                userId: userId,
+                                purchaseDate: "2020-02-04T12:00:00.000+0000",
+                                expirationDate: "2020-02-19T12:00:00.000+0000"
                             })
-                        }).then((response)=>{
-                            if(response.status == "200"){
+                        }).then((response) => {
+                            if (response.status == "200") {
+                                this.props.reloadInventory();
                                 alert("Item successfully updated");
                                 console.log('Item successfully updated');
-                            }else{
+                            } else {
                                 console.log(response.status);
                             }
-                        }).catch((error)=>{
+                        }).catch((error) => {
                             console.log(`Error in adding item in inventory --> ${error}`);
-                        })
-                    }
-
+                        }).done()
+                    })
+                }
+            })
+            .catch((error) => {
+                console.log("Error in fetching recipe list");
             })
     }
 
