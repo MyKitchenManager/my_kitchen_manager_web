@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, Text, TouchableOpacity, ScrollView, TextInput, Image, AsyncStorage, StyleSheet, FlatList} from 'react-native';
+import {View, Text, TouchableOpacity, ScrollView, TextInput, Image, AsyncStorage, StyleSheet, FlatList,  SafeAreaView} from 'react-native';
 import {
     Body,
     Button,
@@ -25,6 +25,7 @@ import * as ImagePicker from "expo-image-picker";
 import Constants from "expo-constants";
 import Autocomplete from "react-native-autocomplete-input"
 import {backgroundColor} from "react-native-calendars/src/style";
+import {SafeAreaProvider} from "react-native-safe-area-context";
 
 class AddRecipePage extends Component {
     constructor(props) {
