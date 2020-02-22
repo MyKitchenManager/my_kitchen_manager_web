@@ -262,7 +262,7 @@ class AddRecipePage extends Component {
                     <Content>
                         <ScrollView style={{height: 680}}>
                         <View style={[styles.container,{ paddingVertical: 20, paddingHorizontal: 20}]}>
-                            <Form >
+                            <Form>
                                 <Item rounded style={{marginBottom: 5, alignSelf: "center",marginRight: 10, marginLeft: 10}}>
                                     {/*<Icon name="ios-search"/>*/}
                                     <Input
@@ -284,7 +284,7 @@ class AddRecipePage extends Component {
                                     </Right>
                                 </Item>
                                 <Row>
-                                <Item rounded style={{margin: 10, alignSelf: "center", marginLeft: 10, marginRight: 0, width: 310}}>
+                                <Item rounded style={{margin: 10, alignSelf: "center", marginLeft: 10, marginRight: 0, width: 310, marginBottom: 80}}>
                                     <Icon name="ios-search"/>
                                     <Autocomplete
                                         onChangeText={text=>this.setState({searchIngredient: text})}
@@ -332,7 +332,7 @@ class AddRecipePage extends Component {
 
                                 <View style={{}}>
                                     {this.state.ingredients.map((item)=>{
-                                        return<ListItem>
+                                        return<ListItem key={item.ingredientId}>
                                             <Left>
                                                 <Text>{item.ingredientName}</Text>
                                             </Left>
@@ -340,6 +340,17 @@ class AddRecipePage extends Component {
                                             <Right style={{width: 50}}>
                                                 <Text style={{marginRight: 10}}>{`${item.ingredientVolume} ${item.unitsOfMeasure}`}</Text>
                                             </Right>
+                                            {/*<Button transparent onPress={*/}
+                                            {/*    (id) => {*/}
+                                            {/*        console.log('id:' + id);*/}
+                                            {/*        this.setState({*/}
+                                            {/*            ingredients: this.state.ingredients.filter(item =>  item.ingredientId != id.ingredientId)*/}
+                                            {/*        });*/}
+                                            {/*    }*/}
+                                            {/*}>*/}
+                                            {/*    <Icon type="MaterialIcons" name="clear" style={{marginLeft: 50, color: '#00BBF2'}}></Icon>*/}
+                                            {/*</Button>*/}
+
                                         </ListItem>
                                     })}
                                 </View>
