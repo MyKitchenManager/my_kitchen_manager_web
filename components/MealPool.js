@@ -16,10 +16,10 @@ import {
 } from "native-base"
 import {Provider} from "@ant-design/react-native";
 import {FlatList, Image} from "react-native";
-import AddRecipeModal from "./AddRecipeModal";
 import RecipeDetailModal from "./RecipeDetailModal";
 import {AsyncStorage, View} from "react-native"
 import {API_URL, TOKEN_KEY} from "../constant"
+import {Actions} from 'react-native-router-flux';
 
 class MealPool extends Component {
     constructor(props) {
@@ -35,7 +35,8 @@ class MealPool extends Component {
     }
 
     onPressAdd(){
-        this.refs.AddRecipeModal.showAddRecipeModal();
+        Actions.add_recipe_page();
+        //this.refs.AddRecipeModal.showAddRecipeModal();
     }
 
     onSearch(data){
@@ -175,7 +176,7 @@ class MealPool extends Component {
                             keyExtractor = {item=>item.id}
                         />
                         </View>
-                        <AddRecipeModal data={this.scanRecipes.bind(this)} ref={'AddRecipeModal'} />
+                        {/*<AddRecipeModal data={this.scanRecipes.bind(this)} ref={'AddRecipeModal'} />*/}
                         <RecipeDetailModal data={this.scanRecipes.bind(this)} ref={'RecipeDetailModal'} />
 
                     </Content>
