@@ -298,7 +298,7 @@ class AddRecipePage extends Component {
                                         renderItem={({item})=>(
                                                 <TouchableOpacity
                                                     style={{alignItems: 'center',
-                                                        backgroundColor: 'white',
+                                                        backgroundColor: '#DDDDDD',
                                                         padding: 5}}
                                                     onPress={() => {
                                                         this.setState({ searchIngredient: item.ingredientName, ingredientItem: item })
