@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {View, Text, TouchableOpacity, ScrollView, TextInput, Image, AsyncStorage, StyleSheet, FlatList} from 'react-native';
+
 import {
     Body,
     Button,
@@ -214,7 +215,7 @@ class AddRecipePage extends Component {
                         }).then((response) => {
                             if (response.status == "200") {
                                 console.log("Successfully Added recipe");
-                                Actions.meal_pool();
+                                Actions.home({page: "mealpool"});
                             } else {
                                 console.log('fail to add recipe');
                                 console.log(response);
@@ -301,7 +302,7 @@ class AddRecipePage extends Component {
                                         containerStyle={styles.autocompleteContainer}
                                         listStyle={{backgroundColor: 'white'}}
                                         inputContainerStyle={{width: 150, borderColor: "white"}}
-                                        listContainerStyle={{width: 150}}
+                                        listContainerStyle={{width: 150, backgroundColor: "white", elevation:1}}
                                         renderItem={({item})=>(
                                                 <TouchableOpacity
                                                     style={{alignItems: 'center',
@@ -317,7 +318,6 @@ class AddRecipePage extends Component {
                                                 </TouchableOpacity>
                                         )}
                                     />
-
                                     <Right>
                                         <Input
                                             placeholder='Amount'
