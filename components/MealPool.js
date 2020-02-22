@@ -118,7 +118,7 @@ class MealPool extends Component {
             :(
             <Provider>
                 <Container >
-                    <Header style={{width: wp('100%')}}>
+                    <Header>
                         <Left>
 
                         </Left>
