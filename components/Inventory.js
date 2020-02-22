@@ -169,6 +169,54 @@ class Inventory extends Component {
 
     }
 
+    onAddItem(id, volume) {
+        AsyncStorage.getItem(TOKEN_KEY)
+            .then((accessToken) => {
+                if (accessToken != null) {
+                    fetch(`${API_URL}/`, {
+                        method: 'GET',
+                        headers: {
+                            'Authorization': accessToken
+                        }
+                    }).then((response) => {
+                        if (response.status == '200') {
+                            return response.json();
+                        }
+                    }).then((responseData) => {
+                        let userId = responseData.userId;
+                        fetch(`${API_URL}/inventory`, {
+                            method: "POST",
+                            headers: {
+                                'Accept': 'application/json',
+                                'Content-Type': 'application/json',
+                                'Authorization':  accessToken
+                            },
+                            body: JSON.stringify({
+                                ingredientId : id,
+                                inventoryVolume: volume,
+                                unitsOfMeasure: 12,
+                                userId: userId,
+                                purchaseDate:"2020-02-04T12:00:00.000+0000",
+                                expirationDate:"2020-02-19T12:00:00.000+0000"
+                            })
+                        }).then((response)=>{
+                            if(response.status == "200"){
+                                alert("Item successfully added");
+                                this.scanInventory();
+                            }else{
+                                console.log(response.status);
+                            }
+                        }).catch((error)=>{
+                            console.log(`Error in adding item in inventory --> ${error}`);
+                        }).done()
+                    })
+                }
+            })
+            .catch((error) => {
+                console.log("Error in fetching recipe list");
+            })
+    }
+
     componentDidMount() {
         this.scanInventory();
     }
@@ -243,7 +291,7 @@ class Inventory extends Component {
                                 keyExtractor = {item=>item.id}
                             />
                             </View>
-                            <AddIngredientModal ref={'AddIngredientModal'} data={this.props.data} data2 = {this.scanInventory.bind(this)}/>
+                            <AddIngredientModal ref={'AddIngredientModal'} data={this.props.data} data2 = {this.scanInventory.bind(this)} handleAddItem={this.onAddItem.bind(this)}/>
                             <IngredientDetailModal ref={'IngredientDetailModal'} handleDeleteItem={this.handleDeleteItem.bind(this)} reloadInventory = {this.scanInventory.bind(this)}/>
 
                         </Content>

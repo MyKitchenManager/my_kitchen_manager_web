@@ -70,7 +70,7 @@ export default class App extends Component {
                     <Scene key="home" data={this.state.userId}  component={Home} hideNavBar={true} title = "My Kitchen Manager" initial={!this.state.init}/>
                     <Scene key="recipe" component={MealPlanRecipe} hideNavBar={true} title="MealPlanRecipe" />
                     <Scene key="add_recipe_page" component={AddRecipePage} hideNavBar={true} title="AddRecipePage" />
-                    <Scene key="meal_pool" component={MealPool} hideNavBar={true} title="MealPool" />
+                    <Scene key="meal_pool" component={MealPool} hideNavBar={true} title="MealPool"/>
                 </Scene>
               </Router>
     }
