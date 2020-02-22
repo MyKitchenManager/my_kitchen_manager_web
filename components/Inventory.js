@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Container, Content, Text, Header, Left, Button, Icon, Body, Title, Right, Item, Input, Card, CardItem, Thumbnail, Spinner} from "native-base"
-import {ScrollView, Image, AsyncStorage, FlatList, Alert} from "react-native";
+import {ScrollView, Image, AsyncStorage, FlatList, Alert, View} from "react-native";
 import {Grid, Row, Col} from "react-native-easy-grid";
 import {API_URL, TOKEN_KEY} from "../constant";
 import beef from '../assets/beef.jpg';
@@ -224,24 +224,25 @@ class Inventory extends Component {
                                     </Button>
                                 </Right>
                             </Item>
+                            <View style={{alignItems: 'center'}}>
                             <FlatList
                                 data ={this.state.display}
                                 renderItem={({item})=>(
-                                    <Card style={{margin: 15, paddingTop: 10, width: 130, height: 140}}>
-                                        <CardItem cardBody>
+                                    <Card style={{alignItems: 'center', width: 130, height: 160, borderRadius: 15}}>
+                                        <CardItem cardBody style={{alignItems: 'center', paddingTop: 25}}>
                                             <Button transparent style={{margin:10}} onPress = {() => this.onPressImage(item)}>
-                                                <Thumbnail source={{uri: item.image}} style ={{marginTop: 30, height: 100, width: 100}}/>
+                                                <Thumbnail source={{uri: item.image}} style ={{height: 100, width: 110}}/>
                                             </Button>
                                         </CardItem>
-                                        <CardItem footer>
-                                            <Text style = {{fontWeight:"bold", fontSize:13}}>{`${item.name} ${item.amount}${item.unit}`}</Text>
+                                        <CardItem style={{backgroundColor: 'transparent'}}>
+                                            <Text style = {{fontWeight:"bold", fontSize:13, textAlign: 'center', marginTop: 10}}>{`${item.name} ${item.amount}${item.unit}`}</Text>
                                         </CardItem>
                                     </Card>
                                 )}
                                 numColumns = {3}
                                 keyExtractor = {item=>item.id}
                             />
-
+                            </View>
                             <AddIngredientModal ref={'AddIngredientModal'} data={this.props.data} data2 = {this.scanInventory.bind(this)}/>
                             <IngredientDetailModal ref={'IngredientDetailModal'} handleDeleteItem={this.handleDeleteItem.bind(this)} reloadInventory = {this.scanInventory.bind(this)}/>
 
