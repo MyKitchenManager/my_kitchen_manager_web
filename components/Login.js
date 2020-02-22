@@ -55,7 +55,7 @@ export default class Login extends Component {
                 //console.log(accessToken);
                 this._onValueChange(accessToken);
             }).then(()=>{
-                Actions.home();
+                Actions.home({page:"mealplan"});
             })
             .catch((error) => {
                 console.error('Error:', error);

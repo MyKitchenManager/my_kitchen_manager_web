@@ -17,7 +17,7 @@ class Home extends Component {
         super(props);
         this.state = {
             userId: 0,
-            page: "",
+            page: this.props.page,
             Items: []
         }
     }

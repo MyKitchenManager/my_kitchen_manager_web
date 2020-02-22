@@ -215,7 +215,7 @@ class AddRecipePage extends Component {
                         }).then((response) => {
                             if (response.status == "200") {
                                 console.log("Successfully Added recipe");
-                                Actions.meal_pool();
+                                Actions.home({page: "mealpool"});
                             } else {
                                 console.log('fail to add recipe');
                                 console.log(response);
@@ -304,7 +304,7 @@ class AddRecipePage extends Component {
                                         inputContainerStyle={{width: 150, borderColor: "white"}}
                                         listContainerStyle={{width: 150, backgroundColor: "white", elevation:1}}
                                         renderItem={({item})=>(
-                                                <TouchableHighlight
+                                                <TouchableOpacity
                                                     style={{alignItems: 'center',
                                                         backgroundColor: '#DDDDDD',
                                                         padding: 5}}
@@ -315,7 +315,7 @@ class AddRecipePage extends Component {
                                                     <Text>
                                                         {item.ingredientName}
                                                     </Text>
-                                                </TouchableHighlight>
+                                                </TouchableOpacity>
                                         )}
                                     />
                                     <Right>
