@@ -57,6 +57,7 @@ class MealPool extends Component {
 
     onPressImage(item) {
         const recipe ={
+            contributorId: item.contributorId,
             id: item.id,
             name: item.recipeName,
             image: item.recipeImageUrl,

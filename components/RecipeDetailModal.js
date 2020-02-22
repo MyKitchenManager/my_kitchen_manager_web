@@ -21,13 +21,24 @@ class RecipeDetailModal extends Component {
         AsyncStorage.getItem(TOKEN_KEY)
             .then((accessToken)=>{
                 if(accessToken!==null){
+                    console.log(this.state.recipe);
+                    let detail = [];
+                    for(let i = 0; i < this.state.recipe.detail.length; i++){
+                        const item ={
+                            ingredientId: this.state.recipe.detail[i].ingredientId,
+                            ingredientVolume: this.state.recipe.detail[i].ingredientVolume,
+                            unitsOfMeasure: 12
+                        }
+                        detail.concat(item);
+                    }
                     const params = {
-                        contributorId: 241,
+                        recipeCategory: null,
+                        contributorId: this.state.recipe.contributorId,
                         prepTime: 10,
                         timesCooked: 10,
                         recipeName: this.state.recipe.name,
-                        instructions: this.state.recipe.instructions,
-                        recipeDetails: this.state.recipe.detail
+                        instructions: this.state.recipe.method,
+                        recipeDetails: detail
                     }
                     fetch(`${API_URL}/recipe/update/${this.state.recipe.id}`, {
                         method:"PUT",
@@ -35,13 +46,15 @@ class RecipeDetailModal extends Component {
                             'Accept': 'application/json',
                             'Content-Type': 'application/json',
                             'Authorization': accessToken
-                        }
+                        },
+                        body: JSON.stringify(params)
                     })
                         .then((response)=>{
                             if(response.status=="200"){
                                 alert("Update Success");
                             }else{
                                 console.log(response.status);
+                                //console.log(response);
                             }
                         }).catch((error)=>{
                             console.log(`cannot update recipe --> ${error}`)
@@ -57,7 +70,6 @@ class RecipeDetailModal extends Component {
             showModal: true,
             recipe: item
         });
-        console.log(this.state.recipe);
     }
     render() {
         return (
