@@ -57,6 +57,7 @@ class MealPool extends Component {
 
     onPressImage(item) {
         const recipe ={
+            id: item.id,
             name: item.recipeName,
             image: item.recipeImageUrl,
             detail: item.recipeDetails,
@@ -87,6 +88,7 @@ class MealPool extends Component {
                            display: responseData,
                            loading: false
                        });
+                       console.log(this.state.Items);
                     }).done()
                 }
             })

@@ -1,10 +1,12 @@
 import React, {Component} from 'react';
 import {Button, Card, CardItem, Item, Right, Text, Thumbnail, View, Container, List, ListItem, Left} from "native-base";
-import {ScrollView} from "react-native";
+import {ScrollView, TextInput} from "react-native";
 import {Col, Grid} from "react-native-easy-grid";
 import {Modal, WhiteSpace} from "@ant-design/react-native";
 import meal from "../assets/meal.jpeg";
 import {Actions} from 'react-native-router-flux';
+import {AsyncStorage} from "react-native"
+import {API_URL, TOKEN_KEY} from "../constant"
 
 class RecipeDetailModal extends Component {
     constructor(props) {
@@ -16,7 +18,38 @@ class RecipeDetailModal extends Component {
     }
 
     onUpdate(){
-
+        AsyncStorage.getItem(TOKEN_KEY)
+            .then((accessToken)=>{
+                if(accessToken!==null){
+                    const params = {
+                        contributorId: 241,
+                        prepTime: 10,
+                        timesCooked: 10,
+                        recipeName: this.state.recipe.name,
+                        instructions: this.state.recipe.instructions,
+                        recipeDetails: this.state.recipe.detail
+                    }
+                    fetch(`${API_URL}/recipe/update/${this.state.recipe.id}`, {
+                        method:"PUT",
+                        headers:{
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json',
+                            'Authorization': accessToken
+                        }
+                    })
+                        .then((response)=>{
+                            if(response.status=="200"){
+                                alert("Update Success");
+                            }else{
+                                console.log(response.status);
+                            }
+                        }).catch((error)=>{
+                            console.log(`cannot update recipe --> ${error}`)
+                    })
+                }
+            }).catch((error)=>{
+                console.log(`Cannot get token --> ${error}`);
+        })
     }
 
     showRecipeDetailModal(item) {
@@ -71,7 +104,14 @@ class RecipeDetailModal extends Component {
                                     </Left>
 
                                     <Right style={{width: 50}}>
-                                        <Text style={{marginRight: 10}}>{`${item.ingredientVolume} ${item.unitsOfMeasureListEntry.entry}`}</Text>
+                                        <TextInput
+                                            style={{alignSelf: "center", fontSize: 16, marginRight: 10, borderColor:"transparent"}}
+                                            onChangeText={text=>{
+                                                item.ingredientVolume = text;
+                                            }}
+                                        >{`${item.ingredientVolume}`}
+                                        </TextInput>
+                                        <Text style={{alignSelf: "center", fontSize: 16}}>{`${item.unitsOfMeasureListEntry.entry}`}</Text>
                                     </Right>
                                 </ListItem>
                             }):<ListItem></ListItem>}
@@ -98,7 +138,7 @@ class RecipeDetailModal extends Component {
                                     backgroundColor:"deepskyblue",
                                     width:200}}
                                 onPress={()=>{
-                                    this.onUpdate.bind(this);
+                                    this.onUpdate();
                                     this.setState({showModal: false})
                                 }}>
                                 <Text >Update</Text>
