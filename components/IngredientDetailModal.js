@@ -13,12 +13,15 @@ import {
     Right,
     CardItem,
     Thumbnail,
-    Card
+    Card,
+    Row,
+    Container
 } from "native-base";
 import {Modal, List, WhiteSpace, InputItem} from "@ant-design/react-native";
-import {Alert} from 'react-native';
+import {Alert, TextInput, KeyboardAvoidingView, AsyncStorage} from 'react-native';
 
 import beef from "../assets/beef.jpg";
+import {API_URL, TOKEN_KEY} from "../constant";
 
 
 
@@ -51,7 +54,8 @@ class IngredientDetailModal extends Component {
             ItemImage: item.image,
             ItemId: item.id,
             ItemCategory: item.category,
-            ItemDate: item.purchaseDate
+            ItemDate: item.purchaseDate,
+            IngredientId: item.ingredientId,
         })
 
     }
@@ -65,10 +69,62 @@ class IngredientDetailModal extends Component {
         this.props.handleDeleteItem(this.state.Item);
     }
 
+    onPressUpdate(ItemId) {
+        console.log('ItemId:' + ItemId);
+        AsyncStorage.getItem(TOKEN_KEY)
+            .then((accessToken) => {
+                if (accessToken != null) {
+                    fetch(`${API_URL}/`, {
+                        method: 'GET',
+                        headers: {
+                            'Authorization': accessToken
+                        }
+                    }).then((response) => {
+                        if (response.status == '200') {
+                            return response.json();
+                        }
+                    }).then((responseData) => {
+                        let userId = responseData.userId;
+                        fetch(`${API_URL}/inventory/inventoryId/${ItemId}`, {
+                            method: "PUT",
+                            headers: {
+                                'Accept': 'application/json',
+                                'Content-Type': 'application/json',
+                                'Authorization': accessToken
+                            },
+                            body: JSON.stringify({
+                                ingredientId: this.state.IngredientId,
+                                inventoryVolume: this.state.ItemVolume,
+                                unitsOfMeasure: 13,
+                                userId: userId,
+                                purchaseDate: "2020-02-04T12:00:00.000+0000",
+                                expirationDate: "2020-02-19T12:00:00.000+0000"
+                            })
+                        }).then((response) => {
+                            if (response.status == "200") {
+                                this.props.reloadInventory();
+                                alert("Item successfully updated");
+                                console.log('Item successfully updated');
+                            } else {
+                                console.log(response.status);
+                            }
+                        }).catch((error) => {
+                            console.log(`Error in adding item in inventory --> ${error}`);
+                        }).done()
+                    })
+                }
+            })
+            .catch((error) => {
+                console.log("Error in fetching recipe list");
+            })
+    }
+
     render() {
         return (
+
+
             <Modal
-                style={{width: 320, height: 530}}
+                style={{width: 320, height: 540}}
                 ref={"IngredientDetailModal"}
                 title="Title"
                 transparent
@@ -81,7 +137,6 @@ class IngredientDetailModal extends Component {
                 title = {<Text style = {{fontWeight:"bold", fontSize:18, textAlign: "center"}}>Ingredient Details</Text>}
                 closable
             >
-
                 <View style={{ paddingVertical: 20 }}>
                     <Card style={{padding: 20, height: 250, width: 280}}>
                         <CardItem cardBody style={{alignSelf: 'center'}}>
@@ -95,24 +150,39 @@ class IngredientDetailModal extends Component {
                     <WhiteSpace />
 
                     <List style={{width: 280}}>
-                        <Item data-seed="logId">
-                            <Text style={{fontSize: 15, fontWeight: 'bold'}}>Amount</Text>
-                            <Right>
-                                <Text>{`${this.state.ItemVolume} ${this.state.ItemUnit}`}</Text>
+                        <Item data-seed="logId" style={{height: 30}}>
+                            <Text style={{fontSize: 16, fontWeight: 'bold'}}>Amount</Text>
+                            <Right >
+                                <Row >
+                                    <TextInput
+                                        style={{alignSelf: 'center',fontSize: 16, height: 20, borderColor: 'transparent', borderWidth: 1, color: '#00BBF2', fontWeight: 'bold'}}
+                                        onChangeText={text => {
+                                            this.setState({
+                                                ItemVolume: text
+                                            })
+                                        }}
+                                    >
+                                        {`${this.state.ItemVolume}`}
+                                    </TextInput>
+                                    <Text style={{alignSelf: 'center', fontSize: 16}}>
+                                        {`${this.state.ItemUnit}`}
+                                    </Text>
+                                </Row>
+                                {/*<Text>{`${this.state.ItemVolume} ${this.state.ItemUnit}`}</Text>*/}
                             </Right>
                         </Item>
 
-                        <Item data-seed="logId">
-                            <Text style={{fontSize: 15, fontWeight: 'bold'}}>Category</Text>
+                        <Item data-seed="logId" style={{height: 30}}>
+                            <Text style={{fontSize: 16, fontWeight: 'bold'}}>Category</Text>
                             <Right>
-                                <Text>{this.state.ItemCategory}</Text>
+                                <Text style={{fontSize: 16}}>{this.state.ItemCategory}</Text>
                             </Right>
                         </Item>
 
-                        <Item data-seed="logId">
-                            <Text style={{fontSize: 15, fontWeight: 'bold'}}>Purchased Date</Text>
+                        <Item data-seed="logId" style={{height: 30}}>
+                            <Text style={{fontSize: 16, fontWeight: 'bold'}}>Purchased Date</Text>
                             <Right>
-                                <Text>{this.state.ItemDate}</Text>
+                                <Text style={{fontSize: 16}}>{this.state.ItemDate}</Text>
                             </Right>
                         </Item>
                     </List>
@@ -127,6 +197,7 @@ class IngredientDetailModal extends Component {
                             backgroundColor:"deepskyblue",
                             width:150}} onPress={()=>{
                             this.setState({showModal: false})
+                            this.onPressUpdate(this.state.ItemId);
                         }}>
                             <Text >Update</Text>
                         </Button>
@@ -163,6 +234,8 @@ class IngredientDetailModal extends Component {
                     </Col>
                 </Grid>
             </Modal>
+
+
         );
     }
 }
