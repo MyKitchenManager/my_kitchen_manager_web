@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {View, Text, TouchableOpacity, ScrollView, TextInput, Image, AsyncStorage, StyleSheet} from 'react-native';
+import {View, Text, TouchableOpacity, ScrollView, TextInput, Image, AsyncStorage, StyleSheet, FlatList} from 'react-native';
 import {
     Body,
     Button,
@@ -243,6 +243,13 @@ class AddRecipePage extends Component {
         })
     }
 
+    deleteItemById(id) {
+        const filteredData = this.state.ingredients.filter(item => item.ingredientId !== id);
+        this.setState({
+            ingredients: filteredData
+        })
+    }
+
     render() {
         let search = this.findIngredient(this.state.searchIngredient);
         return (
@@ -331,29 +338,47 @@ class AddRecipePage extends Component {
                                 </Row>
 
                                 <View style={{}}>
-                                    {this.state.ingredients.map((item)=>{
-                                        return<ListItem key={item.ingredientId}>
-                                            <Left>
-                                                <Text>{item.ingredientName}</Text>
-                                            </Left>
+                                    <FlatList
+                                        data={this.state.ingredients}
+                                        renderItem={({ item }) =>
+                                            <View>
+                                                <ListItem>
+                                                    <Left>
+                                                        <Text>{item.ingredientName}</Text>
+                                                    </Left>
 
-                                            <Right style={{width: 50}}>
-                                                <Text style={{marginRight: 10}}>{`${item.ingredientVolume} ${item.unitsOfMeasure}`}</Text>
-                                            </Right>
-                                            {/*<Button transparent onPress={*/}
-                                            {/*    (id) => {*/}
-                                            {/*        console.log('id:' + id);*/}
-                                            {/*        this.setState({*/}
-                                            {/*            ingredients: this.state.ingredients.filter(item =>  item.ingredientId != id.ingredientId)*/}
-                                            {/*        });*/}
-                                            {/*    }*/}
-                                            {/*}>*/}
-                                            {/*    <Icon type="MaterialIcons" name="clear" style={{marginLeft: 50, color: '#00BBF2'}}></Icon>*/}
-                                            {/*</Button>*/}
+                                                    <Right style={{width: 50}}>
+                                                        <Text style={{marginRight: 10}}>{`${item.ingredientVolume} ${item.unitsOfMeasure}`}</Text>
+                                                    </Right>
 
-                                        </ListItem>
-                                    })}
+                                                    <Button transparent onPress={
+                                                        () => this.deleteItemById(item.ingredientId)
+                                                    }>
+                                                        <Icon type="MaterialIcons" name="clear" style={{marginLeft: 50, color: '#00BBF2'}}></Icon>
+                                                    </Button>
+
+                                                </ListItem>
+                                            </View>
+                                        }
+
+                                        keyExtractor={item => item.ingredientId}
+                                    >
+                                    </FlatList>
                                 </View>
+
+                                {/*<View style={{}}>*/}
+                                {/*    {this.state.ingredients.map((item)=>{*/}
+                                {/*        return<ListItem key={item.id}>*/}
+                                {/*            <Left>*/}
+                                {/*                <Text>{item.ingredientName}</Text>*/}
+                                {/*            </Left>*/}
+
+                                {/*            <Right style={{width: 50}}>*/}
+                                {/*                <Text style={{marginRight: 10}}>{`${item.ingredientVolume} ${item.unitsOfMeasure}`}</Text>*/}
+                                {/*            </Right>*/}
+                                {/*        </ListItem>*/}
+                                {/*    })}*/}
+                                {/*</View>*/}
 
                                 <TextInput
                                     multiline
