@@ -105,7 +105,7 @@ class Inventory extends Component {
                             })
                         } else {
                             for(let i = 0; i< responseData.length; i++) {
-                                console.log(responseData[i]);
+                                console.log('responseData:' + responseData[i]);
                                 let name = responseData[i].ingredientIdJoin.ingredientName;
                                 let id = responseData[i].inventoryId;
                                 let image = responseData[i].ingredientIdJoin.imageUrl;
@@ -113,6 +113,7 @@ class Inventory extends Component {
                                 let unit = responseData[i].unitsOfMeasureListEntry.entry;
                                 let expirationDate = responseData[i].expirationDate;
                                 let purchaseDate = responseData[i].purchaseDate;
+                                let ingredientId = responseData[i].ingredientId;
                                 let category;
                                 switch(responseData[i].ingredientIdJoin.ingredientCategoryId){
                                     case 1:
@@ -153,7 +154,8 @@ class Inventory extends Component {
                                     amount: amount,
                                     unit: unit,
                                     category: category,
-                                    purchaseDate: purchaseDate.substr(0, 10)
+                                    purchaseDate: purchaseDate.substr(0, 10),
+                                    ingredientId: ingredientId
                                 };
                                 const list = this.state.Items.concat(item);
                                 this.setState({Items: list, display: list, loading: false});
@@ -241,7 +243,7 @@ class Inventory extends Component {
                             />
 
                             <AddIngredientModal ref={'AddIngredientModal'} data={this.props.data} data2 = {this.scanInventory.bind(this)}/>
-                            <IngredientDetailModal ref={'IngredientDetailModal'} handleDeleteItem={this.handleDeleteItem.bind(this)} />
+                            <IngredientDetailModal ref={'IngredientDetailModal'} handleDeleteItem={this.handleDeleteItem.bind(this)} reloadInventory = {this.scanInventory.bind(this)}/>
 
                         </Content>
                     </Container>
