@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Button, Card, CardItem, Item, Right, Text, Thumbnail, View, Container, List, ListItem, Left} from "native-base";
+import {Button, Card, CardItem, Item, Right, Text, Thumbnail, View, Container, List, ListItem, Left, Row} from "native-base";
 import {ScrollView, TextInput} from "react-native";
 import {Col, Grid} from "react-native-easy-grid";
 import {Modal, WhiteSpace} from "@ant-design/react-native";
@@ -119,14 +119,16 @@ class RecipeDetailModal extends Component {
                                     </Left>
 
                                     <Right style={{width: 50}}>
+                                        <Row>
                                         <TextInput
-                                            style={{alignSelf: "center", fontSize: 16, marginRight: 10, borderColor:"transparent"}}
+                                            style={{color: '#00BBF2', fontWeight: 'bold', alignSelf: "center", fontSize: 16, marginRight: 10, borderColor:"transparent"}}
                                             onChangeText={text=>{
                                                 item.ingredientVolume = text;
                                             }}
                                         >{`${item.ingredientVolume}`}
                                         </TextInput>
                                         <Text style={{alignSelf: "center", fontSize: 16}}>{`${item.unitsOfMeasureListEntry.entry}`}</Text>
+                                        </Row>
                                     </Right>
                                 </ListItem>
                             }):<ListItem></ListItem>}
