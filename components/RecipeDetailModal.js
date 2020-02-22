@@ -21,7 +21,7 @@ class RecipeDetailModal extends Component {
         AsyncStorage.getItem(TOKEN_KEY)
             .then((accessToken)=>{
                 if(accessToken!==null){
-                    console.log(this.state.recipe);
+                    console.log(this.state.recipe.detail);
                     let detail = [];
                     for(let i = 0; i < this.state.recipe.detail.length; i++){
                         const item ={
@@ -29,8 +29,9 @@ class RecipeDetailModal extends Component {
                             ingredientVolume: this.state.recipe.detail[i].ingredientVolume,
                             unitsOfMeasure: 12
                         }
-                        detail.concat(item);
+                        detail.push(item);
                     }
+                    console.log(detail);
                     const params = {
                         recipeCategory: null,
                         contributorId: this.state.recipe.contributorId,
@@ -53,6 +54,7 @@ class RecipeDetailModal extends Component {
                         .then((response)=>{
                             if(response.status=="200"){
                                 alert("Update Success");
+                                this.props.data();
                             }else{
                                 console.log(response.status);
                                 //console.log(response);

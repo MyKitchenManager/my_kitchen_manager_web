@@ -176,7 +176,7 @@ class MealPool extends Component {
                         />
                         </View>
                         <AddRecipeModal data={this.scanRecipes.bind(this)} ref={'AddRecipeModal'} />
-                        <RecipeDetailModal ref={'RecipeDetailModal'} />
+                        <RecipeDetailModal data={this.scanRecipes.bind(this)} ref={'RecipeDetailModal'} />
 
                     </Content>
                 </Container>
