@@ -12,7 +12,9 @@ import {
     Label, Left,
     List,
     ListItem, Right, Text,
-    Title
+    Title,
+    Root,
+    Toast
 } from "native-base"
 import styles from "../styles/styles"
 import {Actions} from "react-native-router-flux";
@@ -29,8 +31,23 @@ class SignUp extends Component {
 
     handlerSignUp() {
         if(this.state.password!==this.state.confirmPassword){
-            alert('Password does not match with confirm password');
-        }else {
+            Toast.show({
+                text: "Password does not match confirm password",
+                textStyle: {fontSize: 13},
+                buttonText: "Got it!",
+                duration: 3000,
+                position: "top"
+            })
+        }else if(this.state.username===""){
+            Toast.show({
+                text: "Please enter your username",
+                textStyle: {fontSize: 13},
+                buttonText: "Got it!",
+                duration: 3000,
+                position: "top"
+            })
+        }
+        else {
             fetch(`${API_URL}/users/register`, {
                 method: 'POST',
                 headers: {
@@ -82,7 +99,9 @@ class SignUp extends Component {
                     <Right />
                 </Header>
                 {
+
                     <Content>
+                        <Root>
                         <KeyboardAvoidingView behavoir='position'>
                         <List style={{paddingTop: 150, paddingBottom: 15, width: 340, paddingLeft: 15}}>
                             <ListItem style={{borderColor: 'white'}}>
@@ -145,8 +164,9 @@ class SignUp extends Component {
                         {/*    <Text style={{fontWeight: "bold"}}>Back to Login</Text>*/}
                         {/*</Button>*/}
                         </KeyboardAvoidingView>
-
+                    </Root>
                     </Content>
+
                 }
             </Container>
         );
