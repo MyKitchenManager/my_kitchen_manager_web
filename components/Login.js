@@ -1,4 +1,4 @@
-import { Header,Container,Title, Content, List, ListItem, InputGroup, Input, Icon, Text, Label, Button, Item } from 'native-base';
+import { Header,Container,Title, Content, List, ListItem, InputGroup, Input, Icon, Text, Label, Button, Item, Toast, Root } from 'native-base';
 import React, {Component} from 'react';
 import {Actions} from "react-native-router-flux";
 import styles from '../styles/styles.js';
@@ -46,16 +46,31 @@ export default class Login extends Component {
                 if (response.status == "200") {
                     return response.headers;
                 } else {
-                    alert('User does not exist')
+                    Toast.show({
+                        text: "Invalid Username or Password",
+                        textStyle: {fontSize: 13},
+                        buttonText: "Got it!",
+                        duration: 3000,
+                        position: "top"
+                    })
+                    return null;
                 }
             })
             .then((headers) => {
-                console.log('Success:', headers);
-                let accessToken = headers.get('authorization').toString();
-                //console.log(accessToken);
-                this._onValueChange(accessToken);
-            }).then(()=>{
-                Actions.home({page:"mealplan"});
+                if(headers) {
+                    console.log('Success:', headers);
+                    let accessToken = headers.get('authorization').toString();
+                    //console.log(accessToken);
+                    this._onValueChange(accessToken);
+                    return true;
+                }else{
+                    return false;
+                }
+            }).then((status)=>{
+                if(status) {
+                    Actions.home({page:"mealplan"});
+                }
+                return status;
             })
             .catch((error) => {
                 console.error('Error:', error);
@@ -84,6 +99,7 @@ export default class Login extends Component {
                             </Text>
                             <Text style={{color:'#C5CCD6', fontSize: 18}}>Enjoy fast and healthy meal</Text>
                         </View>
+                        <Root>
                         <KeyboardAvoidingView behavior="position">
                         <List style={{paddingTop: 200, paddingBottom: 15, width: 350, paddingLeft: 15}}>
                             <ListItem style={{borderColor: 'white'}}>
@@ -112,9 +128,15 @@ export default class Login extends Component {
                                 </InputGroup>
                             </ListItem>
                         </List>
-                        <Button style={[styles.primaryButton, {width: 340}]}onPress={this.loginHandler.bind(this)}>
-                            <Text style={{fontWeight: "bold"}}>Log in</Text>
-                        </Button>
+
+                                <Button style={[styles.primaryButton, {width: 340}]}
+                                        onPress={
+                                            this.loginHandler.bind(this)
+                                        }>
+                                    <Text style={{fontWeight: "bold"}}>Log in</Text>
+                                </Button>
+
+
 
                         <Text style = {{alignSelf: "center", paddingTop: 10}}>Or New Here?</Text>
                         <Button onPress={()=>Actions.signup()} style={[styles.primaryButton, {width: 340}]}>
@@ -125,6 +147,7 @@ export default class Login extends Component {
                         {/*    Or New Here? Try <Text onPress={()=>Actions.signup()} style={{fontWeight: "bold", color:"#47c1fe"}}>Register</Text>*/}
                         {/*</Text>*/}
                         </KeyboardAvoidingView>
+                        </Root>
 
                     </Content>
                 }
