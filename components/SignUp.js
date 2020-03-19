@@ -38,7 +38,16 @@ class SignUp extends Component {
                 duration: 3000,
                 position: "top"
             })
-        }else if(this.state.username===""||this.state.email===""){
+        }else if(this.state.password===""){
+            Toast.show({
+                text: "Please enter your password",
+                textStyle: {fontSize: 13},
+                buttonText: "Got it!",
+                duration: 3000,
+                position: "top"
+            })
+        }
+        else if(this.state.username===""||this.state.email===""){
             Toast.show({
                 text: "Please enter your username and email",
                 textStyle: {fontSize: 13},
