@@ -1,16 +1,14 @@
 import React, {Component}from 'react';
 import SignUp from "./components/SignUp";
-import { StyleSheet, Text, View } from 'react-native';
 import {Scene, Router} from 'react-native-router-flux';
 import Login from './components/Login';
 import Home from "./components/Home";
 import {AsyncStorage} from "react-native"
 import {TOKEN_KEY, API_URL} from "./constant";
-import MealPlanStack from './routes/MealPlanStack';
 import MealPlanRecipe from "./components/MealPlanRecipe";
-import MealPlan from './components/MealPlan';
 import MealPool from './components/MealPool';
 import AddRecipePage from "./components/AddRecipePage";
+import ShoppingListPage from "./components/ShoppingListPage";
 
 export default class App extends Component {
     state = {
@@ -44,7 +42,6 @@ export default class App extends Component {
 
     }
 
-
     userInfoHandler(accessToken){
         return fetch(`${API_URL}/`, {
             method: 'GET',
@@ -71,6 +68,7 @@ export default class App extends Component {
                     <Scene key="recipe" component={MealPlanRecipe} hideNavBar={true} title="MealPlanRecipe" />
                     <Scene key="add_recipe_page" component={AddRecipePage} hideNavBar={true} title="AddRecipePage" />
                     <Scene key="meal_pool" component={MealPool} hideNavBar={true} title="MealPool"/>
+                    <Scene key="shopping_list_page" component={ShoppingListPage} hideNavBar={true} title="ShoppingList"/>
                 </Scene>
               </Router>
     }

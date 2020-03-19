@@ -338,7 +338,8 @@ class MealPlan extends Component {
     }
 
     onPressShoppingButton(userId) {
-        this.refs.ShoppingListModal.showShoppingListModal(userId);
+        // this.refs.ShoppingListModal.showShoppingListModal(userId);
+        Actions.shopping_list_page();
     }
 
     onPressFinishCook(id) {
