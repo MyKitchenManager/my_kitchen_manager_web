@@ -38,9 +38,9 @@ class SignUp extends Component {
                 duration: 3000,
                 position: "top"
             })
-        }else if(this.state.username===""){
+        }else if(this.state.username===""||this.state.email===""){
             Toast.show({
-                text: "Please enter your username",
+                text: "Please enter your username and email",
                 textStyle: {fontSize: 13},
                 buttonText: "Got it!",
                 duration: 3000,
@@ -48,39 +48,50 @@ class SignUp extends Component {
             })
         }
         else {
-            fetch(`${API_URL}/users/register`, {
-                method: 'POST',
-                headers: {
-                    // 'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    "signupDate": '2020-01-28T12:00:00.000+0000',
-                    "password": this.state.password,
-                    "gender": 'M',
-                    "emailAddress": this.state.email,
-                    "nationality": 90,
-                    "firstName": 'Xiao',
-                    "lastName": 'Yu',
-                    "userName": this.state.username,
-                    "vegetarian": false,
-                    "vegan": false,
-                    "lactoseIntolerant": false,
-                    "glutenFree": false,
+            let pattern = /^([A-Za-z0-9_\-\.\u4e00-\u9fa5])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,8})$/;
+            if (pattern.test(this.state.email)) {
+                fetch(`${API_URL}/users/register`, {
+                    method: 'POST',
+                    headers: {
+                        // 'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        "signupDate": '2020-01-28T12:00:00.000+0000',
+                        "password": this.state.password,
+                        "gender": 'M',
+                        "emailAddress": this.state.email,
+                        "nationality": 90,
+                        "firstName": 'Xiao',
+                        "lastName": 'Yu',
+                        "userName": this.state.username,
+                        "vegetarian": false,
+                        "vegan": false,
+                        "lactoseIntolerant": false,
+                        "glutenFree": false,
+                    })
+                }).then((response) => {
+                    if (response.status == "200") {
+                        alert('Register successfully');
+                        console.log('Register successfully');
+                        Actions.pop();
+                    } else if (response.status == "226") {
+                        alert('User has existed');
+                        console.log('The username has existed')
+                    }
+                    //throw new Error(response.statusText)
+                }).catch((error) => {
+                    console.log('Exist Error: ' + error);
                 })
-            }).then((response) => {
-                if (response.status == "200") {
-                    alert('Register successfully');
-                    console.log('Register successfully');
-                    Actions.pop();
-                } else if (response.status == "226") {
-                    alert('User has existed');
-                    console.log('The username has existed')
-                }
-                //throw new Error(response.statusText)
-            }).catch((error)=>{
-                console.log('Exist Error: '+error);
-            })
+            }else {
+                Toast.show({
+                    text: "Invalid email address!",
+                    textStyle: {fontSize: 13},
+                    buttonText: "Got it!",
+                    duration: 3000,
+                    position: "top"
+                })
+            }
         }
     }
 
