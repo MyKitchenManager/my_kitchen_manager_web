@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Alert, AsyncStorage, ScrollView, StyleSheet, Text, View} from 'react-native';
+import {Alert, AsyncStorage, ScrollView, StyleSheet, Text, TextInput, View} from 'react-native';
 import {
     Body,
     Button, CheckBox,
@@ -10,7 +10,7 @@ import {
     Left,
     List,
     ListItem,
-    Right,
+    Right, Row,
     Spinner,
     Thumbnail,
     Title
@@ -26,7 +26,7 @@ class ShoppingListPage extends Component {
             checkedBox: [],
             items: [],
             purchasedIngredient: [],
-            userId: this.props.userId
+            userId: this.props.userId,
         }
     }
 
@@ -202,8 +202,23 @@ class ShoppingListPage extends Component {
                                                             <Thumbnail square source={{ uri: item.image}} />
                                                         </Left>
                                                         <Body>
+
                                                             <Text style={{fontSize: 16, fontWeight: '15', marginBottom: 5}}>{item.name}</Text>
                                                             <Text note numberOfLines={1} style={{fontWeight: '15'}}>{item.volume} g</Text>
+
+                                                            {/*<TextInput*/}
+                                                            {/*    style={{alignSelf: 'center',fontSize: 16, height: 20, borderColor: 'transparent', borderWidth: 1, color: '#00BBF2', fontWeight: 'bold'}}*/}
+                                                            {/*    onChangeText={text => {*/}
+                                                            {/*        this.volume = text;*/}
+                                                            {/*        // this.setState({*/}
+                                                            {/*        //     ItemVolume: text*/}
+                                                            {/*        // })*/}
+                                                            {/*    }}*/}
+                                                            {/*>*/}
+                                                            {/*    {`${this.state.ItemVolume}`}*/}
+                                                            {/*</TextInput>*/}
+                                                            {/*<Text>g</Text>*/}
+
                                                         </Body>
                                                         <Right>
                                                             <CheckBox style={{marginRight: 20}} checked={this.state.checkedBox.includes(item.id) ? true : false}
