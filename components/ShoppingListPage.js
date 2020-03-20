@@ -18,6 +18,8 @@ import {
 import {Actions} from "react-native-router-flux";
 import {Modal, Provider} from "@ant-design/react-native";
 import {API_URL, TOKEN_KEY} from "../constant";
+import EditShoppingListModal from "./EditShoppingListModal";
+
 class ShoppingListPage extends Component {
     constructor(props) {
         super(props);
@@ -28,11 +30,10 @@ class ShoppingListPage extends Component {
             purchasedIngredient: [],
             userId: this.props.userId,
         }
+        this.onPressEditButton = this.onPressEditButton.bind(this);
     }
 
-    onPressYes = () => {
-        Actions.home({page: "inventory"});
-    }
+
 
     getShoppingList(){
         this.setState({items: [], loading: true});
@@ -109,20 +110,6 @@ class ShoppingListPage extends Component {
                         body: JSON.stringify(this.state.purchasedIngredient)
                     }).then((response)=>{
                         if(response.status == "200"){
-                            Alert.alert(
-                                'Finish Shopping?',
-                                'Purchased items will be added to inventory',
-                                [
-                                    {
-                                        text: 'Cancel',
-                                        onPress: console.log('cancel'),
-                                        style: 'cancel',
-                                    },
-                                    {text: 'Yes', onPress: () => {this.onPressYes()}},
-                                ],
-                                {cancelable: false},
-                            );
-                            //alert("Purchased Items have been added to Inventory");
                             console.log('Purchased Items have been added to Inventory')
                         }else{
                             console.log(response.status);
@@ -167,6 +154,19 @@ class ShoppingListPage extends Component {
         console.log(this.state.purchasedIngredient);
     }
 
+    onPressYes = () => {
+        if (this.state.checkedBox.length === 0) {
+            Actions.home({page: "mealplan"});
+        } else {
+            this.onFinishShoppingButton();
+            Actions.home({page: "inventory"});
+        }
+    }
+
+    onPressEditButton = () => {
+        this.refs.EditShoppingListModal.showEditShoppingListModal();
+    }
+
     componentDidMount() {
         this.getShoppingList();
     }
@@ -202,27 +202,19 @@ class ShoppingListPage extends Component {
                                                             <Thumbnail square source={{ uri: item.image}} />
                                                         </Left>
                                                         <Body>
-
                                                             <Text style={{fontSize: 16, fontWeight: '15', marginBottom: 5}}>{item.name}</Text>
                                                             <Text note numberOfLines={1} style={{fontWeight: '15'}}>{item.volume} g</Text>
-
-                                                            {/*<TextInput*/}
-                                                            {/*    style={{alignSelf: 'center',fontSize: 16, height: 20, borderColor: 'transparent', borderWidth: 1, color: '#00BBF2', fontWeight: 'bold'}}*/}
-                                                            {/*    onChangeText={text => {*/}
-                                                            {/*        this.volume = text;*/}
-                                                            {/*        // this.setState({*/}
-                                                            {/*        //     ItemVolume: text*/}
-                                                            {/*        // })*/}
-                                                            {/*    }}*/}
-                                                            {/*>*/}
-                                                            {/*    {`${this.state.ItemVolume}`}*/}
-                                                            {/*</TextInput>*/}
-                                                            {/*<Text>g</Text>*/}
-
                                                         </Body>
                                                         <Right>
-                                                            <CheckBox style={{marginRight: 20}} checked={this.state.checkedBox.includes(item.id) ? true : false}
+                                                            <Row style={{alignItems: 'center'}}>
+                                                                <Button transparent onPress={() => {this.onPressEditButton()}}>
+                                                                    <Icon type="FontAwesome" name="edit" style={{color: 'deepskyblue', marginRight: 10}} />
+                                                                </Button>
+
+                                                            <CheckBox style={{marginRight: 20}}
+                                                                      checked={this.state.checkedBox.includes(item.id) ? true : false}
                                                                       onPress={()=>this.onPressCheckBox(item.id)}/>
+                                                            </Row>
                                                         </Right>
                                                     </ListItem>
                                                 }):<ListItem>
@@ -243,12 +235,25 @@ class ShoppingListPage extends Component {
                                         marginTop: 20
                                     }}
                                     onPress={()=>{
-                                        this.onFinishShoppingButton()
+                                        Alert.alert(
+                                            'Finish Shopping?',
+                                            'Purchased items will be added to inventory',
+                                            [
+                                                {
+                                                    text: 'Cancel',
+                                                    onPress: console.log('cancel'),
+                                                    style: 'cancel',
+                                                },
+                                                {text: 'Yes', onPress: () => {this.onPressYes()}},
+                                            ],
+                                            {cancelable: false},
+                                        );
                                     }}>
                                     <Text >Finish Shopping</Text>
                                 </Button>
                             </View>
 
+                        <EditShoppingListModal ref={'EditShoppingListModal'} />
                     </Content>
                 </Container>
             </Provider>

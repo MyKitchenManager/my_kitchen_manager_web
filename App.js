@@ -70,7 +70,7 @@ export default class App extends Component {
                     <Scene key="add_recipe_page" component={AddRecipePage} hideNavBar={true} title="AddRecipePage" />
                     <Scene key="meal_pool" component={MealPool} hideNavBar={true} title="MealPool"/>
                     <Scene key="shopping_list_page" component={ShoppingListPage} hideNavBar={true} title="ShoppingList"/>
-                    <Scene key="inventory_page" component={Inventory} hideNavBar={true} title="Inventory"/>
+                    {/*<Scene key="inventory_page" component={Inventory} hideNavBar={true} title="Inventory"/>*/}
                 </Scene>
               </Router>
     }
