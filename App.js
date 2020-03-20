@@ -9,6 +9,7 @@ import MealPlanRecipe from "./components/MealPlanRecipe";
 import MealPool from './components/MealPool';
 import AddRecipePage from "./components/AddRecipePage";
 import ShoppingListPage from "./components/ShoppingListPage";
+import Inventory from "./components/Inventory";
 
 export default class App extends Component {
     state = {
@@ -69,6 +70,7 @@ export default class App extends Component {
                     <Scene key="add_recipe_page" component={AddRecipePage} hideNavBar={true} title="AddRecipePage" />
                     <Scene key="meal_pool" component={MealPool} hideNavBar={true} title="MealPool"/>
                     <Scene key="shopping_list_page" component={ShoppingListPage} hideNavBar={true} title="ShoppingList"/>
+                    <Scene key="inventory_page" component={Inventory} hideNavBar={true} title="Inventory"/>
                 </Scene>
               </Router>
     }
