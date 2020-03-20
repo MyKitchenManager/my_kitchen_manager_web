@@ -163,7 +163,7 @@ class ShoppingListPage extends Component {
         }
     }
 
-    onPressEditButton = () => {
+    onPressEditButton () {
         this.refs.EditShoppingListModal.showEditShoppingListModal();
     }
 

@@ -42,7 +42,6 @@ class MealPlan extends Component {
             finishcook: false,
             userId: ''
         };
-        this.onPressShoppingButton = this.onPressShoppingButton.bind(this);
         this.onPressCookButton = this.onPressCookButton.bind(this);
     }
 
@@ -338,7 +337,6 @@ class MealPlan extends Component {
     }
 
     onPressShoppingButton(userId) {
-        // this.refs.ShoppingListModal.showShoppingListModal(userId);
         Actions.shopping_list_page({userId: userId});
     }
 
@@ -398,8 +396,7 @@ class MealPlan extends Component {
                         renderEmptyDate={this.renderEmptyDate.bind(this)}
                         rowHasChanged={this.rowHasChanged.bind(this)}
                     />
-
-                    <ShoppingListModal ref={'ShoppingListModal'}/>
+                    
                     <CookModal ref={'CookModal'} data={this.onPressFinishCook.bind(this)}/>
                 </Container>
             </Provider>

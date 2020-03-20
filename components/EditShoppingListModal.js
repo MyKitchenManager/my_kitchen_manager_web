@@ -1,41 +1,45 @@
 import React, {Component} from 'react';
-import { Modal, Text, View } from 'react-native';
+import { Text, View } from 'react-native';
+import {Modal} from '@ant-design/react-native';
 
 class EditShoppingListModal extends Component {
-    state = {
-        showModal: false
+    constructor(props) {
+        super(props);
+        this.state = {
+            showModal: false
+        }
     }
+
 
     showEditShoppingListModal = () => {
         this.setState({
             showModal: true,
         })
     }
+
     render() {
         return (
-            <div>
-                <Modal
-                    style={{width: 320}}
-                    ref={"EditShoppingListModal"}
-                    title="Title"
-                    transparent
-                    onClose={()=>{
-                        this.setState({
-                            showModal:false,
-                        });
-                    }}
-                    maskClosable
-                    animationType = 'slide'
-                    visible={this.state.showModal}
-                    title = {<Text style = {{fontWeight:"bold", fontSize:18, textAlign: "center"}}>Enter Actual Amount</Text>}
-                    closable
-                >
-                    <View>
+            <Modal
+                style={{width: 320}}
+                ref={"EditShoppingListModal"}
+                title="Title"
+                transparent
+                onClose={()=>{
+                    this.setState({
+                        showModal:false,
+                    });
+                }}
+                maskClosable
+                animationType = 'fade'
+                visible={this.state.showModal}
+                title = {<Text style = {{fontWeight:"bold", fontSize:18, textAlign: "center"}}>Enter Amount</Text>}
+                closable
+            >
+                <View>
 
-                    </View>
+                </View>
 
-                </Modal>
-            </div>
+            </Modal>
         );
     }
 }
