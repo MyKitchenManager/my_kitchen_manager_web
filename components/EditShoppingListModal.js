@@ -10,7 +10,6 @@ class EditShoppingListModal extends Component {
         }
     }
 
-
     showEditShoppingListModal = () => {
         this.setState({
             showModal: true,
@@ -32,13 +31,12 @@ class EditShoppingListModal extends Component {
                 maskClosable
                 animationType = 'fade'
                 visible={this.state.showModal}
-                title = {<Text style = {{fontWeight:"bold", fontSize:18, textAlign: "center"}}>Enter Amount</Text>}
+                title = {<Text style = {{fontWeight:"bold", fontSize:18, textAlign: "center"}}>Edit Amount</Text>}
                 closable
             >
                 <View>
 
                 </View>
-
             </Modal>
         );
     }
