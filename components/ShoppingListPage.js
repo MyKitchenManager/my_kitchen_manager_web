@@ -140,7 +140,7 @@ class ShoppingListPage extends Component {
             this.state.purchasedIngredient.push({
                 ingredientId : id,
                 inventoryVolume: volume,
-                unitsOfMeasure: 13,
+                unitsOfMeasure: 14,
                 userId: this.state.userId,
                 purchaseDate:"2020-02-04T12:00:00.000+0000",
                 expirationDate:"2020-02-19T12:00:00.000+0000"
@@ -249,7 +249,7 @@ class ShoppingListPage extends Component {
                                             {cancelable: false},
                                         );
                                     }}>
-                                    <Text >Finish Shopping</Text>
+                                    <Text style={{color: 'white', fontWeight: '800', fontSize: '18'}}>Finish Shopping</Text>
                                 </Button>
                             </View>
 
