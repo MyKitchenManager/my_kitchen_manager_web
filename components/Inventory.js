@@ -8,6 +8,7 @@ import spinach from '../assets/spinach.jpeg';
 import AddIngredientModal from "./AddIngredientModal";
 import {Provider} from "@ant-design/react-native";
 import IngredientDetailModal from "./IngredientDetailModal";
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from "react-native-responsive-screen"
 
 class Inventory extends Component {
     constructor(props) {
@@ -250,7 +251,7 @@ class Inventory extends Component {
                             </Right>
                         </Header>
                         <Content>
-                            <Item rounded style={{margin: 10, width: 380, height:50, alignSelf: "center", marginLeft: 10}}>
+                            <Item rounded style={{margin: 10, width: wp('85%'), height:50, alignSelf: "center", marginLeft: 10}}>
                                 <Icon name="ios-search"/>
                                 <Input
                                     placeholder = "Find Ingredient"
@@ -276,10 +277,10 @@ class Inventory extends Component {
                             <FlatList
                                 data ={this.state.display}
                                 renderItem={({item})=>(
-                                    <Card style={{alignItems: 'center', width: 130, height: 160, borderRadius: 15}} key = {item.ingredientId}>
+                                    <Card style={{alignItems: 'center', width: wp("30%"), height: hp("18%"), borderRadius: 15}} key = {item.ingredientId}>
                                         <CardItem cardBody style={{alignItems: 'center', paddingTop: 25}}>
                                             <Button transparent style={{margin:10}} onPress = {() => this.onPressImage(item)}>
-                                                <Thumbnail source={{uri: item.image}} style ={{height: 100, width: 110}}/>
+                                                <Thumbnail source={{uri: item.image}} style ={{height: hp("10%"), width: wp("25%")}}/>
                                             </Button>
                                         </CardItem>
                                         <CardItem style={{backgroundColor: 'transparent'}}>
