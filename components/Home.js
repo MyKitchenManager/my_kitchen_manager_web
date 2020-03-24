@@ -1,16 +1,9 @@
-import { Header,Container,Title, Content, List, ListItem, InputGroup, Icon, Text, Label, Button, Footer, FooterTab, Left, Right, Body} from 'native-base';
-import {View} from "react-native";
+import { Container, Icon, Text, Button, Footer, FooterTab } from 'native-base';
 import React, {Component} from 'react';
 import MealPlan from "./MealPlan";
 import Inventory from "./Inventory";
 import MealPool from "./MealPool";
-import {Actions} from "react-native-router-flux";
-import styles from '../styles/styles.js';
 import Profile from "./Profile"
-import {AsyncStorage} from "react-native"
-import {API_URL, TOKEN_KEY} from "../constant"
-import MealPlanRecipe from "./MealPlanRecipe";
-import MealPlanStack from "../routes/MealPlanStack";
 
 //test github username
 class Home extends Component {
