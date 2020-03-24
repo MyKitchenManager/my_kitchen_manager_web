@@ -20,6 +20,7 @@ import RecipeDetailModal from "./RecipeDetailModal";
 import {AsyncStorage, View} from "react-native"
 import {API_URL, TOKEN_KEY} from "../constant"
 import {Actions} from 'react-native-router-flux';
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from "react-native-responsive-screen"
 
 class MealPool extends Component {
     constructor(props) {
@@ -136,7 +137,7 @@ class MealPool extends Component {
                         </Right>
                     </Header>
                     <Content>
-                        <Item rounded style={{margin: 10, width: 380, height:50, alignSelf: "center", marginLeft: 10}}>
+                        <Item rounded style={{margin: 10, width: wp("85%"), height:50, alignSelf: "center", marginLeft: 10}}>
                             <Icon name="ios-search"/>
                             <Input
                                 placeholder = "Find Recipe"
@@ -163,10 +164,10 @@ class MealPool extends Component {
                         <FlatList
                             data={this.state.display}
                             renderItem={({item}) =>(
-                                <Card style={{alignItems: 'center', paddingTop: 30, height: 200, width: 190, borderRadius: 15}} key={item.id}>
+                                <Card style={{alignItems: 'center', paddingTop: 30, paddingRight: 10, height: hp("22%"), width: wp("47%"), borderRadius: 15}} key={item.id}>
                                     <CardItem cardBody style={{alignItems: 'center'}}>
                                         <Button transparent style={{margin: 10}} onPress = {() => this.onPressImage(item)}>
-                                            <Thumbnail source={{uri:item.recipeImageUrl}} style ={{height: 130, width: 160, marginTop: 30}}/>
+                                            <Thumbnail source={{uri:item.recipeImageUrl}} style ={{height: hp("15%"), width: wp("35%"), marginTop: 30}}/>
                                         </Button>
                                     </CardItem>
                                     <CardItem style={{marginTop: 40, backgroundColor: 'transparent'}}>
