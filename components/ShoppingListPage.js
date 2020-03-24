@@ -221,7 +221,7 @@ class ShoppingListPage extends Component {
                                             <Spinner color='deepskyblue'/>
                                         </View>
                                         :
-                                        <ScrollView style={{height: hp("85%")}}>
+                                        <ScrollView>
                                             <List>
                                                 {this.state.items ? this.state.items.map((item)=>{
                                                     return <ListItem thumbnail key={item.id}>
@@ -283,7 +283,6 @@ class ShoppingListPage extends Component {
                                     <Text style={{color: 'white', fontWeight: '800', fontSize: '18'}}>Finish Shopping</Text>
                                 </Button>
                             </View>
-
                         <EditShoppingListModal ref={'EditShoppingListModal'} data={this.changedItem.bind(this)} />
                     </Content>
                 </Container>
@@ -296,7 +295,8 @@ const styles = StyleSheet.create({
     container: {
         backgroundColor: 'white',
         flex: 1,
-        paddingTop: 25
+        paddingTop: 25,
+        height: hp("85%")
     }
 });
 

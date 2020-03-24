@@ -421,10 +421,10 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         marginRight: 5,
         marginTop: 17,
-        width: wp("80%"),
+        width: wp("75%"),
     },
     emptyDate: {
-        height: 15,
+        height: hp("18%"),
         flex: 1,
         paddingTop: 30
     },
