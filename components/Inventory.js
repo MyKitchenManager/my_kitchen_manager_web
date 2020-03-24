@@ -246,7 +246,7 @@ class Inventory extends Component {
                             </Body>
                             <Right>
                                 <Button transparent onPress = {() => this.onPressAdd()}>
-                                    <Icon name='add-circle' />
+                                    <Icon name='add-circle' style={{color: '#00BBF2'}}/>
                                 </Button>
                             </Right>
                         </Header>
@@ -269,7 +269,7 @@ class Inventory extends Component {
                                             }
                                         }
                                     }>
-                                        <Icon type="MaterialIcons" name="clear"></Icon>
+                                        <Icon type="MaterialIcons" name="clear" style={{color: '#00BBF2'}}></Icon>
                                     </Button>
                                 </Right>
                             </Item>
