@@ -27,6 +27,12 @@ class ShoppingListPage extends Component {
             loading: true,
             checkedBox: [],
             items: [],
+            newItem: {
+                id: 185,
+                image: "https://i.ndtvimg.com/i/2014-11/feta-cheese_625x300_61416559749.jpg",
+                name: "Feta Cheese",
+                volume: 100,
+            },
             purchasedIngredient: [],
             userId: this.props.userId,
         }
@@ -140,7 +146,7 @@ class ShoppingListPage extends Component {
             this.state.purchasedIngredient.push({
                 ingredientId : id,
                 inventoryVolume: volume,
-                unitsOfMeasure: 14,
+                unitsOfMeasure: 12,
                 userId: this.state.userId,
                 purchaseDate:"2020-02-04T12:00:00.000+0000",
                 expirationDate:"2020-02-19T12:00:00.000+0000"
@@ -157,18 +163,38 @@ class ShoppingListPage extends Component {
     onPressYes = () => {
         if (this.state.checkedBox.length === 0) {
             Actions.home({page: "mealplan"});
+            Alert.alert(
+                "Really?",
+                "Seems you didn't buy anything. Please check that."
+            )
         } else {
             this.onFinishShoppingButton();
             Actions.home({page: "inventory"});
         }
     }
 
-    onPressEditButton () {
-        this.refs.EditShoppingListModal.showEditShoppingListModal();
+    onPressEditButton (item) {
+        this.refs.EditShoppingListModal.showEditShoppingListModal(item);
     }
 
     componentDidMount() {
         this.getShoppingList();
+    }
+
+    changedItem(item){
+        this.setState({newItem: item});
+    }
+
+    editShoppingList(item){
+        console.log(this.state.items);
+        let newItems = this.state.items;
+        for(let i = 0; i < newItems.length; i++){
+            if(newItems[i].id === item.id){
+                newItems[i] = item;
+                break;
+            }
+        }
+        this.setState({items: newItems});
     }
 
     render() {
@@ -202,12 +228,16 @@ class ShoppingListPage extends Component {
                                                             <Thumbnail square source={{ uri: item.image}} />
                                                         </Left>
                                                         <Body>
-                                                            <Text style={{fontSize: 16, fontWeight: '15', marginBottom: 5}}>{item.name}</Text>
-                                                            <Text note numberOfLines={1} style={{fontWeight: '15'}}>{item.volume} g</Text>
+                                                            <Text style={{fontSize: 16, fontWeight: "bold", marginBottom: 5}}>{item.name}</Text>
+                                                            <Text note numberOfLines={1} style={{fontWeight: "bold"}}>{item.volume} g</Text>
                                                         </Body>
                                                         <Right>
                                                             <Row style={{alignItems: 'center'}}>
-                                                                <Button transparent onPress={() => {this.onPressEditButton()}}>
+                                                                <Button transparent onPress={() => {
+                                                                    console.log(item);
+                                                                    this.onPressEditButton(item);
+                                                                    this.editShoppingList(this.state.newItem);
+                                                                }}>
                                                                     <Icon type="FontAwesome" name="edit" style={{color: 'deepskyblue', marginRight: 10}} />
                                                                 </Button>
 
@@ -253,7 +283,7 @@ class ShoppingListPage extends Component {
                                 </Button>
                             </View>
 
-                        <EditShoppingListModal ref={'EditShoppingListModal'} />
+                        <EditShoppingListModal ref={'EditShoppingListModal'} data={this.changedItem.bind(this)} />
                     </Content>
                 </Container>
             </Provider>
