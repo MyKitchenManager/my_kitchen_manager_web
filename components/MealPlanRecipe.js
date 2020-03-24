@@ -19,6 +19,7 @@ import {Provider, Modal} from "@ant-design/react-native";
 import {Actions} from 'react-native-router-flux';
 import {API_URL, TOKEN_KEY} from "../constant";
 import RecipeDetailModal from "./RecipeDetailModal";
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from "react-native-responsive-screen"
 
 class MealPlanRecipe extends Component {
     constructor(props) {
@@ -165,14 +166,14 @@ class MealPlanRecipe extends Component {
                        <Right />
                    </Header>
 
-                   <Content>
+                   <Content style={{height: hp("80%")}}>
                            {
                                this.state.loading ?
                                    <View>
                                        <Spinner color='deepskyblue'/>
                                    </View>
                                    :
-                                   <ScrollView style={{height: 680}}>
+                                   <ScrollView>
                                        <List>
                                            {this.state.items ? this.state.items.map((item)=>{
                                                return <ListItem thumbnail key={item.id} style={{marginVertical: 5}}>
@@ -200,29 +201,31 @@ class MealPlanRecipe extends Component {
                                    </ScrollView>
                            }
 
-                       <Button
-                           style = {{margin: 10,
-                               padding: 15,
-                               alignSelf:'center',
-                               justifyContent:'center',
-                               backgroundColor:"deepskyblue",
-                               width:380,
-                               marginTop: 20,
-                           }}
-                           onPress={()=>{
-                               this.onAddButton(),
+
+
+                       <RecipeDetailModal ref={'RecipeDetailModal'}/>
+                    </Content>
+                   <Button
+                       style = {{margin: 20,
+                           padding: 20,
+                           marginBottom: 20,
+                           alignSelf:'center',
+                           justifyContent:'center',
+                           backgroundColor:"deepskyblue",
+                           width:wp("80%"),
+                           marginTop: 10,
+                       }}
+                       onPress={()=>{
+                           this.onAddButton(),
                                this.setState({
                                    showModal: false,
                                    items: [],
                                    loading: false,
                                    checkedBox: []
                                })
-                           }}>
-                           <Text >ADD</Text>
-                       </Button>
-
-                       <RecipeDetailModal ref={'RecipeDetailModal'}/>
-                    </Content>
+                       }}>
+                       <Text style={{color: "white", fontSize: 16}}>ADD</Text>
+                   </Button>
                </Container>
            </Provider>
         );

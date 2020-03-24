@@ -414,7 +414,7 @@ class AddRecipePage extends Component {
                                     this.onAddItem();
                                 }
                             }}>
-                            <Text >ADD</Text>
+                            <Text style={{color: "white"}}>ADD</Text>
                         </Button>
                     </Content>
                 </Container>

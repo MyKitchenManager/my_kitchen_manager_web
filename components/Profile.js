@@ -7,6 +7,7 @@ import {SafeAreaProvider} from "react-native-safe-area-context";
 import avatar from '../assets/avatar.jpeg';
 import meal from '../assets/meal.jpeg';
 import {List} from "@ant-design/react-native";
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from "react-native-responsive-screen"
 
 class Profile extends Component {
     constructor(props) {
@@ -164,7 +165,7 @@ class Profile extends Component {
                     </View>
                     <Text style={[styles.personalInfo, styles.subText]}>PERSONAL INFO</Text>
                     <View style={styles.personalInfoItem}>
-                        <List style={{width: 280}}>
+                        <List style={{width: wp("75%")}}>
                             <Item data-seed="logId">
                                 <Text style={[styles.text, {fontSize: 15, fontWeight: 'bold'}]}>Username</Text>
                                 <Right>
@@ -311,8 +312,9 @@ const styles = StyleSheet.create({
     personalInfoItem: {
         flexDirection: "row",
         alignItems: "flex-start",
-        marginBottom: 16,
-        marginLeft: 60
+        marginHorizontal: wp("12%"),
+        justifyContent: "center",
+        marginBottom: 60
     },
     personalInfoItemIndicator: {
         backgroundColor: "#CABFAB",

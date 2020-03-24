@@ -251,7 +251,7 @@ class Inventory extends Component {
                             </Right>
                         </Header>
                         <Content>
-                            <Item rounded style={{margin: 10, width: wp('85%'), height:50, alignSelf: "center", marginLeft: 10}}>
+                            <Item rounded style={{margin: 10, width: wp('90%'), height:hp("6%"), alignSelf: "center", marginLeft: 10}}>
                                 <Icon name="ios-search"/>
                                 <Input
                                     placeholder = "Find Ingredient"
@@ -273,18 +273,19 @@ class Inventory extends Component {
                                     </Button>
                                 </Right>
                             </Item>
-                            <View style={{alignItems: 'center'}}>
+                            <View style={{width: wp("100%"), alignItems: 'center'}}>
                             <FlatList
+                                contentContainerStyle={{width: wp('95%'), alignItems: "center"}}
                                 data ={this.state.display}
                                 renderItem={({item})=>(
-                                    <Card style={{alignItems: 'center', width: wp("30%"), height: hp("18%"), borderRadius: 15}} key = {item.ingredientId}>
-                                        <CardItem cardBody style={{alignItems: 'center', paddingTop: 25}}>
-                                            <Button transparent style={{margin:10}} onPress = {() => this.onPressImage(item)}>
+                                    <Card style={{alignItems: 'center', width: wp("32%"), height: hp("20%"), borderRadius: 15, padding: 10}} key = {item.ingredientId}>
+                                        <CardItem cardBody style={{alignItems: 'center', paddingTop: 15}}>
+                                            <Button transparent style={{marginTop: hp('1.3%'), marginBottom: hp('1.0%')}} onPress = {() => this.onPressImage(item)}>
                                                 <Thumbnail source={{uri: item.image}} style ={{height: hp("10%"), width: wp("25%")}}/>
                                             </Button>
                                         </CardItem>
                                         <CardItem style={{backgroundColor: 'transparent'}}>
-                                            <Text style = {{fontWeight:"bold", fontSize:13, textAlign: 'center', marginTop: 10}}>{`${item.name} ${item.amount}${item.unit}`}</Text>
+                                            <Text style = {{fontWeight:"bold", fontSize:13, textAlign: 'center', marginTop: hp('1.3%'), paddingTop: 2}}>{`${item.name} ${item.amount}${item.unit}`}</Text>
                                         </CardItem>
                                     </Card>
                                 )}

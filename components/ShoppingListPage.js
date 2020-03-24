@@ -19,6 +19,7 @@ import {Actions} from "react-native-router-flux";
 import {Modal, Provider} from "@ant-design/react-native";
 import {API_URL, TOKEN_KEY} from "../constant";
 import EditShoppingListModal from "./EditShoppingListModal";
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from "react-native-responsive-screen"
 
 class ShoppingListPage extends Component {
     constructor(props) {
@@ -220,7 +221,7 @@ class ShoppingListPage extends Component {
                                             <Spinner color='deepskyblue'/>
                                         </View>
                                         :
-                                        <ScrollView style={{height: 680}}>
+                                        <ScrollView style={{height: hp("85%")}}>
                                             <List>
                                                 {this.state.items ? this.state.items.map((item)=>{
                                                     return <ListItem thumbnail key={item.id}>
@@ -261,7 +262,7 @@ class ShoppingListPage extends Component {
                                         alignSelf:'center',
                                         justifyContent:'center',
                                         backgroundColor:"deepskyblue",
-                                        width: 360,
+                                        width: wp("90%"),
                                         marginTop: 20
                                     }}
                                     onPress={()=>{

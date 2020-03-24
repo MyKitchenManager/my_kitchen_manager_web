@@ -5,6 +5,8 @@ import {Col, Grid} from "react-native-easy-grid";
 import {Modal, WhiteSpace} from "@ant-design/react-native";
 import meal from "../assets/meal.jpeg";
 import Actions from 'react-native-router-flux';
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from "react-native-responsive-screen"
+
 class RecipeDetailModal extends Component {
     constructor(props) {
         super(props);
@@ -39,7 +41,7 @@ class RecipeDetailModal extends Component {
     render() {
         return (
             <Modal
-                style={{width: 380}}
+                style={{width: wp("93%"), height: hp("80%")}}
                 ref={"CookModal"}
                 title="Title"
                 transparent
@@ -61,7 +63,7 @@ class RecipeDetailModal extends Component {
 
                     <WhiteSpace />
 
-                    <ScrollView style = {{height: 270}}>
+                    <ScrollView style = {{height: hp("30%")}}>
                         <Text style={{marginRight: 10, fontSize: 20, marginBottom:10, fontWeight: "bold"}}>Recipe</Text>
                         <List>
                             <ListItem>

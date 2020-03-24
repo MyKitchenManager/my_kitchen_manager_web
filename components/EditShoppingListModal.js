@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import { View } from 'react-native';
 import {Modal} from '@ant-design/react-native';
 import {Form, Input, Item, Button, Text} from "native-base"
+import {widthPercentageToDP as wp} from "react-native-responsive-screen"
 
 class EditShoppingListModal extends Component {
     constructor(props) {
@@ -26,7 +27,7 @@ class EditShoppingListModal extends Component {
     render() {
         return (
             <Modal
-                style={{width: 320}}
+                style={{width: wp("70%")}}
                 ref={"EditShoppingListModal"}
                 title="Title"
                 transparent
@@ -38,7 +39,7 @@ class EditShoppingListModal extends Component {
                 maskClosable
                 animationType = 'fade'
                 visible={this.state.showModal}
-                title = {<Text style = {{fontWeight:"bold", fontSize:18, textAlign: "center"}}>Edit Amount</Text>}
+                title = {<Text style = {{fontWeight:"bold", fontSize: 18, textAlign: "center"}}>Edit Amount</Text>}
                 closable
             >
                 <View style={{marginTop: 20}}>
@@ -56,13 +57,13 @@ class EditShoppingListModal extends Component {
                         />
                     </Item>
                     <Button primary
-                            style={{margin: 15, paddingTop: 10}}
+                            style={{margin: 15, paddingTop: 10, justifyContent: "center"}}
                             onPress={()=>{
                                 console.log(this.state.item);
                                 this.props.data(this.state.item);
                                 this.setState({showModal : false})
                         }}>
-                        <Text style={{fontSize: 16, textAlign: "center", color: "white"}}>Edit</Text>
+                        <Text style={{fontSize: 16, textAlign: "center", color: "white", justifyContent: "center"}}>Edit</Text>
                     </Button>
                 </View>
             </Modal>
