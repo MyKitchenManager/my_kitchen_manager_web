@@ -278,7 +278,7 @@ class Inventory extends Component {
                                 contentContainerStyle={{width: wp('95%'), alignItems: "center"}}
                                 data ={this.state.display}
                                 renderItem={({item})=>(
-                                    <Card style={{alignItems: 'center', width: wp("32%"), height: hp("20%"), borderRadius: 15, padding: 10}} key = {item.ingredientId}>
+                                    <Card style={{alignItems: 'center', width: wp("30%"), height: hp("20%"), borderRadius: 15, padding: 10}} key = {item.ingredientId}>
                                         <CardItem cardBody style={{alignItems: 'center', paddingTop: 15}}>
                                             <Button transparent style={{marginTop: hp('1.3%'), marginBottom: hp('1.0%')}} onPress = {() => this.onPressImage(item)}>
                                                 <Thumbnail source={{uri: item.image}} style ={{height: hp("10%"), width: wp("25%")}}/>
