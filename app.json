@@ -24,7 +24,7 @@
       "**/*"
     ],
     "ios": {
-      "bundleIdentifier": "com.flagcamp.mykitchenmanager",
+      "bundleIdentifier": "com.mkm.mykitchenmanager",
       "supportsTablet": true
     },
     "description": ""
