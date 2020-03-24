@@ -399,25 +399,27 @@ class AddRecipePage extends Component {
                             </View>
                         </View>
                         </ScrollView>
-                        <Button
-                            style = {{
-                                alignSelf:'center',
-                                justifyContent:'center',
-                                backgroundColor:"deepskyblue",
-                                width: wp("80%"),
-                                }}
-                            onPress={()=>{
-                                if(this.state.image===""){
-                                    alert("Please upload your image")
-                                }else{this.setState({
-                                    showModal:false,
-                                });
-                                    this.onAddItem();
-                                }
-                            }}>
-                            <Text style={{color: "white", fontSize: 18, fontWeight: "bold"}}>ADD</Text>
-                        </Button>
                     </Content>
+                    <Button
+                        style = {{
+                            alignSelf:'center',
+                            justifyContent:'center',
+                            backgroundColor:"deepskyblue",
+                            width: wp("80%"),
+                            marginBottom: hp("6%"),
+                            marginTop: hp("3%")
+                        }}
+                        onPress={()=>{
+                            if(this.state.image===""){
+                                alert("Please upload your image")
+                            }else{this.setState({
+                                showModal:false,
+                            });
+                                this.onAddItem();
+                            }
+                        }}>
+                        <Text style={{color: "white", fontSize: 18, fontWeight: "bold"}}>ADD</Text>
+                    </Button>
                 </Container>
             </Provider>
         );
