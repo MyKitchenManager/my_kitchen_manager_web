@@ -166,7 +166,7 @@ class MealPlanRecipe extends Component {
                        <Right />
                    </Header>
 
-                   <Content style={{height: hp("80%")}}>
+                   <Content style={{height: hp("70%"), paddingBottom: 20}}>
                            {
                                this.state.loading ?
                                    <View>
@@ -208,12 +208,12 @@ class MealPlanRecipe extends Component {
                    <Button
                        style = {{margin: 20,
                            padding: 20,
-                           marginBottom: 20,
+                           marginBottom: 40,
                            alignSelf:'center',
                            justifyContent:'center',
                            backgroundColor:"deepskyblue",
                            width:wp("80%"),
-                           marginTop: 10,
+                           marginTop: 20,
                        }}
                        onPress={()=>{
                            this.onAddButton(),
@@ -224,7 +224,7 @@ class MealPlanRecipe extends Component {
                                    checkedBox: []
                                })
                        }}>
-                       <Text style={{color: "white", fontSize: 16}}>ADD</Text>
+                       <Text style={{color: "white", fontSize: 16, fontWeight: "bold"}}>ADD</Text>
                    </Button>
                </Container>
            </Provider>

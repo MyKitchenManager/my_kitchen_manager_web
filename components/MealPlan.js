@@ -412,7 +412,7 @@ const styles = StyleSheet.create({
         padding: 5,
         marginRight: 10,
         marginTop: 17,
-        width: wp("75%"),
+        width: wp("80%"),
         height: hp("18%")
     },
     listItem: {
@@ -421,7 +421,7 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         marginRight: 5,
         marginTop: 17,
-        width: wp("75%"),
+        width: wp("80%"),
     },
     emptyDate: {
         height: hp("18%"),

@@ -26,6 +26,7 @@ import * as ImagePicker from "expo-image-picker";
 import Constants from "expo-constants";
 import Autocomplete from "react-native-autocomplete-input"
 import {backgroundColor} from "react-native-calendars/src/style";
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from "react-native-responsive-screen"
 
 class AddRecipePage extends Component {
     constructor(props) {
@@ -292,7 +293,7 @@ class AddRecipePage extends Component {
                                     </Right>
                                 </Item>
                                 <Row>
-                                <Item rounded style={{margin: 10, alignSelf: "center", marginLeft: 10, marginRight: 0, width: 310, marginBottom: 80}}>
+                                <Item rounded style={{margin: 10, alignSelf: "center", marginLeft: 10, marginRight: 0, width: wp("75%"), marginBottom: 80}}>
                                     <Icon name="ios-search"/>
                                     <Autocomplete
                                         onChangeText={text=>this.setState({searchIngredient: text})}
@@ -301,8 +302,8 @@ class AddRecipePage extends Component {
                                         data = {search}
                                         containerStyle={styles.autocompleteContainer}
                                         listStyle={{backgroundColor: 'white'}}
-                                        inputContainerStyle={{width: 150, borderColor: "white"}}
-                                        listContainerStyle={{width: 150, backgroundColor: "white", elevation:1}}
+                                        inputContainerStyle={{width: wp("30%"), borderColor: "white"}}
+                                        listContainerStyle={{width: wp("30%"), backgroundColor: "white", elevation:1}}
                                         renderItem={({item})=>(
                                                 <TouchableOpacity
                                                     style={{alignItems: 'center',
@@ -321,7 +322,7 @@ class AddRecipePage extends Component {
                                     <Right>
                                         <Input
                                             placeholder='Amount'
-                                            style={{marginRight:10, width: 75}}
+                                            style={{marginRight:10, width: wp("20%")}}
                                             value={this.state.ingredientVolume}
                                             onChangeText={(text) => this.setState({ingredientVolume: parseInt(text)})}
                                         />
@@ -382,7 +383,7 @@ class AddRecipePage extends Component {
 
                                 <TextInput
                                     multiline
-                                    style={{height: 100, margin:10, paddingTop:10, borderColor:"grey",borderWidth:1, elevation:5}}
+                                    style={{height: hp("25%"), margin:10, paddingTop:10, borderColor:"grey",borderWidth:1, elevation:5, width: wp("75%")}}
                                     placeholder="Type your method!"
                                     onChangeText={text=>this.setState({instructions: text})}
                                     value = {this.state.instructions}
@@ -403,7 +404,7 @@ class AddRecipePage extends Component {
                                 alignSelf:'center',
                                 justifyContent:'center',
                                 backgroundColor:"deepskyblue",
-                                width: 360,
+                                width: wp("80%"),
                                 }}
                             onPress={()=>{
                                 if(this.state.image===""){
