@@ -251,7 +251,7 @@ class Inventory extends Component {
                             </Right>
                         </Header>
                         <Content>
-                            <Item rounded style={{margin: 10, width: wp('90%'), height:hp("6%"), alignSelf: "center", marginLeft: 10}}>
+                            <Item rounded style={{margin: 10, width: wp('91%'), height:hp("6%"), alignSelf: "center", marginLeft: 10}}>
                                 <Icon name="ios-search"/>
                                 <Input
                                     placeholder = "Find Ingredient"
@@ -281,7 +281,7 @@ class Inventory extends Component {
                                     <Card style={{alignItems: 'center', width: wp("30%"), height: hp("20%"), borderRadius: 15, padding: 10}} key = {item.ingredientId}>
                                         <CardItem cardBody style={{alignItems: 'center', paddingTop: 15}}>
                                             <Button transparent style={{marginTop: hp('1.3%'), marginBottom: hp('1.0%')}} onPress = {() => this.onPressImage(item)}>
-                                                <Thumbnail source={{uri: item.image}} style ={{height: hp("10%"), width: wp("25%")}}/>
+                                                <Thumbnail source={{uri: item.image}} style ={{height: hp("12%"), width: wp("25%")}}/>
                                             </Button>
                                         </CardItem>
                                         <CardItem style={{backgroundColor: 'transparent'}}>
