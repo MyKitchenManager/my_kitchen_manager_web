@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "my_kitchen_manager",
+    "name": "KitchenMate",
     "slug": "my_kitchen_manager",
     "privacy": "public",
     "sdkVersion": "36.0.0",
@@ -9,7 +9,7 @@
       "android",
       "web"
     ],
-    "version": "1.0.0",
+    "version": "1.0.2",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {

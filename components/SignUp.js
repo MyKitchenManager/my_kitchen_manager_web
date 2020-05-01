@@ -122,7 +122,7 @@ class SignUp extends Component {
 
                     <Content>
                         <Root>
-                        <KeyboardAvoidingView behavoir='position'>
+                        <KeyboardAvoidingView behavior='position'>
                         <List style={{paddingTop: 150, paddingBottom: 15, width: 340, paddingLeft: 15}}>
                             <ListItem style={{borderColor: 'white'}}>
                                 <InputGroup>
