@@ -10,6 +10,8 @@ import MealPool from './components/MealPool';
 import AddRecipePage from "./components/AddRecipePage";
 import ShoppingListPage from "./components/ShoppingListPage";
 import Inventory from "./components/Inventory";
+import store from "./redux/store"
+import {Provider} from "react-redux"
 
 export default class App extends Component {
     state = {
@@ -61,7 +63,8 @@ export default class App extends Component {
     }
 
   render(){
-      return  <Router>
+      return <Provider store={store}>
+      <Router>
                 <Scene key="root">
                     <Scene key="login"  component={Login} hideNavBar={true} title="Login" initial={this.state.init}/>
                     <Scene key="signup" component={SignUp} hideNavBar={true} title="SignUp"/>
@@ -73,6 +76,7 @@ export default class App extends Component {
                     {/*<Scene key="inventory_page" component={Inventory} hideNavBar={true} title="Inventory"/>*/}
                 </Scene>
               </Router>
+      </Provider>
     }
 }
 

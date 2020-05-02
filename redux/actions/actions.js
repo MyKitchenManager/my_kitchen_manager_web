@@ -1,8 +1,17 @@
-export const ADD_SHOW = "ADD_SHOW";
 export const SET_ID = "SET_ID";
-export function addShow(text) {
+export const SET_USERNAME = "SET_USERNAME";
+export const SET_PASSWORD = "SET_PASSWORD";
+
+export function setUsername(text){
     return {
-        type: ADD_SHOW,
+        type: SET_USERNAME,
+        payload: text
+    }
+}
+
+export function setPassword(text){
+    return {
+        type: SET_PASSWORD,
         payload: text
     }
 }

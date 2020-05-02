@@ -4,9 +4,27 @@ import {Actions} from "react-native-router-flux";
 import styles from '../styles/styles.js';
 import {API_URL, TOKEN_KEY} from "../constant";
 import {AsyncStorage, View, KeyboardAvoidingView } from "react-native";
+import {connect, Provider} from "react-redux"
+import store from "../redux/store"
+import {setUsername, setId, setPassword} from "../redux/actions/actions"
 
+const UsernameInput = connect(
+    state => {
+        return {
+            value: state.username
+        }
+    },
+    dispatch =>{
+        return {
+            onChangeText: (text)=>{
+                dispatch(setUsername(text))
+                console.log(JSON.stringify(store.getState()))
+            }
+        }
+    }
+)(Input);
 
-export default class Login extends Component {
+class Login extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -14,6 +32,7 @@ export default class Login extends Component {
             password: ""
         }
     }
+
 
     async _onValueChange(accessToken){
         try {
@@ -30,6 +49,7 @@ export default class Login extends Component {
     }
 
     async loginHandler(){
+        console.log(JSON.stringify(store.getState()))
         return fetch(`${API_URL}/login`,{
             method: 'POST',
             headers: {
@@ -37,8 +57,8 @@ export default class Login extends Component {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                userName : this.state.username,
-                password : this.state.password,
+                userName : this.props.username,
+                password : this.props.password,
             }),
         })
             .then((response) => {
@@ -82,14 +102,8 @@ export default class Login extends Component {
         // If we are loading then we display an ActivityIndicator.
 
         return (
+            <Provider store={store}>
             <Container>
-                {/*<Header>*/}
-                {/*    <Text style = {{fontWeight: "bold", paddingTop:10, fontSize:17}}>*/}
-                {/*        Login*/}
-                {/*    </Text>*/}
-                {/*</Header>*/}
-
-
                 {
                     <Content>
                         <View style={{marginTop: 200, alignSelf: "center", alignItems: "center",}}>
@@ -108,8 +122,11 @@ export default class Login extends Component {
                                     <Item floatingLabel>
                                         <Label style={{padding: 10, fontSize: 15}}> Username </Label>
                                         <Input
-                                            onChangeText={(text)=>this.setState({username:text})}
-                                            value = {this.state.username}
+                                            onChangeText={(text)=>{
+                                                //this.setState({username:text})
+                                                this.props.setUsername(text)
+                                            }}
+                                            value = {this.props.username}
                                         />
                                     </Item>
                                 </InputGroup>
@@ -120,8 +137,11 @@ export default class Login extends Component {
                                     <Item floatingLabel>
                                         <Label style={{padding: 10, fontSize: 15}}> Password </Label>
                                         <Input
-                                            onChangeText = {(text)=>this.setState({password:text})}
-                                            value = {this.state.password}
+                                            onChangeText = {(text)=>{
+                                                this.props.setPassword(text)
+                                                //this.setState({password:text})
+                                            }}
+                                            value = {this.props.password}
                                             secureTextEntry={true}
                                         />
                                     </Item>
@@ -152,7 +172,13 @@ export default class Login extends Component {
                     </Content>
                 }
             </Container>
+            </Provider>
         );
     }
 }
+
+export default connect(state =>({
+    username: state.username,
+    password: state.password
+}), {setUsername, setId, setPassword})(Login);
 
